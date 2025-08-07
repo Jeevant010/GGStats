@@ -4,7 +4,7 @@ const Search = () => {
     return (
         
     <>
-        <Slidebar />
+        Search
         
 
     </>

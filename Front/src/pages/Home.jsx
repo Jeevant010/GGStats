@@ -5,6 +5,7 @@ const Home = () => {
         
     <>
         <Slidebar />
+        Add the side bar to the app.js
         
 
     </>

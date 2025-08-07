@@ -4,8 +4,7 @@ const Profile = () => {
     return (
         
     <>
-        <Slidebar />
-        
+        profile
 
     </>
 

@@ -4,7 +4,7 @@ const Categories = () => {
     return (
         
     <>
-        <Slidebar />
+        Categories
         
 
     </>
