@@ -1,10 +1,15 @@
 import React from "react";
-import Slidebar from "../components/slidebar";
+// import Slidebar from "../components/slidebar";
+// import Logo from "../components/logo";
+import Header from "../components/Header";
+
 const Home = () => {
     return (
         
     <>
-        <Slidebar />
+
+        <Header />
+        {/* <Slidebar /> */}
         
 
     </>
