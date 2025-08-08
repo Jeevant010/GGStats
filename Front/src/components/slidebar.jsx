@@ -23,7 +23,7 @@ export default function Slidebar({ isOpen }){
             {/* <Logo /> */}
            
                 
-            <div className='menu-items relative flex flex-col gap-8 px-[6px] top-10 '>
+            <div className='menu-items relative flex flex-col gap-8 px-[6px] top-20 '>
                 {menuItems.map(({Icon, label}, index) => (
                     <div 
                     className={`flex items-center gap-4 px-8 hover:cursor-pointer z-50 ${isActive === index ? "text-black bg-white py-4 ml-0 mr-0 rounded-sm transition-all duration-600 ease-in-out ": "text-gray-500"}`}
