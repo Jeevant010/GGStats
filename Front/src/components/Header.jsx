@@ -17,19 +17,20 @@ const Header = () => {
               <nav className='hidden md:block flex-1'>
 
               <ul className='flex text-white gap-8 justify-end py-7 px-8'>
-                <li>
+                
+                <li className='hover:text-red-600'>
                   <a href='#'>Home</a>
                 </li>
-                <li>
+                <li className='hover:text-red-600'>
                   <a href='#'>Sports/Games</a>
                 </li>
-                <li>
-                  <a href='#'>Sports Type</a>
+                <li className='hover:text-red-600'>
+                  <a href='#'>Categories</a>
                 </li>
-                <li>
+                <li className='hover:text-red-600'>
                   <a href='#'>Live</a>
                 </li>
-                <li>
+                <li className='hover:text-red-600'>
                   <a href='#'>Register</a>
                 </li>
               </ul>
@@ -40,11 +41,11 @@ const Header = () => {
             <div className='md:hidden ml-auto pr-4 '>
               {showMenu ? (
                 <button onClick={handleToggleButton} aria-label="Close menu">
-                  <X className="text-white w-8 h-8" />
+                  <X className="text-white w-8 h-8 " />
                 </button>
               ) : (
                 <button onClick={handleToggleButton} aria-label="Open menu">
-                  <Menu className="text-white w-8 h-8" />
+                  <Menu className="text-white w-8 h-8 " />
                 </button>
               )}
             </div>
