@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Logo from './logo';
-import { Menu, X } from "lucide-react";
-const Header = () => {
+import { Menu, X , Gamepad2, Home} from "lucide-react";
+const Header = () => {  
  
   const [showMenu, setShowMenu] = useState(false);
   const handleToggleButton =() => {
@@ -9,28 +9,28 @@ const Header = () => {
   };
 
   return (
-  <div className="main-header h-[80px] bg-black fixed top-0 left-0 right-0 z-[100] flex items-center">  
+  <div className="main-header h-[60px] bg-black top-1 mx-1 z-[100] flex items-center rounded-full sticky">  
         
         <Logo />
         {/* Desktop  Menu*/}
 
               <nav className='hidden md:block flex-1'>
 
-              <ul className='flex text-white gap-8 justify-end py-7 px-8'>
+              <ul className='flex text-white gap-4  justify-end py-7 px-6'>
                 
-                <li className='hover:text-red-600'>
+                <li className='hover:bg-red-600 px-4 py-1 rounded-lg transition-all duration-300 transform hover:scale-110'>
                   <a href='#'>Home</a>
                 </li>
-                <li className='hover:text-red-600'>
+                <li className='hover:bg-red-600 px-4 py-1 rounded-lg transition-all duration-300 transform hover:scale-110'>
                   <a href='#'>Sports/Games</a>
                 </li>
-                <li className='hover:text-red-600'>
+                <li className='hover:bg-red-600 px-4 py-1 rounded-lg transition-all duration-300 transform hover:scale-110'>
                   <a href='#'>Categories</a>
                 </li>
-                <li className='hover:text-red-600'>
+                <li className='hover:bg-red-600 px-4 py-1 rounded-lg transition-all duration-300 transform hover:scale-110'>
                   <a href='#'>Live</a>
                 </li>
-                <li className='hover:text-red-600'>
+                <li className='hover:bg-red-600 px-4 py-1 rounded-lg transition-all duration-300 transform hover:scale-120'>
                   <a href='#'>Register</a>
                 </li>
               </ul>
@@ -53,7 +53,7 @@ const Header = () => {
             {/* Mobile Menu */}
             <nav
               className={`absolute top-[80px] left-0 w-full bg-black md:hidden z-[200] transition-all duration-500 ease-in-out
-                ${showMenu ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-4 pointer-events-none'}`}
+                ${showMenu ? 'opacity-100 translate-y-0 pointer-events-auto rounded-3xl' : 'opacity-0 -translate-y-4 pointer-events-none'}`}
               style={{ willChange: 'opacity, transform' }}
             >
               <ul className='flex flex-col text-white gap-4 py-4 px-8'>
