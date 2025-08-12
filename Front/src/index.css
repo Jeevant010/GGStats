@@ -1,1 +1,6 @@
 @import "tailwindcss";
+
+/* Remove the default scroll */
+::-webkit-scrollbar {
+  display: none;
+}
