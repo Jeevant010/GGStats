@@ -1,4 +1,4 @@
-import Logo from './logo';
+import Logo from '../components/shared/logo/logo';
 import Slidebar from '../components/shared/Screen/slidebar';
 import { Menu, X , Gamepad2, Home} from "lucide-react";
 import React, { useState } from 'react';
