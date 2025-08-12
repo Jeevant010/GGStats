@@ -1,6 +1,9 @@
-import React, { useState } from 'react'
 import Logo from './logo';
+import Slidebar from '../components/shared/Screen/slidebar';
 import { Menu, X , Gamepad2, Home} from "lucide-react";
+import React, { useState } from 'react';
+
+
 const Header = () => {  
  
   const [showMenu, setShowMenu] = useState(false);
@@ -8,11 +11,42 @@ const Header = () => {
     setShowMenu(!showMenu);
   };
 
+  const [isSlidebarOpen, setIsSlidebarOpen] = useState(false);
+
+  const toggleSlidebar = () => {
+    setIsSlidebarOpen(!isSlidebarOpen);
+
+  };
+
   return (
   <div className="main-header h-[60px] bg-black top-1 mx-1 z-[100] flex items-center rounded-full sticky">  
         
         <Logo />
         {/* Desktop  Menu*/}
+
+
+
+               
+        
+
+        
+
+        <div className="header-items text-white justify-center items-center flex w-full">
+          <p>Header Items</p>
+        </div>
+        <div className='justify-end '>
+          {isSlidebarOpen ? (
+            <button className='z-100 text-white py-2 mt-5 px-2 justify-end left-25 r-0 top-4 cursor-pointer ' onClick={toggleSlidebar}><Menu /></button>
+        ):(
+          <button className='z-100 text-white py-2 mt-5 justify-end px-7 left-25 top-4 cursor-pointer' onClick={toggleSlidebar}><X /></button>
+        )}
+        </div>
+          <div className='flex justify-end'><Slidebar isOpen={isSlidebarOpen} /></div>
+
+
+
+
+
 
               <nav className='hidden md:block flex-1'>
 
@@ -69,4 +103,4 @@ const Header = () => {
   )
 }
 
-export default Header
+export default Header;
