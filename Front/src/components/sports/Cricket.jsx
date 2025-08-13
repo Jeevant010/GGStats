@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from '../Header';
+import Header from '../../../src/components/Differ/single/Header';
 import SportsType from '../SportsType';
 import BigBlock from '../shared/Screen/BigBlock';
 

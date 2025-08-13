@@ -1,48 +1,38 @@
-import React from 'react'
-import { House, Search, User, LayoutPanelLeft, Award, Medal,Settings, Menu} from "lucide-react";
-import { useState } from 'react';
-// import Logo from './logo';
+import React, { useState } from 'react'
+import { House, Search, User, LayoutPanelLeft, Award, Medal, Settings } from "lucide-react"
 
-export default function Slidebar({ isOpen }){
+export default function Slidebar({ isOpen }) {
+  const [isActive, setIsActive] = useState(0)
 
-    const [isActive, setIsActive] = useState(0);
-    const menuItems = [
-        {Icon : House, label: "Home"},
-        {Icon : Search, label: "Search"},
-        { Icon: LayoutPanelLeft, label: "Categories" },
-        {Icon : Award, label: "Awards"},
-        {Icon : Medal, label: "Medals"},
-        {Icon : User, label: "Profile"},
-        {Icon : Settings, label: "Settings"},
-    ];
+  const menuItems = [
+    { Icon: House, label: "Home" },
+    { Icon: Search, label: "Search" },
+    { Icon: LayoutPanelLeft, label: "Categories" },
+    { Icon: Award, label: "Awards" },
+    { Icon: Medal, label: "Medals" },
+    { Icon: User, label: "Profile" },
+    { Icon: Settings, label: "Settings" },
+  ]
 
   return (
-    <div>
-
-        <div className={`group main-slide absolute bg-yellow-600  h-screen w-24 top-[80px] right-0 hover:w-[200px] transition-all duration-300 ease-in-out bg-black text-white shadow-lg z-50 ${isOpen ? '' : ''}`}>
-
-            {/* <Logo /> */}
-
-            <div className='menu-items relative flex flex-col  gap-8 px-[6px] top-20 '>
-                                {menuItems.map((item, index) => {
-                                        const { Icon, label } = item; 
-                                        return (
-                    <div 
-                                            className={`flex items-center gap-4 px-8 hover:cursor-pointer z-50 ${isActive === index ? "text-black bg-white py-4 ml-0 mr-0 rounded-sm transition-all duration-600 ease-in-out " : "text-gray-500"}`}
-                                            key={index}
-                                            onClick={() => setIsActive(index)}
-                                        >
-                                            <div className="single_icon hover:text-red-700 flex items-center gap-4">
-                                                <span><Icon /></span>
-                                                <span className='hidden group-hover:inline'>{label}</span>
-                                            </div>
-                                        </div>
-                                        );
-                                })}
-           
-            </div>
-
-        </div>
-    </div>
+    <aside
+      className={`fixed top-[80px] right-0 h-screen bg-black text-white shadow-lg z-50 
+        transition-all duration-600 ease-in-out overflow-hidden
+        ${isOpen ? 'w-52 opacity-100' : 'w-0 opacity-0'}`}
+    >
+      <nav className={`flex flex-col gap-4 px-3 py-6 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
+        {menuItems.map(({ Icon, label }, index) => (
+          <button
+            key={label}
+            onClick={() => setIsActive(index)}
+            className={`flex items-center gap-4 px-4 py-3 rounded-sm transition-all
+              ${isActive === index ? "bg-white text-black" : "text-gray-400 hover:text-red-600"}`}
+          >
+            <Icon />
+            {isOpen && <span>{label}</span>}
+          </button>
+        ))}
+      </nav>
+    </aside>
   )
 }

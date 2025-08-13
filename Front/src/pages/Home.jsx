@@ -1,7 +1,7 @@
 import React from "react";
 // import Slidebar from "../components/slidebar";
 // import Logo from "../components/logo";
-
+import Cricket from '../components/sports/cricket';
 import SportsType from '../components/SportsType';
 import Header from "../components/Differ/single/Header";
 
@@ -9,13 +9,13 @@ const Home = () => {
     return (
         
         <>
-            <div className="bg-gradient-to-t from-purple-400 to-indigo-800 min-h-screen">
-                <Header />
-                {/* Offset main content by the fixed header height (80px) */}
-                {/* <main className="pt-[70px]"> */}
-                    <SportsType />
-                {/* </main> */}
-                </div>
+            <div className="relative min-h-screen bg-gradient-to-b from-indigo-900 via-purple-800 to-black overflow-hidden">
+  
+  <Header />
+  <SportsType />
+  <Cricket />
+</div>
+
         </>
 
     )};
