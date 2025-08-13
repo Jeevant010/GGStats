@@ -16,9 +16,9 @@ export default function Slidebar({ isOpen }) {
 
   return (
     <aside
-      className={`fixed top-[80px] right-0 h-screen bg-black text-white shadow-lg z-50 
+      className={`fixed top-[60px] right-0 h-screen bg-black text-white shadow-lg z-50 
         transition-all duration-600 ease-in-out overflow-hidden
-        ${isOpen ? 'w-52 opacity-100' : 'w-0 opacity-0'}`}
+        ${isOpen ? 'w-52 opacity-100 backdrop-blur' : 'w-0 opacity-0'}`}
     >
       <nav className={`flex flex-col gap-4 px-3 py-6 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
         {menuItems.map(({ Icon, label }, index) => (

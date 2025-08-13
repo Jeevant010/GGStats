@@ -39,7 +39,7 @@ const Cricket = () => {
       <Header />
       <SportsType />
 
-      <div className="min-h-screen w-full bg-gradient-to-t from-purple-400 to-red-800 p-6">
+      <div className="min-h-screen w-full bg-yellow-400 p-6">
         <h1 className="text-white text-2xl font-bold mb-4">Cricket Matches</h1>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">

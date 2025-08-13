@@ -36,7 +36,7 @@ const Header = () => {
   const toggleSlidebar = () => setIsSlidebarOpen(o => !o);
 
   return (
-    <div className="main-header h-[60px] bg-black/80 backdrop-blur top-1 mx-1 z-[100] flex items-center rounded-full sticky px-4">
+    <div className="main-header h-[60px] bg-black z-[100] flex items-center sticky px-4">
       <nav className="flex items-center w-full gap-4 relative" aria-label="Main navigation">
         <Logo />
 

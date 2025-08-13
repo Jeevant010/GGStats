@@ -9,11 +9,11 @@ const Home = () => {
     return (
         
         <>
-            <div className="relative min-h-screen bg-gradient-to-b from-indigo-900 via-purple-800 to-black overflow-hidden">
+            <div className="relative min-h-screen bg-green-400 overflow-hidden">
   
   <Header />
   <SportsType />
-  <Cricket />
+  {/* <Cricket /> */}
 </div>
 
         </>
