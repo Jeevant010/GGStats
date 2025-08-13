@@ -57,7 +57,7 @@ const Header = () => {
             <button
               onClick={toggleSlidebar}
               aria-label={isSlidebarOpen ? 'Close sidebar' : 'Open sidebar'}
-              className="text-white w-9 h-9 flex items-center justify-center rounded-lg hover:bg-red-600 transition-colors"
+              className="text-white w-9 h-9 flex items-center justify-center bg-yellow-500 rounded-lg hover:bg-red-600 transition-colors"
             >
               {isSlidebarOpen ? <X />   : <Menu />}
             </button>
