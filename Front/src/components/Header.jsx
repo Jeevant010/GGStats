@@ -19,11 +19,11 @@ const Header = () => {
   const toggleSlidebar = () => setIsSlidebarOpen(o => !o);
 
   return (
-    <div className="main-header h-[60px] bg-black/90 backdrop-blur top-1 mx-1 z-[100] flex items-center rounded-full sticky px-4">
+    <div className="main-header h-[60px] bg-black/20 backdrop-blur top-1 mx-1 z-[100] flex items-center rounded-full sticky px-4">
       <nav className="flex items-center w-full gap-4 relative" aria-label="Main navigation">
         <Logo />
 
-        {/* Center Search Bar (desktop only) */}
+      
         <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 w-full justify-center pointer-events-none px-4">
           <form className="w-full max-w-md flex pointer-events-auto" onSubmit={(e)=>e.preventDefault()}>
             <input
@@ -59,20 +59,14 @@ const Header = () => {
               aria-label={isSlidebarOpen ? 'Close sidebar' : 'Open sidebar'}
               className="text-white w-9 h-9 flex items-center justify-center rounded-lg hover:bg-red-600 transition-colors"
             >
-              {isSlidebarOpen ? <X /> : <Menu />}
+              {isSlidebarOpen ? <X />   : <Menu />}
             </button>
           </li>
         </ul>
 
         {/* Mobile Right Controls */}
-        <div className="flex md:hidden items-center gap-2 ml-auto">
-          <button
-            onClick={toggleSlidebar}
-            aria-label={isSlidebarOpen ? 'Close sidebar' : 'Open sidebar'}
-            className="text-white w-9 h-9 flex items-center justify-center rounded-lg hover:bg-gray-800 transition-colors"
-          >
-            {isSlidebarOpen ? <X /> : <Menu />}
-          </button>
+        <div className="flex md:hidden items-center gap-2 ml-auto ">
+         
           <button
             onClick={toggleMobile}
             aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
