@@ -57,7 +57,7 @@ const Header = () => {
             <button
               onClick={toggleSlidebar}
               aria-label={isSlidebarOpen ? 'Close sidebar' : 'Open sidebar'}
-              className="text-white w-9 h-9 flex items-center justify-center bg-yellow-500 rounded-lg hover:bg-red-600 "
+              className="text-white w-9 h-9 flex items-center justify-center bg-yellow-500 rounded-lg hover:bg-red-600 transition-colors"
             >
               {isSlidebarOpen ? <X />   : <Menu />}
             </button>
@@ -66,13 +66,7 @@ const Header = () => {
 
         {/* Mobile Right Controls */}
         <div className="flex md:hidden items-center gap-2 ml-auto ">
-          <button
-            onClick={toggleSlidebar}
-            aria-label={isSlidebarOpen ? 'Close sidebar' : 'Open sidebar'}
-            className="text-white w-9 h-9 flex items-center justify-center rounded-lg hover:bg-gray-800 transition-colors"
-          >
-            {isSlidebarOpen ? <X /> : <Menu />}
-          </button>
+         
           <button
             onClick={toggleMobile}
             aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
