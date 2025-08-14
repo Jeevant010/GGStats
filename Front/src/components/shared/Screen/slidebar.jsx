@@ -16,20 +16,37 @@ export default function Slidebar({ isOpen }) {
 
   return (
     <aside
-      className={`fixed top-[60px] right-0 h-screen bg-black text-white shadow-lg z-50 
-        transition-all duration-600 ease-in-out overflow-hidden
-        ${isOpen ? 'w-52 opacity-100 backdrop-blur' : 'w-0 opacity-0'}`}
+      className={`fixed top-[60px] right-0 h-[calc(100vh-60px)] z-50 transition-all duration-500 ease-in-out overflow-hidden
+        ${isOpen ? 'w-60 opacity-100' : 'w-0 opacity-0 pointer-events-none'}
+      `}
+      style={{
+        background: 'rgba(24, 24, 32, 0.75)',
+        backdropFilter: isOpen ? 'blur(16px)' : 'none',
+        borderTopLeftRadius: '1.5rem',
+        borderBottomLeftRadius: '1.5rem',
+        boxShadow: isOpen ? '0 8px 32px 0 rgba(31, 38, 135, 0.37)' : 'none',
+      }}
     >
-      <nav className={`flex flex-col gap-4 px-3 py-6 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
+      <nav className={`flex flex-col gap-2 px-4 py-8 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
+        <div className="mb-4 border-b border-white/20 pb-2 text-lg font-bold tracking-wide text-white/80 pl-1 select-none">
+          Menu
+        </div>
         {menuItems.map(({ Icon, label }, index) => (
           <button
             key={label}
             onClick={() => setIsActive(index)}
-            className={`flex items-center gap-4 px-4 py-3 rounded-sm transition-all
-              ${isActive === index ? "bg-white text-black" : "text-gray-400 hover:text-red-600"}`}
+            className={`flex items-center gap-4 px-4 py-3 rounded-xl text-base font-medium transition-all duration-200
+              ${isActive === index
+                ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-lg scale-105'
+                : 'text-gray-300 hover:bg-white/10 hover:text-pink-400'}
+            `}
+            style={{
+              outline: isActive === index ? 'border-none' : 'none',
+              outlineOffset: '2px',
+            }}
           >
-            <Icon />
-            {isOpen && <span>{label}</span>}
+            <Icon size={22} />
+            {isOpen && <span className="whitespace-nowrap">{label}</span>}
           </button>
         ))}
       </nav>

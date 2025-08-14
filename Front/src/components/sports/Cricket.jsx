@@ -31,6 +31,42 @@ const Cricket = () => {
       score: "NZ 320/7",
       overs: "50.0",
       result: "New Zealand won by 15 runs"
+    },
+    {
+      matchTitle: "Pakistan vs New Zealand",
+      venue: "Karachi National Stadium",
+      image: "https://upload.wikimedia.org/wikipedia/commons/0/05/Cricket_field_and_pitch.jpg",
+      status: "Completed",
+      score: "NZ 320/7",
+      overs: "50.0",
+      result: "New Zealand won by 15 runs"
+    },
+    {
+      matchTitle: "Pakistan vs New Zealand",
+      venue: "Karachi National Stadium",
+      image: "https://upload.wikimedia.org/wikipedia/commons/0/05/Cricket_field_and_pitch.jpg",
+      status: "Completed",
+      score: "NZ 320/7",
+      overs: "50.0",
+      result: "New Zealand won by 15 runs"
+    },
+    {
+      matchTitle: "Pakistan vs New Zealand",
+      venue: "Karachi National Stadium",
+      image: "https://upload.wikimedia.org/wikipedia/commons/0/05/Cricket_field_and_pitch.jpg",
+      status: "Completed",
+      score: "NZ 320/7",
+      overs: "50.0",
+      result: "New Zealand won by 15 runs"
+    },
+    {
+      matchTitle: "Pakistan vs New Zealand",
+      venue: "Karachi National Stadium",
+      image: "https://upload.wikimedia.org/wikipedia/commons/0/05/Cricket_field_and_pitch.jpg",
+      status: "Completed",
+      score: "NZ 320/7",
+      overs: "50.0",
+      result: "New Zealand won by 15 runs"
     }
   ];
 
@@ -39,8 +75,11 @@ const Cricket = () => {
       <Header />
       <SportsType />
 
-      <div className="min-h-screen w-full bg-yellow-400 p-6">
-        <h1 className="text-white text-2xl font-bold mb-4">Cricket Matches</h1>
+      <div
+        className="min-h-screen w-full p-6 relative bg-[url('/src/assets/cricket1.svg')] bg-no-repeat bg-cover bg-left-center bg-green-500"
+        style={{opacity:1}}
+      >
+        <h1 className="text-black-800 text-2xl font-bold mb-4">Cricket Matches</h1>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {mockMatch.map((match, index) => (
