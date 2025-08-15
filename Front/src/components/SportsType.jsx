@@ -9,44 +9,56 @@ const sports = [
 
 const SportsType = () => {
   const [showMenu, setShowMenu] = useState(false)
+  const [selectedSport, setSelectedSport] = useState('')
+
+  const getPath = (s) => {
+    const place = s.toLowerCase()
+    return sports.includes(s) ? `/sports/${place}` : '/'
+  }
+
+  const handleSelect = (s, isMobile = false) => {
+    setSelectedSport(s)
+    if (isMobile) setShowMenu(false)
+  }
 
   const renderLinks = (isMobile = false) =>
-    sports.map((s) => (
-      <li key={s} className="">
-        {s === 'Cricket' ? (
+    sports.map((s) => {
+      const isActive = s === selectedSport
+
+      
+      const baseClass = isMobile
+        ? 'block w-full text-center text-lg py-3 mb-2 rounded-full text-white font-semibold shadow-lg transition-transform duration-200'
+        : 'inline-block px-5 py-2 rounded-full font-medium shadow transition-all duration-200'
+
+      const activeClass = isActive
+        ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white scale-105'
+        : 'bg-white/80 text-black hover:bg-gradient-to-r hover:from-gray-700 hover:to-gray-900 hover:text-white hover:scale-105'
+
+      return (
+        <li key={s}>
           <Link
-            to="/sports/cricket"
-            onClick={isMobile ? () => setShowMenu(false) : undefined}
-            className={`
-              ${isMobile
-                ? 'block w-full text-center text-lg py-3 mb-2 rounded-full bg-gradient-to-r from-red-500 to-pink-500 text-white font-semibold shadow-lg hover:scale-105 transition-transform duration-200'
-                : 'inline-block px-5 py-2 rounded-full bg-white/80 text-black font-medium shadow hover:bg-gradient-to-r hover:from-red-500 hover:to-pink-500 hover:text-white transition-all duration-200 hover:scale-105'}
-            `}
+        to={getPath(s)}
+        onClick={() => handleSelect(s, isMobile)}
+        className={`${baseClass} ${
+          (isActive ||
+            (typeof window !== 'undefined' &&
+          s.toLowerCase() === (window.location.pathname.split('/')[2] || '')))
+            ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white scale-105'
+            : 'bg-white/80 text-black hover:bg-gradient-to-r hover:from-gray-700 hover:to-gray-900 hover:text-white hover:scale-105'
+        }`}
           >
-            {s}
+        {s}
           </Link>
-        ) : (
-          <a
-            href="#"
-            onClick={isMobile ? () => setShowMenu(false) : undefined}
-            className={`
-              ${isMobile
-                ? 'block w-full text-center text-lg py-3 mb-2 rounded-full bg-gradient-to-r from-gray-700 to-gray-900 text-white font-semibold shadow-lg hover:scale-105 transition-transform duration-200'
-                : 'inline-block px-5 py-2 rounded-full bg-white/80 text-black font-medium shadow hover:bg-gradient-to-r hover:from-gray-700 hover:to-gray-900 hover:text-white transition-all duration-200 hover:scale-105'}
-            `}
-          >
-            {s}
-          </a>
-        )}
-      </li>
-    ))
+        </li>
+      )
+    })
 
   return (
     <header className="h-[60px] bg-gradient-to-r from-red-400 via-pink-400 to-purple-400 shadow-lg flex items-center px-4 relative z-20 rounded-b-3xl">
       <nav className="flex w-full items-center justify-between">
         {/* Desktop Menu */}
         <ul className="hidden md:flex gap-4 lg:gap-8 text-black">
-          {renderLinks()}
+          {renderLinks(false)}
         </ul>
 
         {/* Mobile Toggle */}
