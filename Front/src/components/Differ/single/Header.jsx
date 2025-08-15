@@ -6,7 +6,7 @@ import Slidebar from '../../shared/Screen/slidebar';
 const navItems = [
   { label: 'Home', href: '#' },
   { label: 'Sports/Games', href: '#' },
-  { label: 'Categories', href: '#' },
+  { label: 'Categories', href: '/categories' },
   { label: 'Live', href: '#' },
   { label: 'Register', href: '#' },
 ];
