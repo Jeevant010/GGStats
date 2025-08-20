@@ -4,7 +4,7 @@ import Logo from '../../shared/logo/logo';
 import Slidebar from '../../shared/Screen/slidebar';
 
 const navItems = [
-  { label: 'Home', href: '#' },
+  { label: 'Home', href: '/Home' },
   { label: 'Sports/Games', href: '#' },
   { label: 'Categories', href: '/categories' },
   { label: 'Live', href: '#' },
@@ -12,21 +12,21 @@ const navItems = [
 ];
 
 // Reusable Search Form
-const SearchForm = ({ placeholder, buttonText }) => (
-  <form className="flex w-full max-w-md" onSubmit={e => e.preventDefault()}>
-    <input
-      type="text"
-      placeholder={placeholder}
-      className="w-full bg-gray-800/70 text-white placeholder-gray-400 rounded-l-full py-2 px-4 focus:outline-none focus:ring-1 focus:ring-red-600"
-    />
-    <button
-      type="submit"
-      className="bg-red-600 text-white rounded-r-full px-4 hover:bg-red-700 transition-colors"
-    >
-      {buttonText}
-    </button>
-  </form>
-);
+// const SearchForm = ({ placeholder, buttonText }) => (
+//   <form className="flex w-full max-w-md" onSubmit={e => e.preventDefault()}>
+//     <input
+//       type="text"
+//       placeholder={placeholder}
+//       className="w-full bg-gray-800/70 text-white placeholder-gray-400 rounded-l-full py-2 px-4 focus:outline-none focus:ring-1 focus:ring-red-600"
+//     />
+//     <button
+//       type="submit"
+//       className="bg-red-600 text-white rounded-r-full px-4 hover:bg-red-700 transition-colors"
+//     >
+//       {buttonText}
+//     </button>
+//   </form>
+// );
 
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -36,16 +36,16 @@ const Header = () => {
   const toggleSlidebar = () => setIsSlidebarOpen(o => !o);
 
   return (
-    <div className="main-header h-[60px] bg-gradient-to-r from-red-400 via-pink-400 to-purple-400 shadow-lg z-[100] flex items-center sticky px-4 ">
+    <div className="main-header h-[60px] bg-gradient-to-r from-blue-400 via-pink-200 to-purple-400 shadow-lg z-[100] flex items-center px-4 sticky top-0 ">
       <nav className="flex items-center w-full gap-4 relative" aria-label="Main navigation">
         <Logo />
 
         {/* Desktop Search */}
-        <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 w-full justify-center px-4 pointer-events-none">
+        {/* <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 w-full justify-center px-4 pointer-events-none">
           <div className="pointer-events-auto">
             <SearchForm placeholder="Search..." buttonText="Search" />
           </div>
-        </div>
+        </div> */}
 
         {/* Desktop Nav Items */}
         <ul className="hidden md:flex items-center gap-2 ml-auto">
@@ -75,7 +75,7 @@ const Header = () => {
           <button
             onClick={toggleSlidebar}
             aria-label={isSlidebarOpen ? 'Close sidebar' : 'Open sidebar'}
-            className="text-white w-9 h-9 flex items-center justify-center rounded-full bg-black/60 shadow hover:bg-black/80 transition-colors"
+            className="text-white w-9   h-9 flex items-center justify-center rounded-full bg-black/60 shadow hover:bg-black/80 transition-colors"
           >
             {isSlidebarOpen ? <X /> : <Menu />}
           </button>
@@ -96,9 +96,9 @@ const Header = () => {
         }`}
         style={{ backdropFilter: 'blur(6px)' }}
       >
-        <div className="p-4 border-b border-gray-800">
+        {/* <div className="p-4 border-b border-gray-800">
           <SearchForm placeholder="Search..." buttonText="Go" />
-        </div>
+        </div> */}
         <ul className="flex flex-col text-white gap-2 p-4">
           {navItems.map(item => (
             <li key={item.label}>

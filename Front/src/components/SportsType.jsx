@@ -54,7 +54,7 @@ const SportsType = () => {
     })
 
   return (
-    <header className="h-[60px] bg-gradient-to-r from-red-400 via-pink-400 to-purple-400 shadow-lg flex items-center px-4 relative z-20 rounded-b-3xl">
+    <header className="h-[60px] bg-gradient-to-r from-blue-400 via-pink-200 to-purple-400 shadow-lg flex items-center px-4 relative z-20">
       <nav className="flex w-full items-center justify-between">
         {/* Desktop Menu */}
         <ul className="hidden md:flex gap-4 lg:gap-8 text-black">

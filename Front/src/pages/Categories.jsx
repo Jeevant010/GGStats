@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import SmallCategory from '../components/Differ/single/SmallCategory'; 
-
+import Header from '../components/Differ/single/Header';
 const Categories= ({
   onEnquireClick = () => console.log('Enquire clicked'),
   onBookUsClick = () => console.log('Book Us clicked'),
@@ -81,8 +81,9 @@ const Categories= ({
   }
 
   return (
+    <>
+      <Header  />
     <div className="bg-white min-h-screen flex flex-col">
-        
       <main className="flex-1">
         {portfolioData.categories.map((category) => (
           <SmallCategory
@@ -94,6 +95,7 @@ const Categories= ({
         ))}
       </main>
     </div>
+    </>
   );
 };
 
