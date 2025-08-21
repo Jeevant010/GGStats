@@ -1,4 +1,5 @@
 const express = require('express');
+const app = express();
 const port = 8000;
 const bcrypt = require("bcrypt");
 const passport = require("passport");
@@ -6,11 +7,12 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const csrf = require("csurf");
-
+const newsRoutes = require('./routes/news');
 require('dotenv').config();
-
 const authRoutes = require('./routes/auth');
 
+
+app.use('/api', newsRoutes);
 mongoose.connect(
         `mongodb+srv://Main:${process.env.MONGO}@mongocluster.gmqer.mongodb.net/?retryWrites=true&w=majority&appName=mongoCluster`
 
@@ -33,7 +35,6 @@ mongoose.connect(
 
 
     ///  ==================MIDDLEWARES==================
-const app = express();
 
 
 
