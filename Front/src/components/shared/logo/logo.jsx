@@ -12,7 +12,7 @@ const Logo = () => {
           alt="GGStats logo"
           className='w-8 h-8 object-contain'
         />
-        <span className='text-white text-xl font-bold my-2 mx-3'>GGStats</span>
+        <span className='text-black text-xl font-bold my-2 mx-3'>GGStats</span>
       </Link>
     </div>
   )

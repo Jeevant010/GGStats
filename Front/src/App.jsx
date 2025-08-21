@@ -17,6 +17,7 @@ import Badminton from './components/sports/Badminton.jsx';
 import Kabaddi from './components/sports/Kabaddi.jsx';
 import Hockey from './components/sports/Hockey.jsx';
 import VolleyBalls from './components/sports/Volleyballs.jsx';
+import GamesHome from './pages/GamesHome.jsx';
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<SearchRoute />} />
+          <Route path = "/GamesHome" element={<GamesHome/>}/>
           <Route path="/categories" element={<Categories />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<Home />} />
