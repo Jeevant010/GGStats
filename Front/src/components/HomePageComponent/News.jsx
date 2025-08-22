@@ -9,14 +9,16 @@ const News = () => {
     const getDATA = async () => {
         const response = await fetch(`/api/news?q=${search}`);
         const jsondata = await response.json();
-        setNewsData(jsondata);
-    }
+        // console.log(jsondata.articles);
+        setNewsData(jsondata.articles);
+    };
 
     useEffect(() => {
         getDATA();
     }, []);
+
     const handleInput = (e) => {
-        console.log(e.target.value);
+        // console.log(e.target.value);
         setSearch(e.target.value);
     }
     return (

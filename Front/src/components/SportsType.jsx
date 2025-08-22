@@ -54,8 +54,8 @@ const SportsType = () => {
     })
 
   return (
-    <header className="h-[60px]  shadow-lg flex items-center px-4 relative z-20">
-      <nav className="flex w-full items-center justify-between">
+    <header className="h-[60px]  shadow-lg flex items-center px-4 relative z-10 overflow-hidden">
+      <nav className="flex w-full items-center justify-between overflow-hidden">
         {/* Desktop Menu */}
         <ul className="hidden md:flex gap-4 lg:gap-8 text-black">
           {renderLinks(false)}
