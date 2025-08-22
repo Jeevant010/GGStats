@@ -1,5 +1,6 @@
 const express = require('express');
 const port = 8000;
+const helmet = require("helmet");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 const mongoose = require("mongoose");
@@ -35,17 +36,47 @@ mongoose.connect(
     ///  ==================MIDDLEWARES==================
 const app = express();
 
+app.use(express.json());
+app.use(express.urlencoded( { extended:true } ));
+app.use(cookieParser());
+
+app.use(cors({
+    origin: [],
+    methods : " GET, POST , PUT , DELETE",
+    credentials: true,
+}));
+
+
+app.use(helmet());
+
+// Rate Limiting , only for admin/ routes
 
 
 
 
+/// =============== Passport jwt setup ==================
 
+const JwtStrategy = require('passport-jwt').Strategy,
+      ExtractJWt = require('passport-jwt').ExtractJwt;
 
+    const opts = {
+        jwtFromRequest: ExtractJWt.fromAuthHeaderAsBearerToken(),
+        secretOrKey : process.env.TOKEN,
+    };
 
-
-
+    passport.use('user-jwt' , new JwtStrategy(opts , async (jwt_payload , done) => {
+        try {
+            const user  =await User.findById(jwt_payload.id);
+            if(user) return done(null, user);
+            return done(null , false);
+        }   catch (err) {
+            return done(err, false);
+        }
+    }));
+app.use(passport.initialize());
 ///  ======================= ROUTES =====================
-app.use(authRoutes);
+
 app.get( "/" , (req, res) => res.send( " Can you see me?" ) );
+app.use(authRoutes);
 app.listen( port , () => console.log("App is running on port http://localhost:" + port));
 
