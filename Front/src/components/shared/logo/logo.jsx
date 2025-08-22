@@ -1,0 +1,21 @@
+import React from 'react'
+import { Link } from 'react-router-dom'
+// It is recommended to use a local image asset for the logo instead of an external URL.
+// import GGStatsLogo from './path/to/your/logo.png';
+
+const Logo = () => {
+  return (
+    <div className='z-50'>
+      <Link to='/' className='flex items-center'>
+        <img
+          src="https://t3.ftcdn.net/jpg/12/82/15/68/240_F_1282156894_dJTHOpUEf1Oi8PmH9l7PRNNob17ykOSY.jpg"
+          alt="GGStats logo"
+          className='w-8 h-8 object-contain'
+        />
+        <span className='text-black text-xl font-bold my-2 mx-3'>GGStats</span>
+      </Link>
+    </div>
+  )
+}
+
+export default Logo
