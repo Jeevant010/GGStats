@@ -6,19 +6,18 @@ const News = () => {
     const [newsData, setNewsData] = useState([]);
     const API_KEY = "a90297fb0e554032ac48ff512ced53e7";
 
-    const getDATA = async () => {
-        const response = await fetch(`/api/news?q=${search}`);
+    const getDATA = async (query = search) => {
+        const response = await fetch(`https://newsapi.org/v2/everything?q=${query}&apiKey=${API_KEY}`);
         const jsondata = await response.json();
-        // console.log(jsondata.articles);
+        console.log(jsondata.articles);
         setNewsData(jsondata.articles);
     };
 
     useEffect(() => {
-        getDATA();
+        getDATA("Sport");
     }, []);
-
     const handleInput = (e) => {
-        // console.log(e.target.value);
+        console.log(e.target.value);
         setSearch(e.target.value);
     }
     return (
@@ -51,4 +50,4 @@ const News = () => {
   )
 }
 
-export default News
+export default News;
