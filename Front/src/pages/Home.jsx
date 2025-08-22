@@ -4,6 +4,7 @@ import React from "react";
 import Hero from '../components/HomePageComponent/Hero';
 import SportsType from '../components/SportsType';
 import Header from "../components/Differ/single/Header";
+import News from "../components/HomePageComponent/News";
 
 const Home = () => {
     return (
@@ -14,6 +15,7 @@ const Home = () => {
   <Header />
   <SportsType />
    <Hero /> 
+   <News />
 
   
 </div>

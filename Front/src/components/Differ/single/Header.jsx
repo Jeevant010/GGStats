@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Menu, X } from "lucide-react";
+import { Link } from 'react-router-dom';
 import Logo from '../../shared/logo/logo';
 import Slidebar from '../../shared/Screen/slidebar';
 
 const navItems = [
   { label: 'Home', href: '/Home' },
-  { label: 'Sports/Games', href: '#' },
+  { label: 'Sports/Games', href: '/GamesHome' },
   { label: 'Categories', href: '/categories' },
   { label: 'Live', href: '#' },
   { label: 'Register', href: '#' },
@@ -36,8 +37,8 @@ const Header = () => {
   const toggleSlidebar = () => setIsSlidebarOpen(o => !o);
 
   return (
-    <div className="main-header h-[60px] bg-gradient-to-r from-blue-400 via-pink-200 to-purple-400 shadow-lg z-[100] flex items-center px-4 sticky top-0 ">
-      <nav className="flex items-center w-full gap-4 relative" aria-label="Main navigation">
+    <div className="main-header h-[60px]  shadow-lg z-[100] flex items-center px-4 sticky top-0 ">
+      <nav className="flex items-center w-full gap-8 relative" aria-label="Main navigation">
         <Logo />
 
         {/* Desktop Search */}
@@ -48,15 +49,16 @@ const Header = () => {
         </div> */}
 
         {/* Desktop Nav Items */}
-        <ul className="hidden md:flex items-center gap-2 ml-auto">
+        <ul className="hidden md:flex justify-around w-full">
           {navItems.map(item => (
             <li key={item.label}>
-              <a
-                href={item.href}
-                className="inline-block px-5 py-2 rounded-full bg-white/80 text-black font-medium shadow hover:bg-gradient-to-r hover:from-red-500 hover:to-pink-500 hover:text-white transition-all duration-200 hover:scale-105"
+              <Link
+                to={item.href}
+                className="inline-block px-5 py-2  text-black font-medium  hover: hover: transition-all duration-300 hover:scale-135"
+                onClick={() => setMobileOpen(false)}
               >
                 {item.label}
-              </a>
+              </Link>
             </li>
           ))}
           <li>
@@ -102,13 +104,13 @@ const Header = () => {
         <ul className="flex flex-col text-white gap-2 p-4">
           {navItems.map(item => (
             <li key={item.label}>
-              <a
-                href={item.href}
+              <Link
+                to={item.href}
                 className="block w-full text-center text-lg py-3 mb-2 rounded-full bg-gradient-to-r from-red-500 to-pink-500 text-white font-semibold shadow-lg hover:scale-105 transition-transform duration-200"
                 onClick={() => setMobileOpen(false)}
               >
                 {item.label}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
