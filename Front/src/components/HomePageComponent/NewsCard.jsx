@@ -1,4 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
+import gsap from 'gsap';
+
+const GSAPText = () => {
+  useEffect(() => {
+    gsap.fromTo('.news-cards',{
+      opacity: 0,
+      y:20,
+    },
+    {
+      opacity:1,
+      y:0,
+      delay:1.5,
+      stagger:0.2,
+    })
+  }, [])
+  return null;
+}
 
 const NewsCard = ({ data }) => {
   const [page, setPage] = useState(0);
@@ -16,7 +33,8 @@ const NewsCard = ({ data }) => {
 
   return (
     <div className="relative">
-      <div className="grid grid-cols-1 sm:grid-cols-4 gap-6">
+      <GSAPText />
+      <div className="news-cards grid grid-cols-1 sm:grid-cols-4 gap-6">
         {visibleData.map((curItem, index) => (
           <div
             className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col hover:scale-105 transition-transform duration-200 border border-gray-200"

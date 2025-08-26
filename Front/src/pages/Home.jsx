@@ -10,17 +10,19 @@ const Home = () => {
     return (
         
         <>
-            {/* <div className="relative min-h-screen bg-[url('/src/assets/GradeGrey.jpg')] bg-no-repeat bg-cover bg-left-center  overflow-hidden"> */}
-  
-  <Header />
-  <SportsType />
 
-   <Hero /> 
-   <News />
-   <UpcomingEvents />
+    {/* Blurred background circle */}
+    <div className="circlePosition w-full h-full bg-violet-400 rounded-[100%] absolute z-1 top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] blur-[90px] pointer-events-none" />
 
-  
-{/* </div> */}
+    {/* Main content with backdrop blur */}
+    <div className="relative z-10 backdrop-blur-xl">
+        <Header />
+        <SportsType />
+        <Hero />
+        <News />
+        <UpcomingEvents />
+    </div>
+
 
         </>
 

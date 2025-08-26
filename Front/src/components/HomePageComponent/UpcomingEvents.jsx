@@ -1,3 +1,9 @@
+
+
+
+// To use the bold, geometric font style, add this to your index.html <head>:
+// <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+
 import React, { useRef, useEffect } from 'react';
 import footballVideo from '../../assets/football.mp4';
 
@@ -35,9 +41,9 @@ export const UpcomingEvents = () => {
                 textAnchor="middle"
                 dominantBaseline="middle"
                 fontSize="320"
-                fontWeight="bold"
-                fontFamily="'Arial Black', Impact, Arial, sans-serif"
-                letterSpacing="-10"
+                fontWeight="900"
+                fontFamily="'Archivo Black', Arial, sans-serif"
+                letterSpacing="0"
                 fill="white"
                 style={{ textTransform: 'uppercase' }}
               >
@@ -49,8 +55,8 @@ export const UpcomingEvents = () => {
                 textAnchor="middle"
                 dominantBaseline="middle"
                 fontSize="70"
-                fontWeight="bold"
-                fontFamily="'Arial Black', Impact, Arial, sans-serif"
+                fontWeight="900"
+                fontFamily="'Archivo Black', Arial, sans-serif"
                 fill="white"
                 style={{ textTransform: 'uppercase' }}
               >
@@ -62,8 +68,8 @@ export const UpcomingEvents = () => {
                 textAnchor="middle"
                 dominantBaseline="middle"
                 fontSize="85"
-                fontWeight="bold"
-                fontFamily="'Arial Black', Impact, Arial, sans-serif"
+                fontWeight="900"
+                fontFamily="'Archivo Black', Arial, sans-serif"
                 fill="white"
                 style={{ textTransform: 'uppercase' }}
               >

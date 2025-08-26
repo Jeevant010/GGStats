@@ -1,10 +1,28 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import gsap from 'gsap';
+
+const GsapText = () => {
+    useEffect(() => {
+        gsap.fromTo('.cards', {
+                opacity: 0,
+                y: 20
+            },
+            {
+                opacity: 1,
+                y: 0,
+                delay: .5,
+                stagger: 0.2,
+            })
+    }, [])
+    return null;
+}
 
 const Hero = () => {
   return (
     <>
+      <GsapText />
       <div className="flex flex-col w-full mt-6">
-        <div className="flex flex-col md:flex-row w-full max-w-full mx-auto gap-6 px-2 mt-0">
+        <div className="cards flex flex-col md:flex-row w-full max-w-full mx-auto gap-6 px-2 mt-0">
           {/* Left Cards */}
           <div className="flex flex-col gap-4 w-full md:w-1/4 order-2 md:order-1 mt-4 md:mt-0 ">
             <div className="bg-white/80 rounded-xl shadow-lg p-4 min-h-[120px] flex flex-col items-center justify-center">
