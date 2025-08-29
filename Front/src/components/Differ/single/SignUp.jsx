@@ -64,15 +64,15 @@ const SignUp = () => {
 
       {/* Form Section */}
       <motion.div
-        initial={{ x: "100%"}}
-        animate={{ x: isLogin ? "0%" : "100%"}}
+        initial={{ x: "100%" }}
+        animate={{ x: isLogin ? "0%" : "100%" }}
         // exit={{opacity:1}}
         transition={{ duration: 0.8, ease: "easeInOut" }}
-        className="absolute top-0 left-0 w-1/2 h-full flex justify-center items-center p-8"
+        className="absolute top-0 left-0 w-[50%] h-full flex justify-center items-center p-8"
 
 
       >
-        <div className="rounded-2xl shadow-2xl p-8 w-full max-w-md text-center">
+        <div className="rounded-2xl shadow-2xl p-8 h-full w-full max-w-md m-10 mt-10 text-center p-20">
           <h1 className="text-3xl font-bold text-black mb-6">
             {isLogin ? "Welcome Back!" : "Create Your Account"}
           </h1>

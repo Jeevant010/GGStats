@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const images = [
-  "/3dcharacter1.png",
+  "/game4.jpg",
   "/game2.jpg",
   "/game3.jpg",
   "/game1.jpg",
-  "/game4.jpg",
   "/game5.jpg",
   "/game6.jpg",
   "/val2.jpg",
@@ -33,9 +32,9 @@ const Hero = () => {
           alt={`Game ${index}`}
           className="absolute w-[80%] h-[80%] object-cover object-top rounded-2xl shadow-2xl"
           style={{ perspective: 1000 }} // adds depth
-          initial={{ opacity: 0, rotateY: 0, scale: 0.8 }}
-          animate={{ opacity: 1, rotateY: 0, scale: 1 }}
-          exit={{ opacity: 0, rotateY: 0, scale: 0.8 }}
+          initial={{ x: "100%", opacity: 0, scale: 0.8 }}
+          animate={{ x: "0%", opacity: 1, scale: 1 }}
+          exit={{ x: "-100%", opacity: 0, scale: 0.8 }}
           transition={{ duration: 0.8, ease: "easeInOut" }}
         />
       </AnimatePresence>
