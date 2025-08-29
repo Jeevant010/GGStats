@@ -3,9 +3,14 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const images = [
   "/3dcharacter1.png",
-  "/3dcharacter1.png",
-  "/3dcharacter1.png",
-  "/3dcharacter1.png",
+  "/game2.jpg",
+  "/game3.jpg",
+  "/game1.jpg",
+  "/game4.jpg",
+  "/game5.jpg",
+  "/game6.jpg",
+  "/val2.jpg",
+  "/omen1.png",
 ];
 
 const Hero = () => {
@@ -15,7 +20,7 @@ const Hero = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % images.length);
-    }, 3000);
+    }, 4000);
     return () => clearInterval(interval);
   }, []);
 
@@ -26,7 +31,7 @@ const Hero = () => {
           key={index}
           src={images[index]}
           alt={`Game ${index}`}
-          className="absolute w-[80%] h-[80%] object-cover rounded-2xl shadow-2xl"
+          className="absolute w-[80%] h-[80%] object-cover object-top rounded-2xl shadow-2xl"
           style={{ perspective: 1000 }} // adds depth
           initial={{ opacity: 0, rotateY: 0, scale: 0.8 }}
           animate={{ opacity: 1, rotateY: 0, scale: 1 }}
