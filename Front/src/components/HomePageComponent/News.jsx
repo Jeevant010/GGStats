@@ -9,7 +9,6 @@ const News = () => {
     const getDATA = async (query = search) => {
         const response = await fetch(`https://newsapi.org/v2/everything?q=${query}&apiKey=${API_KEY}`);
         const jsondata = await response.json();
-        console.log(jsondata.articles);
         setNewsData(jsondata.articles);
     };
 
@@ -17,7 +16,6 @@ const News = () => {
         getDATA("Sport");
     }, []);
     const handleInput = (e) => {
-        console.log(e.target.value);
         setSearch(e.target.value);
     }
     return (

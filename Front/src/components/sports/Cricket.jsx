@@ -2,6 +2,7 @@ import React from 'react';
 import Header from '../../../src/components/Differ/single/Header';
 import SportsType from '../SportsType';
 import BigBlock from '../shared/Screen/BigBlock';
+import SportPage from '../shared/Screen/sportpage';
 
 const Cricket = () => {
   const mockMatch = [
@@ -74,7 +75,7 @@ const Cricket = () => {
     <>
       <Header />
       <SportsType />
-
+      <SportPage />
       <div
         className="min-h-screen w-full p-6 relative bg-[url('/src/assets/cricket1.svg')] bg-no-repeat bg-cover bg-left-center bg-green-500"
         style={{opacity:1}}
