@@ -8,8 +8,8 @@ const navItems = [
   { label: 'Home', href: '/Home' },
   { label: 'Sports/Games', href: '/GamesHome' },
   { label: 'Categories', href: '/categories' },
-  { label: 'Live', href: '#' },
-  { label: 'Register', href: '#' },
+  { label: 'Live', href: '/live' },
+  { label: 'Register', href: '/register' },
 ];
 
 // Reusable Search Form

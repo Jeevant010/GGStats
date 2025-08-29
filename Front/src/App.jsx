@@ -18,6 +18,9 @@ import Kabaddi from './components/sports/Kabaddi.jsx';
 import Hockey from './components/sports/Hockey.jsx';
 import VolleyBalls from './components/sports/Volleyballs.jsx';
 import GamesHome from './pages/GamesHome.jsx';
+import Live from './pages/Live.jsx';
+import Login from './components/Differ/single/Login.jsx';
+import SignUp from './components/Differ/single/SignUp.jsx';
 
 function App() {
 
@@ -29,6 +32,9 @@ function App() {
           <Route path="/search" element={<SearchRoute />} />
           <Route path = "/GamesHome" element={<GamesHome/>}/>
           <Route path="/categories" element={<Categories />} />
+          <Route path="/live" element={<Live />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<SignUp />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<Home />} />
           <Route path="/sports/cricket" element={<Cricket />} />
