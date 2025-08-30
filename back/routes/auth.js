@@ -122,23 +122,6 @@ router.get("/me" , verifyToken , passport.authenticate("user-jwt" , { session:fa
 
 
 
-/// ========================== TO AUTHENTICATE THE LOGGED IN USER =============================
-
-
-const authenticate = async (req, res , next) => {
-    const auth = req.headers.authorization;
-    if ( !auth || !auth.startsWith('Bearer')) return res.status(401).json({ message : "No token." });
-    const token = auth.split(' ')[1];
-    try {
-        const payload = jwt.verify(token, process.env.TOKEN);
-        req.user = { id: payload._id };
-        next();
-    } catch {
-        return res.status(401).json({ message : "Invalid/expired token."});
-    }
-};
-
-
 //// ======================= GET USER BY ID =======================
 
 router.get("/get/user/:userId" , passport.authenticate("user-jwt" , { session:false }),  async (req, res) => {
