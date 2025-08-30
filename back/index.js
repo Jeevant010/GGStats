@@ -1,6 +1,10 @@
 const express = require('express');
 const app = express();
-const port = 8000;
+const port = 9000;
+
+require('dotenv').config();
+// =========================== IMPORT OF REQUIRED MODULES =================================
+
 const helmet = require("helmet");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
@@ -8,8 +12,19 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const csrf = require("csurf");
-require('dotenv').config();
+
+
+
+// +======================== IMPORT OF MODELS ==========================
+const User = require('./models/User');
+
+
+// ========================== IMPORT OF ROUTES =========================
 const authRoutes = require('./routes/auth');
+
+
+
+///=============================== DATABASE =============================
 
 
 mongoose.connect(
@@ -21,7 +36,7 @@ mongoose.connect(
         const db = mongoose.connection.db;
         try {
             await db.collection('users').dropIndex('phone_1');
-            console.log(" Dropped existing index 'email_1' ");
+            console.log(" Dropped existing index 'phone_1' ");
         } catch(err){
             console.log("ℹNo existing 'phone_1' to drop. " );
         }
@@ -65,7 +80,7 @@ const JwtStrategy = require('passport-jwt').Strategy,
 
     passport.use('user-jwt' , new JwtStrategy(opts , async (jwt_payload , done) => {
         try {
-            const user  =await User.findById(jwt_payload.id);
+            const user  = await User.findById(jwt_payload.id);
             if(user) return done(null, user);
             return done(null , false);
         }   catch (err) {
