@@ -2,7 +2,7 @@
 import React from "react";
 
 
-const PasswordInput = ({label, placeholder, className, value, setValue}) =>{
+const PasswordBox = ({label, placeholder, className, value, setValue}) =>{
     return (
         <div className={`textInputDiv flex flex-col space-y-2 w-full ${className}`}>
             <label htmlFor={label} className="font-semibold">
@@ -20,4 +20,4 @@ const PasswordInput = ({label, placeholder, className, value, setValue}) =>{
 
         );
 }
-export default PasswordInput;
+export default PasswordBox;
