@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const [isLogin, setIsLogin] = useState(false); // toggle login/signup
+  const [isLogin, setIsLogin] = useState(false);
   const [form, setForm] = useState({
     name: "",
     email: "",
