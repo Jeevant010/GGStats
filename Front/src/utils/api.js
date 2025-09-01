@@ -2,9 +2,10 @@ import axios from 'axios';
 import { setAuthFromOutside } from './AuthContext';
 
 const api = axios.create({
-    baseUrl: import.meta.VITE_API ,
-    withCredentials : true,
+    baseURL: "http://localhost:9000/", // ✅ Fixed key name
+    withCredentials: true, // ✅ Ensures cookies are sent for same-origin or CORS
 });
+
 
 api.interceptors.request.use((config) => {
     const token = localStorage.getItem('accessToken');

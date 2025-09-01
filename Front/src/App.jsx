@@ -88,7 +88,6 @@ function App() {
               <Route path = "/GamesHome" element={<GamesHome/>}/>
               <Route path="/categories" element={<Categories />} />
               <Route path="/live" element={<Live />} />
-              <Route path="/register" element={<SignUp />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="*" element={<Home />} />
               <Route path="/sports/cricket" element={<Cricket />} />
