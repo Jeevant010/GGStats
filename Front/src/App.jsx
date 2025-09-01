@@ -4,6 +4,7 @@
 import { useState } from 'react';
 import { Search, Volleyball } from 'lucide-react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { useCookies } from 'react-cookie';
 
@@ -35,7 +36,6 @@ import Hockey from './components/sports/Hockey.jsx';
 import VolleyBalls from './components/sports/Volleyballs.jsx';
 import GamesHome from './pages/GamesHome.jsx';
 import Live from './pages/Live.jsx';
-import Login from './components/Differ/single/Login.jsx';
 import SignUp from './components/Differ/single/SignUp.jsx';
 
 
@@ -88,7 +88,6 @@ function App() {
               <Route path = "/GamesHome" element={<GamesHome/>}/>
               <Route path="/categories" element={<Categories />} />
               <Route path="/live" element={<Live />} />
-              <Route path="/login" element={<Login />} />
               <Route path="/register" element={<SignUp />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="*" element={<Home />} />
@@ -113,7 +112,6 @@ function App() {
               <Route path = "/GamesHome" element={<GamesHome/>}/>
               <Route path="/categories" element={<Categories />} />
               <Route path="/live" element={<Live />} />
-              <Route path="/login" element={<Login />} />
               <Route path="/register" element={<SignUp />} />
               <Route path="*" element={<Home />} />
               <Route path="/sports/cricket" element={<Cricket />} />

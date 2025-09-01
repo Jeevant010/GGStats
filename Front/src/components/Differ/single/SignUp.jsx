@@ -1,10 +1,18 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import api from '../../../utils/api';
+import { useCookies } from "react-cookie";
 
 const SignUp = () => {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(false);
+  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState("");
+  const [cookies, setCookies] = useCookies(["token"]);
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -12,9 +20,28 @@ const SignUp = () => {
     confirmPassword: "",
   });
 
+    const SignUp = async () => {
+    const data = { userName , email , phone , password } ;
+    if( !userName || !email || !password ){
+      toast.error('Please fill all the required fields', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      return;
+    } 
+  };
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -35,7 +62,7 @@ const SignUp = () => {
         initial={{ x: 0 }}
         animate={{ x: isLogin ? "50%" : "-50%" }}
         transition={{ duration: 0.8, ease: "easeInOut" }}
-        className="flex-1 bg-cover bg-center relative"
+        className="flex-1 bg-cover bg-center relative z-1"
         style={{ backgroundImage: "url('/signup3d.png')" }}
       >
 
@@ -68,7 +95,7 @@ const SignUp = () => {
         animate={{ x: isLogin ? "0%" : "100%" }}
         // exit={{opacity:1}}
         transition={{ duration: 0.8, ease: "easeInOut" }}
-        className="absolute top-0 left-0 w-[50%] h-full flex justify-center items-center p-8"
+        className="absolute top-0 left-0 w-[50%] h-full z-0 flex justify-center items-center p-8"
 
 
       >
