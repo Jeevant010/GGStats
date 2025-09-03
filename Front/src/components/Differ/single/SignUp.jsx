@@ -236,7 +236,7 @@ const SignUp = () => {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(false);
   const [form, setForm] = useState({
-    name: "",
+    userName: "",
     email: "",
     phone: "",
     password: "",
@@ -297,7 +297,7 @@ const SignUp = () => {
     } else {
       
       if (
-        !form.name ||
+        !form.userName ||
         !form.email ||
         !form.password ||
         !confirmPassword
@@ -386,9 +386,9 @@ const SignUp = () => {
             {!isLogin && (
               <input
                 type="text"
-                name="name"
+                name="userName"
                 placeholder="Full Name"
-                value={form.name}
+                value={form.userName}
                 onChange={handleChange}
                 required
                 className="px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-white"
