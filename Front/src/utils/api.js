@@ -8,8 +8,8 @@ import { setAuthFromOutside } from './AuthContext';
  * This makes your requests cleaner: api.get("/users").
  */
 const api = axios.create({
-    baseURL: "http://localhost:9000/", // Fixed key name
-    withCredentials: true, // Ensures cookies are sent for same-origin or CORS
+  baseURL: import.meta.env.VITE_API || 'http://localhost:9000/',
+  withCredentials: true,
 });
 
 /**
