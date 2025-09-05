@@ -2,6 +2,7 @@ import React from 'react';
 import Header from '../components/Differ/single/Header';
 import Hero from '../components/GamePageComponents/Hero';
 import Current from '../components/GamePageComponents/CurrentScores'
+import GamesUpdates from '../components/GamePageComponents/GamesUpdates';
 const GamesHome = () => {
   return (
     <>
@@ -12,7 +13,8 @@ const GamesHome = () => {
       > */}
         <Hero />
         <Current />
-  
+        <GamesUpdates />
+
       {/* </div> */}
     </>
   );

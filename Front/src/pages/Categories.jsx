@@ -70,20 +70,39 @@ const Categories= ({
         ]
       }
     ]
+
   };
 
   if (!portfolioData) {
     return (
-      <div className="bg-white min-h-screen flex items-center justify-center">
+      <div className="bg-green-600 min-h-screen flex items-center justify-center">
         <div className="text-xl">No data available</div>
       </div>
     );
   }
 
+  const navItems= [
+    { label: 'FootBall', },
+    { label: 'Cricket', },
+    { label: 'Basketball', },
+  ];
+
   return (
     <>
       <Header  />
-    <div className="bg-white min-h-screen flex flex-col">
+    
+      <div className='flex'>
+    <div className='bg-gray-600 min-h-screen w-[25%] flex flex-col'>
+      <ul className='flex-nonehidden md:flex justify-around w-full'>
+        {navItems.map(item => (
+          <li key={item.label} className='text-white'>
+            {item.label}
+          </li>
+        ))}
+      </ul>
+      
+    </div>
+    <div className="bg-yellow-600 min-h-screen w-[75%] flex flex-col">
       <main className="flex-1">
         {portfolioData.categories.map((category) => (
           <SmallCategory
@@ -91,9 +110,15 @@ const Categories= ({
             category={category}
             onFilmClick={onMatchClick}
             onViewAllClick={onViewAllClick}
+            // className={"bg-blue-400"}
           />
         ))}
       </main>
+     </div>
+     <div className='bg-gray-400 min-h-screen w-[25%] flex flex-col'>
+
+
+     </div>
     </div>
     </>
   );

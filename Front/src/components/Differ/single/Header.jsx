@@ -74,13 +74,13 @@ const Header = () => {
 
         {/* Mobile Controls */}
         <div className="flex md:hidden items-center gap-2 ml-auto">
-          <button
+          {/* <button
             onClick={toggleSlidebar}
             aria-label={isSlidebarOpen ? 'Close sidebar' : 'Open sidebar'}
             className="text-white w-9   h-9 flex items-center justify-center rounded-full bg-black/60 shadow hover:bg-black/80 transition-colors"
           >
             {isSlidebarOpen ? <X /> : <Menu />}
-          </button>
+          </button> */}
           <button
             onClick={toggleMobile}
             aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
@@ -93,7 +93,7 @@ const Header = () => {
 
       {/* Mobile Dropdown */}
       <div
-        className={`md:hidden absolute top-[68px] left-0 right-0 mx-1 bg-black/95 rounded-2xl overflow-hidden z-[90] transition-all duration-300 origin-top ${
+        className={`md:hidden absolute top-[68px] left-0 right-0 mx-1 bg-white overflow-hidden z-[90] transition-all duration-300 origin-top ${
           mobileOpen ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0 pointer-events-none'
         }`}
         style={{ backdropFilter: 'blur(6px)' }}
