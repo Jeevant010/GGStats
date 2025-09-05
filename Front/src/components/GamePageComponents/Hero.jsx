@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion as Motion, AnimatePresence } from "framer-motion";
 
 const images = [
   "/game4.jpg",
@@ -26,7 +26,7 @@ const Hero = () => {
   return (
     <div className="hero-banner relative overflow-hidden w-full h-[500px] flex items-center justify-center bg-black">
       <AnimatePresence mode="wait">
-        <motion.img
+        <Motion.img
           key={index}
           src={images[index]}
           alt={`Game ${index}`}

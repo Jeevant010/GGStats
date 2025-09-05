@@ -42,13 +42,23 @@ export const UpcomingEvents = () => {
                 dominantBaseline="middle"
                 fontSize="320"
                 fontWeight="900"
-                fontFamily="'Archivo Black', Arial, sans-serif"
+                // fontFamily="'Archivo Black', Arial, sans-serif"
+                fontFamily="'Roboto Mono', 'Helvetica Neue', sans-serif"
                 letterSpacing="0"
                 fill="white"
                 style={{ textTransform: 'uppercase' }}
               >
                 2026
               </text>
+              {/* <image
+  x="200"
+  y="50"
+  width="800"
+  height="400"
+  href={('../../assets/2026.png')}
+  preserveAspectRatio="xMidYMid meet"
+  opacity="1"
+/> */}
               <text
                 x="75%"
                 y="68%"
