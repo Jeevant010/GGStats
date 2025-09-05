@@ -227,7 +227,7 @@
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import { motion as Motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { useCookies } from "react-cookie";
 import api from "../../../utils/api";

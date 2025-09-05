@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { motion as Motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react"; // A popular icon library
 
@@ -19,14 +19,14 @@ const Hero = () => {
   const numImages = images.length;
 
   // Function to handle next slide
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     setIndex((prev) => (prev + 1) % numImages);
-  };
+  }, [numImages]);
 
   // Function to handle previous slide
-  const handlePrev = () => {
+  const handlePrev = useCallback(() => {
     setIndex((prev) => (prev - 1 + numImages) % numImages);
-  };
+  }, [numImages]);
 
   // Auto-slide every 4 seconds
   useEffect(() => {
@@ -42,7 +42,7 @@ const Hero = () => {
           // Calculate the raw position
           let position = i - index;
 
-          // ✨ CORE LOGIC FOR CIRCULAR LOOP ✨
+          // CORE LOGIC FOR CIRCULAR LOOP 
           // If an image is more than halfway around the loop in one direction,
           // treat it as being on the other side for a shorter transition.
           if (position > numImages / 2) {
