@@ -35,7 +35,7 @@ const GamesUpdates = () => {
 
      
 
-        {newsData.slice(0,9).map((article, idx) => (
+        {newsData.slice(0,6).map((article, idx) => (
           <div key= {idx} className=' bg-green-400 p-4 flex flex-col'>
               <img src={article.image} alt={article.title} className='w-full object-cover mb-2' />
 
