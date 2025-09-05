@@ -4,7 +4,7 @@ const News = () => {
 
     const [search, setSearch] = useState("Sport");
     const [newsData, setNewsData] = useState([]);
-    const API_KEY = "a90297fb0e554032ac48ff512ced53e7";
+    const API_KEY = import.meta.env.VITE_NEWS_KEY || "";
 
     const getDATA = async (query = search) => {
         const response = await fetch(`https://newsapi.org/v2/everything?q=${query}&apiKey=${API_KEY}`);
