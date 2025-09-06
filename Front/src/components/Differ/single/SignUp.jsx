@@ -1,15 +1,15 @@
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { toast, ToastContainer } from "react-toastify";
 import { useCookies } from "react-cookie";
-import api from "../../../utils/api";
 import "react-toastify/dist/ReactToastify.css";
+import api from '../../../utils/api';
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
   const [form, setForm] = useState({
     userName: "",
     email: "",
@@ -42,6 +42,7 @@ const SignUp = () => {
           return;
         }
 
+        // Replace with your actual API call
         const res = await api.post("/login", {
           email: form.email,
           password: form.password,
@@ -90,6 +91,7 @@ const SignUp = () => {
           return;
         }
 
+        // Replace with your actual API call
         const res = await api.post("/register", form);
         
         if (res.data && res.data.success) {
@@ -118,10 +120,10 @@ const SignUp = () => {
         }
       }
     } catch (error) {
-      console.error("Auth error:", error);
+      console.error("SignUp error:", error);
       const errorMsg = error.response?.data?.message || 
                       error.message || 
-                      "Authentication failed";
+                      "SignUpentication failed";
       
       toast.error(errorMsg, {
         position: "top-right",
@@ -133,7 +135,12 @@ const SignUp = () => {
     }
   };
 
-  return (
+    return (
+
+      <>
+      
+      
+
     <div className="relative min-h-screen flex overflow-hidden">
       <motion.div
         initial={{ x: 0 }}
@@ -208,7 +215,7 @@ const SignUp = () => {
               value={form.email}
               onChange={handleChange}
               required
-              className="px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-400"
+              className="px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-white"
             />
 
             {!isLogin && (
@@ -282,7 +289,25 @@ const SignUp = () => {
           </p>
         </div>
       </motion.div>
+      
+
     </div>
+
+
+      {/* Toast Container */}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
+      </>
   );
 };
 
