@@ -104,4 +104,5 @@ const GamesUpdates = () => {
   );
 };
 
+
 export default GamesUpdates;
