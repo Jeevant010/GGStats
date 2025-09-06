@@ -1,9 +1,11 @@
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { useCookies } from "react-cookie";
 import api from "../../../utils/api";
+import "react-toastify/dist/ReactToastify.css";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -15,103 +17,119 @@ const SignUp = () => {
     password: "",
   });
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [loading, setLoading] = useState("");
-  const [cookies, setCookies] = useCookies(["token"]);
+  const [loading, setLoading] = useState(false);
+  const [cookies, setCookie, removeCookie] = useCookies(["token"]);
 
-  // Handles change for all inputs
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Unified submit handler for login and signup
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    if (isLogin) {
-      // Login mode: Check required fields
-      if (!form.email || !form.password) {
-        toast.error("Please fill all required fields", {
-          position: "top-right",
-          autoClose: 3000,
-          theme: "colored",
-        });
-        setLoading(false);
-        return;
-      }
-      try {
+    try {
+      if (isLogin) {
+        // Login logic
+        if (!form.email || !form.password) {
+          toast.error("Please fill all required fields", {
+            position: "top-right",
+            autoClose: 3000,
+            theme: "colored",
+          });
+          setLoading(false);
+          return;
+        }
+
         const res = await api.post("/login", {
           email: form.email,
           password: form.password,
         });
-        setCookies("token", res.data.token);
-        toast.success("Logged in successfully!", {
-          position: "top-right",
-          autoClose: 3000,
-          theme: "colored",
-        });
-        navigate("/");
-      } catch (err) {
-        toast.error(
-          err.response?.data?.err || err.message || "Login failed",
-          {
+
+        if (res.data && res.data.token) {
+          const token = res.data.token;
+          const date = new Date();
+          date.setDate(date.getDate() + 30);
+          setCookie("token", token, { path: "/", expires: date });
+          
+          toast.success("Logged in successfully!", {
             position: "top-right",
             autoClose: 3000,
             theme: "colored",
-          }
-        );
-      } finally {
-        setLoading(false);
+          });
+          
+          navigate("/home");
+        } else {
+          const errorMsg = res.data?.message || "Login failed";
+          toast.error(errorMsg, {
+            position: "top-right",
+            autoClose: 3000,
+            theme: "colored",
+          });
+        }
+      } else {
+        // Signup logic
+        if (!form.userName || !form.email || !form.password || !confirmPassword) {
+          toast.error("Please fill all required fields", {
+            position: "top-right",
+            autoClose: 3000,
+            theme: "colored",
+          });
+          setLoading(false);
+          return;
+        }
+
+        if (form.password !== confirmPassword) {
+          toast.error("Passwords do not match", {
+            position: "top-right",
+            autoClose: 3000,
+            theme: "colored",
+          });
+          setLoading(false);
+          return;
+        }
+
+        const res = await api.post("/register", form);
+        
+        if (res.data && res.data.success) {
+          toast.success("Account created! Please login.", {
+            position: "top-right",
+            autoClose: 3000,
+            theme: "colored",
+          });
+          
+          // Clear form and switch to login
+          setForm({
+            userName: "",
+            email: "",
+            phone: "",
+            password: "",
+          });
+          setConfirmPassword("");
+          setIsLogin(true);
+        } else {
+          const errorMsg = res.data?.message || "Signup failed";
+          toast.error(errorMsg, {
+            position: "top-right",
+            autoClose: 3000,
+            theme: "colored",
+          });
+        }
       }
-    } else {
+    } catch (error) {
+      console.error("Auth error:", error);
+      const errorMsg = error.response?.data?.message || 
+                      error.message || 
+                      "Authentication failed";
       
-      if (
-        !form.userName ||
-        !form.email ||
-        !form.password ||
-        !confirmPassword
-      ) {
-        toast.error("Please fill all required fields", {
-          position: "top-right",
-          autoClose: 3000,
-          theme: "colored",
-        });
-        setLoading(false);
-        return;
-      }
-      if (form.password !== confirmPassword) {
-        toast.error("Passwords do not match", {
-          position: "top-right",
-          autoClose: 3000,
-          theme: "colored",
-        });
-        setLoading(false);
-        return;
-      }
-      try {
-        await api.post("/register", form);
-        toast.success("Account created! Please login.", {
-          position: "top-right",
-          autoClose: 3000,
-          theme: "colored",
-        });
-        setIsLogin(true);
-      } catch (err) {
-        toast.error(
-          err.response?.data?.err || err.message || "Signup failed",
-          {
-            position: "top-right",
-            autoClose: 3000,
-            theme: "colored",
-          }
-        );
-      } finally {
-        setLoading(false);
-      }
+      toast.error(errorMsg, {
+        position: "top-right",
+        autoClose: 3000,
+        theme: "colored",
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -124,6 +142,7 @@ const SignUp = () => {
         className="flex-1 bg-cover bg-center relative z-1"
         style={{ backgroundImage: "url('/signup3d.png')" }}
       />
+      
       {/* Back Button */}
       <button
         className="absolute top-4 left-4 z-10 flex items-center gap-2 px-4 py-2 rounded-full border-2 bg-white font-bold shadow-lg hover:bg-green-600 hover:text-white hover:scale-105 active:scale-95 transition-all duration-200 ease-in-out cursor-pointer"
@@ -141,6 +160,20 @@ const SignUp = () => {
         </svg>
         Back
       </button>
+
+      {/* Toast Container */}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
 
       {/* Form Section */}
       <motion.div
@@ -164,7 +197,7 @@ const SignUp = () => {
                 value={form.userName}
                 onChange={handleChange}
                 required
-                className="px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-white"
+                className="px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-400"
               />
             )}
 
@@ -175,18 +208,18 @@ const SignUp = () => {
               value={form.email}
               onChange={handleChange}
               required
-              className="px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-white"
+              className="px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-400"
             />
 
             {!isLogin && (
               <input
-                type="phone"
+                type="tel"
                 name="phone"
                 placeholder="Phone"
                 value={form.phone}
                 onChange={handleChange}
                 required
-                className="px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-white"
+                className="px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-400"
               />
             )}
 
@@ -197,7 +230,7 @@ const SignUp = () => {
               value={form.password}
               onChange={handleChange}
               required
-              className="px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-white"
+              className="px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-400"
             />
 
             {!isLogin && (
@@ -208,14 +241,14 @@ const SignUp = () => {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
-                className="px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-white"
+                className="px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-400"
               />
             )}
 
             <button
               type="submit"
               disabled={loading}
-              className="bg-green-400 hover:bg-green-500 text-white font-bold py-2 rounded-full shadow-md transition cursor-pointer"
+              className="bg-green-400 hover:bg-green-500 text-white font-bold py-2 rounded-full shadow-md transition cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
             >
               {loading
                 ? isLogin
@@ -228,10 +261,20 @@ const SignUp = () => {
           </form>
 
           <p className="text-black mt-6">
-            {isLogin ? "Don’t have an account? " : "Already have an account? "}
+            {isLogin ? "Don't have an account? " : "Already have an account? "}
             <button
               type="button"
-              onClick={() => setIsLogin(!isLogin)}
+              onClick={() => {
+                setIsLogin(!isLogin);
+                // Clear form when switching modes
+                setForm({
+                  userName: "",
+                  email: "",
+                  phone: "",
+                  password: "",
+                });
+                setConfirmPassword("");
+              }}
               className="font-bold underline hover:text-violet-600 cursor-pointer"
             >
               {isLogin ? "Sign up" : "Log in"}
@@ -244,4 +287,3 @@ const SignUp = () => {
 };
 
 export default SignUp;
-
