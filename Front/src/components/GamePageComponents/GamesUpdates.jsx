@@ -1,78 +1,101 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
+
+const API_KEY = import.meta.env.VITE_NEWS_KEY || "";
+const DEFAULT_QUERY = "games";
+const MAX_RESULTS = 8;
 
 const GamesUpdates = () => {
+  const [search, setSearch] = useState(DEFAULT_QUERY);
   const [newsData, setNewsData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
 
-  // Access the API key from environment variables
-  const API_KEY = import.meta.env.VITE_API_UPDATE_NEWS;
-  
-  const getData = async (query = 'games') => {
-    if (!API_KEY) {
-      console.warn('API key missing, using mock data');
-      setNewsData([
-        { title: "Mock Game News 1", description: "This is a placeholder.", source: { name: "Local" }, image: "" },
-        { title: "Mock Game News 2", description: "Another placeholder.", source: { name: "Local" }, image: "" }
-      ]);
-      return;
-    }
-
-
-    setLoading(true);
-    setError(null);
-
+  const getData = async (query = search) => {
     try {
-      const response = await fetch(
-        `https://gnews.io/api/v4/search?q=${encodeURIComponent(query)}&lang=en&max=5&apikey=${API_KEY}`
+      setLoading(true);
+      setError("");
+      const res = await fetch(
+        `https://newsapi.org/v2/everything?q=${encodeURIComponent(
+          query
+        )}&apiKey=${API_KEY}`
       );
+      const data = await res.json();
 
-      if (!response.ok) {
-        const text = await response.text().catch(() => response.statusText || '');
-        throw new Error(`News fetch failed: ${response.status} ${text}`);
+      if (data.articles) {
+        setNewsData(data.articles);
+      } else {
+        setError("No results found.");
+        setNewsData([]);
       }
-
-      const jsondata = await response.json();
-      setNewsData(jsondata.articles || []);
     } catch (err) {
-      console.error('News fetch error', err);
-      setError(err.message || 'Fetch error');
+      setError(`Failed to fetch news: ${err.message}. Please try again.`);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    getData('games');
+    getData(DEFAULT_QUERY);
   }, []);
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (search.trim()) {
+      getData();
+    }
+  };
+
   return (
-    <div className="bg-red-300">
+    <div className="bg-red-300 min-h-screen">
       <h1 className="text-2xl font-bold p-4">Games Updates</h1>
       <p className="p-4">
-        Stay tuned for the latest updates on your favorite games! From new releases to exciting
-        features, we've got you covered.
+        Stay tuned for the latest updates on your favorite games! From new
+        releases to exciting features, we've got you covered. Check back often
+        for the freshest news and updates in the gaming world.
       </p>
 
-      {error && <div className="p-4 text-red-700">Error: {error}</div>}
-      {loading && <div className="p-4">Loading...</div>}
+      {/* Search Bar */}
+      <div className="w-full max-w-full mx-auto p-4 bg-white/80 rounded-xl shadow-lg mt-8">
+        <form
+          className="flex flex-col sm:flex-row items-center gap-3 mb-6"
+          onSubmit={handleSubmit}
+        >
+          <input
+            type="text"
+            placeholder="Search Game News"
+            // value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="flex-1 px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-800 bg-white shadow"
+          />
+          <button
+            type="submit"
+            className="px-6 py-2 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold shadow hover:from-pink-500 hover:to-red-500 transition-colors"
+          >
+            Search
+          </button>
+        </form>
+      </div>
 
-      <div className="cards bg-yellow-400 grid md:grid-cols-3 sm:grid-cols-1 p-4 gap-4">
-        {newsData.length === 0 && !loading && !error && (
-          <div className="p-4">No news found.</div>
-        )}
+      {/* Status */}
+      {loading && <p className="text-center text-lg text-blue-700">Loading...</p>}
+      {error && <p className="text-center text-red-600">{error}</p>}
 
-        {newsData.slice(0, 6).map((article, idx) => (
-          <div key={idx} className="bg-green-400 p-4 flex flex-col">
-            {article.image ? (
-              <img src={article.image} alt={article.title} className="w-full object-cover mb-2" />
-            ) : (
-              <div className="w-full h-32 bg-gray-200 mb-2 flex items-center justify-center text-sm">
-                No image
-              </div>
+      {/* News Cards */}
+      <div className="cards bg-yellow-400 grid md:grid-cols-4 sm:grid-cols-1 p-4 gap-4">
+        {newsData.slice(0, MAX_RESULTS).map((article, idx) => (
+          <div
+            key={idx}
+            className="bg-green-400 p-4 flex flex-col rounded-lg shadow"
+          >
+            {article.urlToImage && (
+              <img
+                src={article.urlToImage}
+                alt={article.title || "News image"}
+                className="w-full object-cover rounded-md mb-2 max-h-48"
+              />
             )}
-            <span className="font-bold">{article.title}</span>
-            <span className="text-xs">{article.source?.name}</span>
+            <span className="font-bold line-clamp-2">{article.title}</span>
+            <span className="text-xs text-gray-700">{article.source?.name}</span>
             <span className="text-sm line-clamp-2">{article.description}</span>
           </div>
         ))}
@@ -80,5 +103,6 @@ const GamesUpdates = () => {
     </div>
   );
 };
+
 
 export default GamesUpdates;
