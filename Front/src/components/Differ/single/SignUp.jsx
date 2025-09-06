@@ -1,5 +1,4 @@
 
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -19,7 +18,7 @@ const SignUp = () => {
   });
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [cookies, setCookie] = useCookies(["token"]);
+  const [cookies, setCookie, removeCookie] = useCookies(["token"]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -169,6 +168,20 @@ const SignUp = () => {
         Back
       </button>
 
+      {/* Toast Container */}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
+
       {/* Form Section */}
       <motion.div
         initial={{ x: "100%" }}
@@ -202,7 +215,7 @@ const SignUp = () => {
               value={form.email}
               onChange={handleChange}
               required
-              className="px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-400"
+              className="px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-white"
             />
 
             {!isLogin && (
@@ -299,4 +312,3 @@ const SignUp = () => {
 };
 
 export default SignUp;
-
