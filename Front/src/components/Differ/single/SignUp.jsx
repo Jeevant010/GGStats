@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion as Motion, AnimatePresence } from "framer-motion";
 import { toast, ToastContainer } from "react-toastify";
 import { useCookies } from "react-cookie";
 import "react-toastify/dist/ReactToastify.css";
@@ -288,7 +288,7 @@ const SignUp = () => {
             </button>
           </p>
         </div>
-      </motion.div>
+      </Motion.div>
       
 
     </div>
