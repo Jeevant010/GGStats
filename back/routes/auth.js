@@ -98,7 +98,7 @@ router.post("/login", async (req, res) => {
         /**
          * you know what we are able to make this section much better but i have a lot of work
          * you can do make changes make it more robust with better handling errors.
-         * Lets go to next section its just the message we get onh the console.
+         * Lets go to next section its just the message we get on the console.
         */ 
         if(!isMatch){
             console.log("Password mismatch for user. ", user._id);

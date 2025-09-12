@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 
-const API_KEY = import.meta.env.VITE_NEWS_KEY || "";
+const API_KEY = "a90297fb0e554032ac48ff512ced53e7";
 const DEFAULT_QUERY = "games";
-const MAX_RESULTS = 8;
+const MAX_RESULTS = 6;
 
 const GamesUpdates = () => {
   const [search, setSearch] = useState(DEFAULT_QUERY);
@@ -81,7 +81,7 @@ const GamesUpdates = () => {
       {error && <p className="text-center text-red-600">{error}</p>}
 
       {/* News Cards */}
-      <div className="cards bg-yellow-400 grid md:grid-cols-4 sm:grid-cols-1 p-4 gap-4">
+      <div className="cards bg-yellow-400 grid md:grid-cols-3 sm:grid-cols-1 p-4 gap-4">
         {newsData.slice(0, MAX_RESULTS).map((article, idx) => (
           <div
             key={idx}
@@ -103,6 +103,5 @@ const GamesUpdates = () => {
     </div>
   );
 };
-
 
 export default GamesUpdates;

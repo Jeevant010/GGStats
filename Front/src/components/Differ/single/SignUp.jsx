@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion as Motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { useCookies } from "react-cookie";
 import api from "../../../utils/api";
@@ -117,7 +117,7 @@ const SignUp = () => {
 
   return (
     <div className="relative min-h-screen flex overflow-hidden">
-      <motion.div
+      <Motion.div
         initial={{ x: 0 }}
         animate={{ x: isLogin ? "50%" : "-50%" }}
         transition={{ duration: 0.8, ease: "easeInOut" }}
@@ -143,7 +143,7 @@ const SignUp = () => {
       </button>
 
       {/* Form Section */}
-      <motion.div
+      <Motion.div
         initial={{ x: "100%" }}
         animate={{ x: isLogin ? "0%" : "100%" }}
         transition={{ duration: 0.8, ease: "easeInOut" }}
@@ -238,7 +238,7 @@ const SignUp = () => {
             </button>
           </p>
         </div>
-      </motion.div>
+      </Motion.div>
     </div>
   );
 };
