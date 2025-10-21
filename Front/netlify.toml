@@ -1,7 +1,10 @@
 [build]
   base = "Front"
-  publish = "Front/dist"
+  publish = "dist"
   command = "npm run build"
+
+[build.environment]
+  SECRETS_SCAN_OMIT_KEYS = "VITE_API,VITE_NEWS_KEY,VITE_API_UPDATE_NEWS"
 
 [[headers]]
   for = "/*.js"
