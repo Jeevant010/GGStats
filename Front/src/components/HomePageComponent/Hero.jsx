@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import gsap from 'gsap';
+import axios from 'axios';
 
 const GsapText = () => {
     useEffect(() => {
@@ -17,7 +18,29 @@ const GsapText = () => {
     return null;
 }
 
+
 const Hero = () => {
+  const [leagues, setLeagues] = useState([]);
+
+  useEffect(() => {
+    var config = {
+      method: 'get',
+      url: 'https://v3.football.api-sports.io/teams/countries',
+      headers: {
+        'x-apisports-key': import.meta.env.VITE_FOOTBALL_API_KEY || "",
+      }
+    };
+
+    axios(config)
+    .then(function (response) {
+      setLeagues(response.data.response || []);
+      // console.log(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }, [])
+
   return (
     <>
       <GsapText />
@@ -25,22 +48,27 @@ const Hero = () => {
         <div className="cards flex flex-col md:flex-row w-full max-w-full mx-auto gap-6 px-2 mt-0">
           {/* Left Cards */}
           <div className="flex flex-col gap-4 w-full md:w-1/4 order-2 md:order-1 mt-4 md:mt-0 ">
-            <div className="bg-white/80 rounded-xl shadow-lg p-4 min-h-[120px] flex flex-col items-center justify-center">
+            <div className="bg-white/80 rounded-xl shadow-lg p-4 min-h-30 flex flex-col items-center justify-center">
               <span className="font-bold text-lg text-gray-800">Live Scores</span>
-              <ul className="mt-2 text-sm text-gray-600">
-                <li>1</li>
-                <li>2</li>
-                <li>3</li>
+              <ul className="mt-2 text-sm text-gray-600 flex flex-col items-center">
+                {leagues.length > 0 ? leagues.slice(0, 5).map((item, i) => (
+                    <li key={i} className="mb-1 flex items-center justify-center gap-2">
+                      <span>{item.name}</span>
+                      {item.flag && <img src={item.flag} alt={item.name} className="w-6 h-auto" />}
+                    </li>
+                )) : (
+                    <li>Loading...</li>
+                )}
               </ul>
             </div>
-            <div className="bg-white/80 rounded-xl shadow-lg p-4 min-h-[120px] flex flex-col items-center justify-center">
+            <div className="bg-white/80 rounded-xl shadow-lg p-4 min-h-30 flex flex-col items-center justify-center">
               <span className="font-bold text-lg text-gray-800">Upcoming Matches</span>
               <ul className="mt-2 text-sm text-gray-600">
                 <li>Match1</li>
                 <li>Match2</li>
               </ul>
             </div>
-             <div className="bg-white/80 rounded-xl shadow-lg p-4 min-h-[120px] flex flex-col items-center justify-center">
+             <div className="bg-white/80 rounded-xl shadow-lg p-4 min-h-30 flex flex-col items-center justify-center">
               <span className="font-bold text-lg text-gray-800">Upcoming Matches</span>
               <ul className="mt-2 text-sm text-gray-600">
                 <li>Match1</li>
@@ -66,21 +94,21 @@ const Hero = () => {
 
           {/* Right Cards */}
           <div className="flex flex-col gap-4 w-full md:w-1/4 order-3 mt-4 md:mt-0">
-            <div className="bg-white/80 rounded-xl shadow-lg p-4 min-h-[120px] flex flex-col items-center justify-center">
+            <div className="bg-white/80 rounded-xl shadow-lg p-4 min-h-30 flex flex-col items-center justify-center">
               <span className="font-bold text-lg text-gray-800">Trending News</span>
               <ul className="mt-2 text-sm text-gray-600">
                 <li>News 1</li>
                 <li>News 2</li>
               </ul>
             </div>
-            <div className="bg-white/80 rounded-xl shadow-lg p-4 min-h-[120px] flex flex-col items-center justify-center">
+            <div className="bg-white/80 rounded-xl shadow-lg p-4 min-h-30 flex flex-col items-center justify-center">
               <span className="font-bold text-lg text-gray-800">Trending News</span>
               <ul className="mt-2 text-sm text-gray-600">
                 <li>News 1</li>
                 <li>News 2</li>
               </ul>
             </div>
-            <div className="bg-white/80 rounded-xl shadow-lg p-4 min-h-[120px] flex flex-col items-center justify-center">
+            <div className="bg-white/80 rounded-xl shadow-lg p-4 min-h-30 flex flex-col items-center justify-center">
               <span className="font-bold text-lg text-gray-800">Stats</span>
               <ul className="mt-2 text-sm text-gray-600">
                 <li>Stat 1</li>

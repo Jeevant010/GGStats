@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import NewsCard from './NewsCard';
+
 const News = () => {
 
     const [search, setSearch] = useState("Sport");
@@ -10,7 +11,7 @@ const News = () => {
         const response = await fetch(`https://newsapi.org/v2/everything?q=${query}&apiKey=${API_KEY}`);
         const jsondata = await response.json();
         // console.log(jsondata);
-        setNewsData(jsondata.articles);
+        setNewsData(jsondata.articles || []);
     };
 
     useEffect(() => {

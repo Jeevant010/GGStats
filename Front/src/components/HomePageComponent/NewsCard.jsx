@@ -17,7 +17,7 @@ const GSAPText = () => {
   return null;
 }
 
-const NewsCard = ({ data }) => {
+const NewsCard = ({ data = [] }) => {
   const [page, setPage] = useState(0);
   const itemsPerPage = 8; 
   const maxPage = Math.max(0, Math.ceil(data.length / itemsPerPage) - 1); // Maximum number of pages 

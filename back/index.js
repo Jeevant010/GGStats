@@ -28,7 +28,11 @@ const authRoutes = require('./routes/auth');
 
 
 mongoose.connect(
-        `mongodb+srv://Main:${process.env.MONGO}@mongocluster.gmqer.mongodb.net/?retryWrites=true&w=majority&appName=mongoCluster`
+    process.env.MONGO_URI,
+    {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    }
 
     ).then(async () => {
         console.log("Connected!");
