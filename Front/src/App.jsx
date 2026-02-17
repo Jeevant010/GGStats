@@ -37,6 +37,7 @@ import VolleyBalls from './components/sports/Volleyballs.jsx';
 import GamesHome from './pages/GamesHome.jsx';
 import Live from './pages/Live.jsx';
 import SignUp from './components/Differ/single/SignUp.jsx';
+import Valorant from './components/Games/Valorant.jsx';
 
 
 
@@ -101,6 +102,7 @@ function App() {
               <Route path="/sports/table tennis" element={<TableTennis />} />
               <Route path="/sports/golf" element={<Golf />} />
               <Route path="/sports/chess" element={<Chess />} />
+              <Route path="/games/valorant" element={<Valorant />} />
             </Routes>
 
           ) : (
@@ -124,6 +126,7 @@ function App() {
               <Route path="/sports/table tennis" element={<TableTennis />} />
               <Route path="/sports/golf" element={<Golf />} />
               <Route path="/sports/chess" element={<Chess />} />
+              <Route path="/games/valorant" element={<Valorant />} />
             </Routes>
           )
         }         
