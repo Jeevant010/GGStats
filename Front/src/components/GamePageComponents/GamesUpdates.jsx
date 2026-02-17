@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const API_KEY = "a90297fb0e554032ac48ff512ced53e7";
+const API_KEY = import.meta.env.VITE_NEWS_KEY;
 const DEFAULT_QUERY = "games";
 const MAX_RESULTS = 6;
 
