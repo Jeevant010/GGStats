@@ -37,7 +37,6 @@ import VolleyBalls from './components/sports/Volleyballs.jsx';
 import GamesHome from './pages/GamesHome.jsx';
 import Live from './pages/Live.jsx';
 import SignUp from './components/Differ/single/SignUp.jsx';
-import Valorant from './components/Games/Valorant.jsx';
 
 
 
@@ -45,7 +44,7 @@ import Valorant from './components/Games/Valorant.jsx';
 
 // ========================= APP BEGINS HERE =================
 function App() {
-  
+
   const [cookie] = useCookies(["token"]);
   return (
 
@@ -82,11 +81,11 @@ function App() {
     <>
       <Router>
         {
-          cookie.token? (
+          cookie.token ? (
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/search" element={<SearchRoute />} />
-              <Route path = "/GamesHome" element={<GamesHome/>}/>
+              <Route path="/GamesHome" element={<GamesHome />} />
               <Route path="/categories" element={<Categories />} />
               <Route path="/live" element={<Live />} />
               <Route path="/profile" element={<Profile />} />
@@ -102,7 +101,6 @@ function App() {
               <Route path="/sports/table tennis" element={<TableTennis />} />
               <Route path="/sports/golf" element={<Golf />} />
               <Route path="/sports/chess" element={<Chess />} />
-              <Route path="/games/valorant" element={<Valorant />} />
             </Routes>
 
           ) : (
@@ -110,7 +108,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/search" element={<SearchRoute />} />
-              <Route path = "/GamesHome" element={<GamesHome/>}/>
+              <Route path="/GamesHome" element={<GamesHome />} />
               <Route path="/categories" element={<Categories />} />
               <Route path="/live" element={<Live />} />
               <Route path="/register" element={<SignUp />} />
@@ -126,25 +124,24 @@ function App() {
               <Route path="/sports/table tennis" element={<TableTennis />} />
               <Route path="/sports/golf" element={<Golf />} />
               <Route path="/sports/chess" element={<Chess />} />
-              <Route path="/games/valorant" element={<Valorant />} />
             </Routes>
           )
-        }         
+        }
 
 
-            <ToastContainer
-                    position="top-right"
-                    autoClose={3000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                    theme="colored"
-                  />
-        
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+        />
+
       </Router>
     </>
   )

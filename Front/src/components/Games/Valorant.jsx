@@ -56,7 +56,7 @@ const Valorant = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-black flex items-center justify-center">
+            <div className="bg-black flex items-center justify-center p-10">
                 <div className="text-white text-xl">Loading schedule...</div>
             </div>
         )
@@ -64,14 +64,14 @@ const Valorant = () => {
 
     if (error) {
         return (
-            <div className="min-h-screen bg-black flex items-center justify-center">
+            <div className="bg-black flex items-center justify-center p-10">
                 <div className="text-red-500 text-xl">Error: {error}</div>
             </div>
         )
     }
 
     return (
-        <div className="min-h-screen bg-black text-white p-6">
+        <div className="w-full bg-black text-white p-6">
             <h1 className='text-3xl font-bold mb-6 text-center'>
                 Valorant Esports Schedule
             </h1>
