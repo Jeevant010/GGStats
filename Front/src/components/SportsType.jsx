@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 const sports = [
   'Cricket', 'Football', 'Basketball', 'Badminton', 'Kabaddi', 'Volleyball',
-  'Hockey', 'Tennis', 'Table Tennis', 'Golf', 'Chess'
+  'Hockey', 'Tennis', 'Table Tennis', 'Golf', 'Chess', 'Formula 1'
 ]
 
 const SportsType = () => {
@@ -25,7 +25,7 @@ const SportsType = () => {
     sports.map((s) => {
       const isActive = s === selectedSport
 
-      
+
       const baseClass = isMobile
         ? 'block w-full text-center text-lg py-3 mb-2 rounded-full text-white font-semibold shadow-lg transition-transform duration-200'
         : 'inline-block px-5 py-2 rounded-full font-medium shadow transition-all duration-200'
@@ -37,17 +37,16 @@ const SportsType = () => {
       return (
         <li key={s}>
           <Link
-        to={getPath(s)}
-        onClick={() => handleSelect(s, isMobile)}
-        className={`${baseClass} ${
-          (isActive ||
-            (typeof window !== 'undefined' &&
-          s.toLowerCase() === (window.location.pathname.split('/')[2] || '')))
-            ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white scale-105'
-            : 'bg-white/80 text-black hover:bg-gradient-to-r hover:from-gray-700 hover:to-gray-900 hover:text-white hover:scale-105'
-        }`}
+            to={getPath(s)}
+            onClick={() => handleSelect(s, isMobile)}
+            className={`${baseClass} ${(isActive ||
+                (typeof window !== 'undefined' &&
+                  s.toLowerCase() === (window.location.pathname.split('/')[2] || '')))
+                ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white scale-105'
+                : 'bg-white/80 text-black hover:bg-gradient-to-r hover:from-gray-700 hover:to-gray-900 hover:text-white hover:scale-105'
+              }`}
           >
-        {s}
+            {s}
           </Link>
         </li>
       )
@@ -73,9 +72,8 @@ const SportsType = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden absolute left-0 w-full bg-black/95 rounded-b-3xl shadow-2xl overflow-hidden transition-all duration-300 z-10 ${
-          showMenu ? 'top-[60px] opacity-100 scale-y-100' : 'top-[60px] opacity-0 scale-y-0 pointer-events-none'
-        } origin-top`}
+        className={`md:hidden absolute left-0 w-full bg-black/95 rounded-b-3xl shadow-2xl overflow-hidden transition-all duration-300 z-10 ${showMenu ? 'top-[60px] opacity-100 scale-y-100' : 'top-[60px] opacity-0 scale-y-0 pointer-events-none'
+          } origin-top`}
         style={{ backdropFilter: 'blur(6px)' }}
       >
         <ul className="flex flex-col gap-2 py-4 px-6">
