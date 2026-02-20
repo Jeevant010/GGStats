@@ -3,7 +3,7 @@ import Header from '../components/Differ/single/Header';
 import GamesType from '../components/GamesType';
 import HeroCarousel from '../components/shared/HeroCarousel';
 // import Current from '../components/GamePageComponents/CurrentScores';
-import GamesUpdates from '../components/GamePageComponents/GamesUpdates';
+// import GamesUpdates from '../components/GamePageComponents/GamesUpdates';
 import Footer from '../components/shared/Footer';
 
 const gameImages = [
@@ -25,7 +25,7 @@ const GamesHome = () => {
       <main className="flex-1">
         <HeroCarousel images={gameImages} />
         {/* <Current /> */}
-        <GamesUpdates />
+        {/* <GamesUpdates /> */}
       </main>
       <Footer />
     </div>

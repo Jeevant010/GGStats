@@ -3,6 +3,7 @@ import axios from 'axios';
 import Header from '../Differ/single/Header';
 // import GamesType from '../GamesType';
 import Footer from '../shared/Footer';
+import GamesType from '../GamesType';
 
 const Valorant = () => {
     const [schedule, setSchedule] = useState([]);
@@ -56,6 +57,9 @@ const Valorant = () => {
     };
 
     return (
+        <>
+        <Header />
+        <GamesType />
         <div className="min-h-screen flex flex-col bg-surface-900">
             {/* <Header /> */}
             {/* <GamesType /> */}
@@ -174,6 +178,7 @@ const Valorant = () => {
             </main>
             <Footer />
         </div>
+        </>
     );
 };
 

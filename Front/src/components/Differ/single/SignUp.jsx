@@ -46,6 +46,7 @@ const SignUp = () => {
           const date = new Date();
           date.setDate(date.getDate() + 30);
           setCookie("token", res.data.token, { path: "/", expires: date });
+          localStorage.setItem("accessToken", res.data.token);
           toast.success("Logged in successfully!");
           navigate("/");
         } else {
@@ -66,13 +67,13 @@ const SignUp = () => {
 
         const res = await api.post("/register", form);
 
-        if (res.data && res.data.success) {
+        if (res.data && res.data.token) {
           toast.success("Account created! Please login.");
           setForm({ userName: "", email: "", phone: "", password: "" });
           setConfirmPassword("");
           setIsLogin(true);
         } else {
-          toast.error(res.data?.message || "Signup failed");
+          toast.error(res.data?.error || res.data?.message || "Signup failed");
         }
       }
     } catch (error) {
