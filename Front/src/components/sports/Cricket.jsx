@@ -1,99 +1,59 @@
-import React from 'react';
-import Header from '../../../src/components/Differ/single/Header';
+import React, { useState, useEffect } from 'react';
+import Header from '../Differ/single/Header';
 import SportsType from '../SportsType';
-import BigBlock from '../shared/Screen/BigBlock';
-import SportPage from '../shared/Screen/sportpage';
+import Footer from '../shared/Footer';
+import { Loader } from 'lucide-react';
 
 const Cricket = () => {
-  const mockMatch = [
-    {
-      matchTitle: "India vs Australia",
-      venue: "Melbourne Cricket Ground",
-      image: "https://upload.wikimedia.org/wikipedia/commons/7/72/India_vs_Australia_Cricket_Match.jpg",
-      status: "Live",
-      score: "IND 245/6",
-      overs: "45.3",
-      result: null
-    },
-    {
-      matchTitle: "England vs South Africa",
-      venue: "Lord's, London",
-      image: "https://upload.wikimedia.org/wikipedia/commons/8/81/Cricket_match_in_progress.jpg",
-      status: "Upcoming",
-      score: null,
-      overs: null,
-      result: null
-    },
-    {
-      matchTitle: "Pakistan vs New Zealand",
-      venue: "Karachi National Stadium",
-      image: "https://upload.wikimedia.org/wikipedia/commons/0/05/Cricket_field_and_pitch.jpg",
-      status: "Completed",
-      score: "NZ 320/7",
-      overs: "50.0",
-      result: "New Zealand won by 15 runs"
-    },
-    {
-      matchTitle: "Pakistan vs New Zealand",
-      venue: "Karachi National Stadium",
-      image: "https://upload.wikimedia.org/wikipedia/commons/0/05/Cricket_field_and_pitch.jpg",
-      status: "Completed",
-      score: "NZ 320/7",
-      overs: "50.0",
-      result: "New Zealand won by 15 runs"
-    },
-    {
-      matchTitle: "Pakistan vs New Zealand",
-      venue: "Karachi National Stadium",
-      image: "https://upload.wikimedia.org/wikipedia/commons/0/05/Cricket_field_and_pitch.jpg",
-      status: "Completed",
-      score: "NZ 320/7",
-      overs: "50.0",
-      result: "New Zealand won by 15 runs"
-    },
-    {
-      matchTitle: "Pakistan vs New Zealand",
-      venue: "Karachi National Stadium",
-      image: "https://upload.wikimedia.org/wikipedia/commons/0/05/Cricket_field_and_pitch.jpg",
-      status: "Completed",
-      score: "NZ 320/7",
-      overs: "50.0",
-      result: "New Zealand won by 15 runs"
-    },
-    {
-      matchTitle: "Pakistan vs New Zealand",
-      venue: "Karachi National Stadium",
-      image: "https://upload.wikimedia.org/wikipedia/commons/0/05/Cricket_field_and_pitch.jpg",
-      status: "Completed",
-      score: "NZ 320/7",
-      overs: "50.0",
-      result: "New Zealand won by 15 runs"
-    }
-  ];
+  const [matches, setMatches] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    // TODO: Replace with your actual Cricket API call
+    // Example: const { data } = await axios.get('YOUR_CRICKET_API_URL', { headers: {...} });
+    // setMatches(data.matches);
+    setLoading(false);
+  }, []);
 
   return (
-    <>
+    <div className="min-h-screen flex flex-col bg-surface-900">
       <Header />
       <SportsType />
-      <SportPage />
-      <div
-        className="min-h-screen w-full p-6 relative bg-[url('/src/assets/cricket1.svg')] bg-no-repeat bg-cover bg-left-center bg-green-500"
-        style={{opacity:1}}
-      >
-        <h1 className="text-black-800 text-2xl font-bold mb-4">Cricket Matches</h1>
+      <main className="flex-1 py-6 px-4 lg:px-6 max-w-[1400px] mx-auto w-full">
+        <h1 className="text-2xl font-bold text-white mb-6">🏏 Cricket</h1>
 
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {mockMatch.map((match, index) => (
-            <BigBlock
-              key={index}
-              info={match}
-              onMatchSelect={(selectedMatch) => console.log("Selected match:", selectedMatch)}
-              onWatchLive={() => console.log("Opening live stream...")}
-            />
-          ))}
-        </div>
-      </div>
-    </>
+        {loading && (
+          <div className="flex items-center justify-center py-20">
+            <Loader size={24} className="animate-spin text-accent" />
+          </div>
+        )}
+
+        {error && (
+          <div className="text-live text-sm bg-live/10 px-6 py-4 rounded-xl border border-live/30 text-center">
+            {error}
+          </div>
+        )}
+
+        {!loading && !error && matches.length === 0 && (
+          <div className="text-center py-20">
+            <p className="text-gray-500 text-lg">No matches available.</p>
+            <p className="text-gray-600 text-sm mt-2">Connect an API to display live cricket data.</p>
+          </div>
+        )}
+
+        {matches.length > 0 && (
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {matches.map((match, i) => (
+              <div key={match.id || i} className="glass rounded-xl p-4">
+                <p className="text-white font-medium">{match.title || 'Match'}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </main>
+      <Footer />
+    </div>
   );
 };
 

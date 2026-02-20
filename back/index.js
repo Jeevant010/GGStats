@@ -11,7 +11,7 @@ const passport = require("passport");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const csrf = require("csurf");
+// const csrf = require("csurf");
 
 
 
@@ -30,8 +30,8 @@ const authRoutes = require('./routes/auth');
 mongoose.connect(
     process.env.MONGO_URI,
     {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
+        // useNewUrlParser: true,
+        // useUnifiedTopology: true,
     }
 
     ).then(async () => {

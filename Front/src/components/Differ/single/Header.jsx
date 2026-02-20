@@ -1,124 +1,107 @@
 import React, { useState } from 'react';
-import { Menu, X } from "lucide-react";
-import { Link } from 'react-router-dom';
+import { Menu, X, Home, Tv, Radio, UserCircle, LogIn } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 import Logo from '../../shared/logo/logo';
-import Slidebar from '../../shared/Screen/slidebar';
 
 const navItems = [
-  { label: 'Home', href: '/Home' },
-  { label: 'Sports/Games', href: '/GamesHome' },
-  { label: 'Categories', href: '/categories' },
-  { label: 'Live', href: '/live' },
-  { label: 'Register', href: '/register' },
+  { label: 'Home', href: '/', icon: Home },
+  { label: 'Sports', href: '/sports', icon: Tv },
+  { label: 'Games', href: '/games', icon: Tv },
+  { label: 'Live', href: '/live', icon: Radio },
 ];
-
-// Reusable Search Form
-// const SearchForm = ({ placeholder, buttonText }) => (
-//   <form className="flex w-full max-w-md" onSubmit={e => e.preventDefault()}>
-//     <input
-//       type="text"
-//       placeholder={placeholder}
-//       className="w-full bg-gray-800/70 text-white placeholder-gray-400 rounded-l-full py-2 px-4 focus:outline-none focus:ring-1 focus:ring-red-600"
-//     />
-//     <button
-//       type="submit"
-//       className="bg-red-600 text-white rounded-r-full px-4 hover:bg-red-700 transition-colors"
-//     >
-//       {buttonText}
-//     </button>
-//   </form>
-// );
 
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [isSlidebarOpen, setIsSlidebarOpen] = useState(false);
-
-  const toggleMobile = () => setMobileOpen(o => !o);
-  const toggleSlidebar = () => setIsSlidebarOpen(o => !o);
+  const location = useLocation();
+  const [cookie] = useCookies(["token"]);
+  const isLoggedIn = !!cookie.token;
 
   return (
-  <div className="main-header h-[60px] shadow-lg z-[100] flex items-center px-4 sticky top-0 bg-white/40 backdrop-blur-md">
-      <nav className="flex items-center w-full gap-8 relative" aria-label="Main navigation">
+    <header className="h-16 glass sticky top-0 z-[100] border-b border-white/5">
+      <nav className="flex items-center justify-between w-full h-full max-w-[1400px] mx-auto px-4 lg:px-6">
         <Logo />
 
-        {/* Desktop Search */}
-        {/* <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 w-full justify-center px-4 pointer-events-none">
-          <div className="pointer-events-auto">
-            <SearchForm placeholder="Search..." buttonText="Search" />
-          </div>
-        </div> */}
-
-        {/* Desktop Nav Items */}
-        <ul className="hidden md:flex justify-around w-full">
-          {navItems.map(item => (
-            <li key={item.label}>
-              <Link
-                to={item.href}
-                className="inline-block px-5 py-2  text-black font-medium  hover: hover: transition-all duration-300 hover:scale-135"
-                onClick={() => setMobileOpen(false)}
-              >
-                {item.label}
-              </Link>
-            </li>
-          ))}
+        {/* Desktop Nav */}
+        <ul className="hidden md:flex items-center gap-1">
+          {navItems.map(item => {
+            const isActive = location.pathname === item.href ||
+              (item.href !== '/' && location.pathname.startsWith(item.href));
+            const Icon = item.icon;
+            return (
+              <li key={item.label}>
+                <Link
+                  to={item.href}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${isActive
+                    ? 'bg-accent/10 text-accent'
+                    : 'text-gray-400 hover:text-white hover:bg-white/5'
+                    }`}
+                >
+                  <Icon size={16} />
+                  {item.label}
+                </Link>
+              </li>
+            );
+          })}
           <li>
-            <button
-              onClick={toggleSlidebar}
-              aria-label={isSlidebarOpen ? 'Close sidebar' : 'Open sidebar'}
-              className="text-white w-9 h-9 flex items-center justify-center rounded-full bg-black/60 shadow hover:bg-red-600 transition-colors"
+            <Link
+              to={isLoggedIn ? '/profile' : '/register'}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-gray-400 hover:text-white hover:bg-white/5"
             >
-              {isSlidebarOpen ? <X /> : <Menu />}
-            </button>
+              {isLoggedIn ? <UserCircle size={16} /> : <LogIn size={16} />}
+              {isLoggedIn ? 'Profile' : 'Sign In'}
+            </Link>
           </li>
         </ul>
 
-        {/* Mobile Controls */}
-        <div className="flex md:hidden items-center gap-2 ml-auto">
-          {/* <button
-            onClick={toggleSlidebar}
-            aria-label={isSlidebarOpen ? 'Close sidebar' : 'Open sidebar'}
-            className="text-white w-9   h-9 flex items-center justify-center rounded-full bg-black/60 shadow hover:bg-black/80 transition-colors"
-          > 
-            {isSlidebarOpen ? <X /> : <Menu />}
-          </button> */}
-          <button
-            onClick={toggleMobile}
-            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-            className="text-white w-9 h-9 flex items-center justify-center rounded-full bg-black/60 shadow hover:bg-black/80 transition-colors"
-          >
-            {mobileOpen ? <X /> : <Menu />}
-          </button>
-        </div>
+        {/* Mobile Menu Button */}
+        <button
+          className="md:hidden w-9 h-9 flex items-center justify-center rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+          onClick={() => setMobileOpen(o => !o)}
+          aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+        >
+          {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
       </nav>
 
       {/* Mobile Dropdown */}
       <div
-        className={`md:hidden absolute top-[68px] left-0 right-0 mx-1 bg-white overflow-hidden z-[90] transition-all duration-300 origin-top ${
-          mobileOpen ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0 pointer-events-none'
-        }`}
-        style={{ backdropFilter: 'blur(6px)' }}
+        className={`md:hidden absolute top-16 left-0 right-0 glass border-b border-white/5 overflow-hidden z-[90] transition-all duration-300 origin-top ${mobileOpen ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0 pointer-events-none'
+          }`}
       >
-        {/* <div className="p-4 border-b border-gray-800">
-          <SearchForm placeholder="Search..." buttonText="Go" />
-        </div> */}
-        <ul className="flex flex-col text-white gap-2 p-4">
-          {navItems.map(item => (
-            <li key={item.label}>
-              <Link
-                to={item.href}
-                className="block w-full text-center text-lg py-3 mb-2 rounded-full bg-gradient-to-r from-red-500 to-pink-500 text-white font-semibold shadow-lg hover:scale-105 transition-transform duration-200"
-                onClick={() => setMobileOpen(false)}
-              >
-                {item.label}
-              </Link>
-            </li>
-          ))}
+        <ul className="flex flex-col gap-1 p-3">
+          {navItems.map(item => {
+            const isActive = location.pathname === item.href;
+            const Icon = item.icon;
+            return (
+              <li key={item.label}>
+                <Link
+                  to={item.href}
+                  className={`flex items-center gap-3 w-full px-4 py-3 rounded-xl text-base font-medium transition-all duration-200 ${isActive
+                    ? 'bg-accent/10 text-accent'
+                    : 'text-gray-300 hover:bg-white/5 hover:text-white'
+                    }`}
+                  onClick={() => setMobileOpen(false)}
+                >
+                  <Icon size={18} />
+                  {item.label}
+                </Link>
+              </li>
+            );
+          })}
+          <li>
+            <Link
+              to={isLoggedIn ? '/profile' : '/register'}
+              className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-base font-medium text-gray-300 hover:bg-white/5 hover:text-white transition-all duration-200"
+              onClick={() => setMobileOpen(false)}
+            >
+              {isLoggedIn ? <UserCircle size={18} /> : <LogIn size={18} />}
+              {isLoggedIn ? 'Profile' : 'Sign In'}
+            </Link>
+          </li>
         </ul>
       </div>
-
-      {/* Slidebar */}
-      <Slidebar isOpen={isSlidebarOpen} />
-    </div>
+    </header>
   );
 };
 

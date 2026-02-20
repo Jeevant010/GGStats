@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Search, Newspaper, ExternalLink } from "lucide-react";
 
 const API_KEY = import.meta.env.VITE_NEWS_KEY;
 const DEFAULT_QUERY = "games";
@@ -15,12 +16,9 @@ const GamesUpdates = () => {
       setLoading(true);
       setError("");
       const res = await fetch(
-        `https://newsapi.org/v2/everything?q=${encodeURIComponent(
-          query
-        )}&apiKey=${API_KEY}`
+        `https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&apiKey=${API_KEY}`
       );
       const data = await res.json();
-
       if (data.articles) {
         setNewsData(data.articles);
       } else {
@@ -28,7 +26,7 @@ const GamesUpdates = () => {
         setNewsData([]);
       }
     } catch (err) {
-      setError(`Failed to fetch news: ${err.message}. Please try again.`);
+      setError(`Failed to fetch news: ${err.message}`);
     } finally {
       setLoading(false);
     }
@@ -40,65 +38,101 @@ const GamesUpdates = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (search.trim()) {
-      getData();
-    }
+    if (search.trim()) getData();
   };
 
   return (
-    <div className="bg-red-300 min-h-screen">
-      <h1 className="text-2xl font-bold p-4">Games Updates</h1>
-      <p className="p-4">
-        Stay tuned for the latest updates on your favorite games! From new
-        releases to exciting features, we've got you covered. Check back often
-        for the freshest news and updates in the gaming world.
-      </p>
-
-      {/* Search Bar */}
-      <div className="w-full max-w-full mx-auto p-4 bg-white/80 rounded-xl shadow-lg mt-8">
-        <form
-          className="flex flex-col sm:flex-row items-center gap-3 mb-6"
-          onSubmit={handleSubmit}
-        >
-          <input
-            type="text"
-            placeholder="Search Game News"
-            // value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="flex-1 px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-800 bg-white shadow"
-          />
-          <button
-            type="submit"
-            className="px-6 py-2 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold shadow hover:from-pink-500 hover:to-red-500 transition-colors"
-          >
-            Search
-          </button>
-        </form>
-      </div>
-
-      {/* Status */}
-      {loading && <p className="text-center text-lg text-blue-700">Loading...</p>}
-      {error && <p className="text-center text-red-600">{error}</p>}
-
-      {/* News Cards */}
-      <div className="cards bg-yellow-400 grid md:grid-cols-3 sm:grid-cols-1 p-4 gap-4">
-        {newsData.slice(0, MAX_RESULTS).map((article, idx) => (
-          <div
-            key={idx}
-            className="bg-green-400 p-4 flex flex-col rounded-lg shadow"
-          >
-            {article.urlToImage && (
-              <img
-                src={article.urlToImage}
-                alt={article.title || "News image"}
-                className="w-full object-cover rounded-md mb-2 max-h-48"
-              />
-            )}
-            <span className="font-bold line-clamp-2">{article.title}</span>
-            <span className="text-xs text-gray-700">{article.source?.name}</span>
-            <span className="text-sm line-clamp-2">{article.description}</span>
+    <div className="bg-surface-900 py-8 px-4">
+      <div className="max-w-[1400px] mx-auto">
+        {/* Section Header */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+          <div className="flex items-center gap-3">
+            <Newspaper size={22} className="text-accent" />
+            <div>
+              <h2 className="text-xl font-bold text-white">Games Updates</h2>
+              <p className="text-gray-500 text-sm mt-0.5">Latest news from the gaming world</p>
+            </div>
           </div>
-        ))}
+
+          <form className="flex items-center gap-2 w-full sm:w-auto" onSubmit={handleSubmit}>
+            <div className="relative flex-1 sm:w-56">
+              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+              <input
+                type="text"
+                placeholder="Search game news..."
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full pl-9 pr-4 py-2 rounded-lg bg-surface-700 text-white text-sm placeholder-gray-500 border border-white/5 focus:outline-none focus:border-accent/50 transition-colors"
+              />
+            </div>
+            <button
+              type="submit"
+              className="px-4 py-2 rounded-lg bg-accent hover:bg-accent-hover text-white text-sm font-medium transition-colors shrink-0"
+            >
+              Search
+            </button>
+          </form>
+        </div>
+
+        {/* Loading */}
+        {loading && (
+          <div className="grid md:grid-cols-3 sm:grid-cols-1 gap-4">
+            {Array.from({ length: MAX_RESULTS }).map((_, i) => (
+              <div key={i} className="glass rounded-xl overflow-hidden animate-pulse">
+                <div className="w-full h-40 bg-surface-600" />
+                <div className="p-4 space-y-2">
+                  <div className="h-4 bg-surface-600 rounded w-3/4" />
+                  <div className="h-3 bg-surface-600 rounded w-full" />
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Error */}
+        {error && (
+          <div className="text-center py-8">
+            <p className="text-live text-sm">{error}</p>
+          </div>
+        )}
+
+        {/* Cards */}
+        {!loading && !error && (
+          <div className="grid md:grid-cols-3 sm:grid-cols-1 gap-4">
+            {newsData.slice(0, MAX_RESULTS).map((article, idx) => (
+              <article
+                key={idx}
+                className="glass rounded-xl overflow-hidden flex flex-col group hover:ring-1 hover:ring-accent/30 transition-all duration-300"
+              >
+                {article.urlToImage ? (
+                  <img
+                    src={article.urlToImage}
+                    alt={article.title || "News image"}
+                    className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                ) : (
+                  <div className="w-full h-40 bg-surface-600 flex items-center justify-center">
+                    <span className="text-gray-600 text-xs">No Image</span>
+                  </div>
+                )}
+                <div className="p-4 flex flex-col flex-1">
+                  <span className="font-semibold text-sm text-white line-clamp-2 mb-1">{article.title}</span>
+                  <span className="text-xs text-accent mb-2">{article.source?.name}</span>
+                  <span className="text-xs text-gray-500 line-clamp-2 flex-1">{article.description}</span>
+                  {article.url && (
+                    <a
+                      href={article.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1 text-accent hover:text-accent-hover text-xs font-medium mt-3 transition-colors"
+                    >
+                      Read more <ExternalLink size={12} />
+                    </a>
+                  )}
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

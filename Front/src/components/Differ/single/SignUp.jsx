@@ -1,15 +1,15 @@
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion as Motion, AnimatePresence } from "framer-motion";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { useCookies } from "react-cookie";
-import "react-toastify/dist/ReactToastify.css";
+import { ArrowLeft, Mail, Lock, User, Phone, Eye, EyeOff, Gamepad2 } from "lucide-react";
 import api from '../../../utils/api';
 
 const SignUp = () => {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState({
     userName: "",
     email: "",
@@ -18,7 +18,7 @@ const SignUp = () => {
   });
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+  const [cookies, setCookie] = useCookies(["token"]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,283 +31,242 @@ const SignUp = () => {
 
     try {
       if (isLogin) {
-        // Login logic
         if (!form.email || !form.password) {
-          toast.error("Please fill all required fields", {
-            position: "top-right",
-            autoClose: 3000,
-            theme: "colored",
-          });
+          toast.error("Please fill all required fields");
           setLoading(false);
           return;
         }
 
-        // Replace with your actual API call
         const res = await api.post("/login", {
           email: form.email,
           password: form.password,
         });
 
         if (res.data && res.data.token) {
-          const token = res.data.token;
           const date = new Date();
           date.setDate(date.getDate() + 30);
-          setCookie("token", token, { path: "/", expires: date });
-          
-          toast.success("Logged in successfully!", {
-            position: "top-right",
-            autoClose: 3000,
-            theme: "colored",
-          });
-          
-          navigate("/home");
+          setCookie("token", res.data.token, { path: "/", expires: date });
+          toast.success("Logged in successfully!");
+          navigate("/");
         } else {
-          const errorMsg = res.data?.message || "Login failed";
-          toast.error(errorMsg, {
-            position: "top-right",
-            autoClose: 3000,
-            theme: "colored",
-          });
+          toast.error(res.data?.message || "Login failed");
         }
       } else {
-        // Signup logic
         if (!form.userName || !form.email || !form.password || !confirmPassword) {
-          toast.error("Please fill all required fields", {
-            position: "top-right",
-            autoClose: 3000,
-            theme: "colored",
-          });
+          toast.error("Please fill all required fields");
           setLoading(false);
           return;
         }
 
         if (form.password !== confirmPassword) {
-          toast.error("Passwords do not match", {
-            position: "top-right",
-            autoClose: 3000,
-            theme: "colored",
-          });
+          toast.error("Passwords do not match");
           setLoading(false);
           return;
         }
 
-        // Replace with your actual API call
         const res = await api.post("/register", form);
-        
+
         if (res.data && res.data.success) {
-          toast.success("Account created! Please login.", {
-            position: "top-right",
-            autoClose: 3000,
-            theme: "colored",
-          });
-          
-          // Clear form and switch to login
-          setForm({
-            userName: "",
-            email: "",
-            phone: "",
-            password: "",
-          });
+          toast.success("Account created! Please login.");
+          setForm({ userName: "", email: "", phone: "", password: "" });
           setConfirmPassword("");
           setIsLogin(true);
         } else {
-          const errorMsg = res.data?.message || "Signup failed";
-          toast.error(errorMsg, {
-            position: "top-right",
-            autoClose: 3000,
-            theme: "colored",
-          });
+          toast.error(res.data?.message || "Signup failed");
         }
       }
     } catch (error) {
-      console.error("SignUp error:", error);
-      const errorMsg = error.response?.data?.message || 
-                      error.message || 
-                      "SignUpentication failed";
-      
-      toast.error(errorMsg, {
-        position: "top-right",
-        autoClose: 3000,
-        theme: "colored",
-      });
+      toast.error(error.response?.data?.message || error.message || "Authentication failed");
     } finally {
       setLoading(false);
     }
   };
 
-    return (
+  const inputClass = "w-full pl-10 pr-4 py-3 rounded-xl bg-surface-700 text-white text-sm placeholder-gray-500 border border-white/5 focus:outline-none focus:border-accent/50 transition-colors";
 
-      <>
-      
-      
-
-    <div className="relative min-h-screen flex overflow-hidden">
+  return (
+    <div className="min-h-screen flex bg-surface-900">
+      {/* Left Panel — Branding */}
       <Motion.div
-        initial={{ x: 0 }}
-        animate={{ x: isLogin ? "50%" : "-50%" }}
-        transition={{ duration: 0.8, ease: "easeInOut" }}
-        className="flex-1 bg-cover bg-center relative z-1"
-        style={{ backgroundImage: "url('/signup3d.png')" }}
-      />
-      
-      {/* Back Button */}
-      <button
-        className="absolute top-4 left-4 z-10 flex items-center gap-2 px-4 py-2 rounded-full border-2 bg-white font-bold shadow-lg hover:bg-green-600 hover:text-white hover:scale-105 active:scale-95 transition-all duration-200 ease-in-out cursor-pointer"
-        onClick={() => navigate(-1)}
+        initial={{ opacity: 0, x: -30 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6 }}
+        className="hidden lg:flex w-1/2 flex-col items-center justify-center relative overflow-hidden"
+        style={{
+          background: 'linear-gradient(135deg, #0b0d13 0%, #164e63 50%, #0b0d13 100%)',
+        }}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={2}
-          stroke="currentColor"
-          className="w-5 h-5"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-        </svg>
-        Back
-      </button>
-
-      {/* Toast Container */}
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
-
-      {/* Form Section */}
-      <Motion.div
-        initial={{ x: "100%" }}
-        animate={{ x: isLogin ? "0%" : "100%" }}
-        transition={{ duration: 0.8, ease: "easeInOut" }}
-        className="absolute top-0 left-0 w-[50%] h-full z-0 flex justify-center items-center p-8"
-      >
-        <div className="rounded-2xl shadow-2xl p-8 h-full w-full max-w-md m-10 mt-10 text-center p-20">
-          <h1 className="text-3xl font-bold text-black mb-6">
-            {isLogin ? "Welcome Back!" : "Create Your Account"}
+        <div className="absolute inset-0 opacity-10" style={{
+          backgroundImage: 'radial-gradient(circle at 50% 50%, var(--color-accent) 1px, transparent 1px)',
+          backgroundSize: '30px 30px',
+        }} />
+        <div className="relative z-10 text-center px-8">
+          <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-accent to-purple-500 flex items-center justify-center mx-auto mb-6 shadow-2xl">
+            <Gamepad2 size={40} className="text-white" />
+          </div>
+          <h1 className="text-4xl font-bold text-white mb-3">
+            GG<span className="text-accent">Stats</span>
           </h1>
+          <p className="text-gray-400 text-lg max-w-sm">
+            Track live sports scores, esports tournaments, and gaming news in real-time.
+          </p>
+        </div>
+      </Motion.div>
 
-          {/* FORM */}
-          <form onSubmit={handleSubmit} className="flex flex-col text-black gap-4">
-            {!isLogin && (
+      {/* Right Panel — Form */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center px-6 py-12">
+        <Motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="w-full max-w-md"
+        >
+          {/* Back Button */}
+          <button
+            className="flex items-center gap-2 text-gray-500 hover:text-white text-sm mb-8 transition-colors"
+            onClick={() => navigate(-1)}
+          >
+            <ArrowLeft size={16} />
+            Back
+          </button>
+
+          {/* Heading */}
+          <h2 className="text-3xl font-bold text-white mb-2">
+            {isLogin ? "Welcome back" : "Create account"}
+          </h2>
+          <p className="text-gray-500 mb-8">
+            {isLogin ? "Enter your credentials to access your account" : "Fill in your details to get started"}
+          </p>
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <AnimatePresence mode="wait">
+              {!isLogin && (
+                <Motion.div
+                  key="username"
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="relative"
+                >
+                  <User size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+                  <input
+                    type="text"
+                    name="userName"
+                    placeholder="Full Name"
+                    value={form.userName}
+                    onChange={handleChange}
+                    className={inputClass}
+                  />
+                </Motion.div>
+              )}
+            </AnimatePresence>
+
+            <div className="relative">
+              <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
               <input
-                type="text"
-                name="userName"
-                placeholder="Full Name"
-                value={form.userName}
+                type="email"
+                name="email"
+                placeholder="Email Address"
+                value={form.email}
                 onChange={handleChange}
                 required
-                className="px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-400"
+                className={inputClass}
               />
-            )}
+            </div>
 
-            <input
-              type="email"
-              name="email"
-              placeholder="Email Address"
-              value={form.email}
-              onChange={handleChange}
-              required
-              className="px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-white"
-            />
+            <AnimatePresence mode="wait">
+              {!isLogin && (
+                <Motion.div
+                  key="phone"
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="relative"
+                >
+                  <Phone size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+                  <input
+                    type="tel"
+                    name="phone"
+                    placeholder="Phone"
+                    value={form.phone}
+                    onChange={handleChange}
+                    className={inputClass}
+                  />
+                </Motion.div>
+              )}
+            </AnimatePresence>
 
-            {!isLogin && (
+            <div className="relative">
+              <Lock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
               <input
-                type="tel"
-                name="phone"
-                placeholder="Phone"
-                value={form.phone}
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Password"
+                value={form.password}
                 onChange={handleChange}
                 required
-                className="px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-400"
+                className={`${inputClass} pr-10`}
               />
-            )}
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors"
+              >
+                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
+            </div>
 
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={form.password}
-              onChange={handleChange}
-              required
-              className="px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-400"
-            />
-
-            {!isLogin && (
-              <input
-                type="password"
-                name="confirmPassword"
-                placeholder="Confirm Password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-                className="px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-400"
-              />
-            )}
+            <AnimatePresence mode="wait">
+              {!isLogin && (
+                <Motion.div
+                  key="confirm"
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="relative"
+                >
+                  <Lock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    placeholder="Confirm Password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className={inputClass}
+                  />
+                </Motion.div>
+              )}
+            </AnimatePresence>
 
             <button
               type="submit"
               disabled={loading}
-              className="bg-green-400 hover:bg-green-500 text-white font-bold py-2 rounded-full shadow-md transition cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
+              className="w-full py-3 rounded-xl bg-gradient-to-r from-accent to-cyan-400 hover:from-accent-hover hover:to-cyan-300 text-white font-semibold text-sm shadow-lg shadow-accent/20 transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed mt-2"
             >
               {loading
-                ? isLogin
-                  ? "Logging In..."
-                  : "Signing Up..."
-                : isLogin
-                ? "LOG IN"
-                : "SIGN UP"}
+                ? (isLogin ? "Logging in..." : "Creating account...")
+                : (isLogin ? "Log In" : "Create Account")}
             </button>
           </form>
 
-          <p className="text-black mt-6">
+          <p className="text-gray-500 text-sm text-center mt-6">
             {isLogin ? "Don't have an account? " : "Already have an account? "}
             <button
               type="button"
               onClick={() => {
                 setIsLogin(!isLogin);
-                // Clear form when switching modes
-                setForm({
-                  userName: "",
-                  email: "",
-                  phone: "",
-                  password: "",
-                });
+                setForm({ userName: "", email: "", phone: "", password: "" });
                 setConfirmPassword("");
               }}
-              className="font-bold underline hover:text-violet-600 cursor-pointer"
+              className="text-accent hover:text-accent-hover font-semibold transition-colors"
             >
               {isLogin ? "Sign up" : "Log in"}
             </button>
           </p>
-        </div>
-      </Motion.div>
-      
-
+        </Motion.div>
+      </div>
     </div>
-
-
-      {/* Toast Container */}
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
-      </>
   );
 };
 

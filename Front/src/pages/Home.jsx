@@ -1,31 +1,31 @@
 import React from "react";
-// import Slidebar from "../components/slidebar";
-// import Logo from "../components/logo";
-import Hero from '../components/HomePageComponent/Hero';
-import SportsType from '../components/SportsType';
+import HeroCarousel from '../components/shared/HeroCarousel';
 import Header from "../components/Differ/single/Header";
 import News from "../components/HomePageComponent/News";
 import { UpcomingEvents } from "../components/HomePageComponent/UpcomingEvents";
+import Footer from "../components/shared/Footer";
+
+const heroImages = [
+    "/game4.jpg",
+    "/game2.jpg",
+    "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=1200&q=80",
+    "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&w=1200&q=80",
+    "/game3.jpg",
+    "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=1200&q=80",
+];
+
 const Home = () => {
     return (
-        
-        <>
-
-    {/* Blurred background circle */}
-    <div className="circlePosition w-full h-full bg-violet-400 rounded-[100%] absolute z-1 top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] blur-[90px] pointer-events-none" />
-
-    {/* Main content with backdrop blur */}
-    <div className="relative z-10 backdrop-blur-xl">
-        <Header />
-        <SportsType />
-        <Hero />
-        <News />
-        <UpcomingEvents />
-    </div>
-
-
-        </>
-
-    )};
+        <div className="min-h-screen flex flex-col bg-surface-900">
+            <Header />
+            <main className="flex-1">
+                <HeroCarousel images={heroImages} />
+                <News />
+                <UpcomingEvents />
+            </main>
+            <Footer />
+        </div>
+    );
+};
 
 export default Home;

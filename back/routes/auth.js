@@ -49,7 +49,7 @@ router.post("/register" , async (req, res) => {
     // what to return to the website and the signed in user
     const usertoReturn = { ...newUser.toJSON() , token };
     // now delete the password to make it secret on frontend and backend
-    delete usertoReturn.passport;
+    delete usertoReturn.password;
     // finally return the userdata on the frontend using this REST api
     return res.status(201).json(usertoReturn);
 });
@@ -82,7 +82,7 @@ router.post("/login", async (req, res) => {
         // finding the user in the database also with the password
         const user = await User.findOne({
             email: email.trim()
-        }).select('+pasword');
+        }).select('+password');
 
         // if the user is not there
         if(!user){
