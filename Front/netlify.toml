@@ -1,0 +1,17 @@
+[build]
+  base = "Front"
+  publish = "dist"
+  command = "npm run build"
+
+[build.environment]
+  SECRETS_SCAN_OMIT_KEYS = "VITE_API,VITE_NEWS_KEY,VITE_API_UPDATE_NEWS"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Content-Type = "text/javascript; charset=utf-8"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
