@@ -1,21 +1,18 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-// It is recommended to use a local image asset for the logo instead of an external URL.
-// import GGStatsLogo from './path/to/your/logo.png';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Gamepad2 } from 'lucide-react';
 
 const Logo = () => {
   return (
-    <div className='z-50'>
-      <Link to='/' className='flex items-center'>
-        <img
-          src="https://t3.ftcdn.net/jpg/12/82/15/68/240_F_1282156894_dJTHOpUEf1Oi8PmH9l7PRNNob17ykOSY.jpg"
-          alt="GGStats logo"
-          className='w-8 h-8 object-contain'
-        />
-        <span className='text-black text-xl font-bold my-2 mx-3'>GGStats</span>
-      </Link>
-    </div>
-  )
-}
+    <Link to="/" className="flex items-center gap-2 group z-50">
+      <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-accent to-purple-500 flex items-center justify-center shadow-lg group-hover:shadow-accent/30 transition-shadow duration-300">
+        <Gamepad2 size={20} className="text-white" />
+      </div>
+      <span className="text-white text-xl font-bold tracking-tight">
+        GG<span className="text-accent">Stats</span>
+      </span>
+    </Link>
+  );
+};
 
-export default Logo
+export default Logo;

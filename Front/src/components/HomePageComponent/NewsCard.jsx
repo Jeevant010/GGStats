@@ -1,92 +1,86 @@
-import React, { useState,useEffect } from 'react';
-import gsap from 'gsap';
+import React, { useState } from 'react';
+import { ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
 
-const GSAPText = () => {
-  useEffect(() => {
-    gsap.fromTo('.news-cards',{
-      opacity: 0,
-      y:20,
-    },
-    {
-      opacity:1,
-      y:0,
-      delay:1.5,
-      stagger:0.2,
-    })
-  }, [])
-  return null;
-}
-
-const NewsCard = ({ data }) => {
+const NewsCard = ({ data = [] }) => {
   const [page, setPage] = useState(0);
-  const itemsPerPage = 8; 
-  const maxPage = Math.max(0, Math.ceil(data.length / itemsPerPage) - 1); // Maximum number of pages 
+  const itemsPerPage = 8;
+  const maxPage = Math.max(0, Math.ceil(data.length / itemsPerPage) - 1);
 
-  const handleNext = () => {
-    if (page < maxPage) setPage(page + 1);
-  };
-  const handlePrev = () => {
-    if (page > 0) setPage(page - 1);
-  };
+  const handleNext = () => { if (page < maxPage) setPage(page + 1); };
+  const handlePrev = () => { if (page > 0) setPage(page - 1); };
 
-  const visibleData = data.slice(page * itemsPerPage, (page + 1) * itemsPerPage); // Get current page data
+  const visibleData = data.slice(page * itemsPerPage, (page + 1) * itemsPerPage);
+
+  if (data.length === 0) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-gray-500 text-sm">No articles available.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="relative">
-      <GSAPText />
-      <div className="news-cards grid grid-cols-1 sm:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {visibleData.map((curItem, index) => (
-          <div
-            className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col hover:scale-105 transition-transform duration-200 border border-gray-200"
+          <article
+            className="bg-surface-700 rounded-xl overflow-hidden flex flex-col hover:ring-1 hover:ring-accent/30 transition-all duration-300 group"
             key={index}
           >
-            {curItem.urlToImage && (
+            {curItem.urlToImage ? (
               <img
                 src={curItem.urlToImage}
                 alt={curItem.title}
-                className="w-full h-48 object-cover"
+                className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-500"
               />
+            ) : (
+              <div className="w-full h-40 bg-surface-600 flex items-center justify-center">
+                <span className="text-gray-600 text-xs">No Image</span>
+              </div>
             )}
             <div className="p-4 flex flex-col flex-1">
-              <h2 className="text-lg font-bold mb-2 text-gray-800 line-clamp-2">{curItem.title}</h2>
-              <p className="text-gray-600 text-sm mb-4 flex-1 line-clamp-3">{curItem.description}</p>
+              <h3 className="text-sm font-semibold text-white mb-2 line-clamp-2 leading-snug">{curItem.title}</h3>
+              <p className="text-gray-500 text-xs mb-3 flex-1 line-clamp-2">{curItem.description}</p>
               {curItem.url && (
                 <a
                   href={curItem.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-auto inline-block text-blue-600 hover:underline text-sm font-medium"
-                  onClick={e => { e.stopPropagation(); }} 
+                  className="flex items-center gap-1 text-accent hover:text-accent-hover text-xs font-medium transition-colors mt-auto"
+                  onClick={e => e.stopPropagation()}
                 >
-                  Read more
+                  Read more <ExternalLink size={12} />
                 </a>
               )}
             </div>
-          </div>
+          </article>
         ))}
       </div>
 
-
-      {page > 0 && (
-        <button
-          onClick={handlePrev}
-          className="absolute left-0 top-1/2 -translate-y-1/2 bg-white/80 rounded-full shadow p-2 hover:bg-blue-200 z-10"
-          aria-label="Previous"
-        >
-          <span className="text-2xl">&#8592;</span>
-        </button>
-      )}
-      {page < maxPage && (
-        <button
-          onClick={handleNext}
-          className="absolute right-0 top-1/2 -translate-y-1/2 bg-white/80 rounded-full shadow p-2 hover:bg-blue-200 z-10"
-          aria-label="Next"
-        >
-          <span className="text-2xl">&#8594;</span>
-        </button>
+      {/* Pagination */}
+      {maxPage > 0 && (
+        <div className="flex items-center justify-center gap-3 mt-6">
+          <button
+            onClick={handlePrev}
+            disabled={page === 0}
+            className="w-9 h-9 rounded-lg bg-surface-700 flex items-center justify-center text-gray-400 hover:text-white hover:bg-surface-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+          >
+            <ChevronLeft size={18} />
+          </button>
+          <span className="text-sm text-gray-500">
+            {page + 1} / {maxPage + 1}
+          </span>
+          <button
+            onClick={handleNext}
+            disabled={page >= maxPage}
+            className="w-9 h-9 rounded-lg bg-surface-700 flex items-center justify-center text-gray-400 hover:text-white hover:bg-surface-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+          >
+            <ChevronRight size={18} />
+          </button>
+        </div>
       )}
     </div>
   );
-}
+};
 
 export default NewsCard;

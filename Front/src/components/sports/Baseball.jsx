@@ -1,13 +1,10 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Header from '../Differ/single/Header';
 import SportsType from '../SportsType';
 import Footer from '../shared/Footer';
-// import Cors from 'cors';
 
-// const Cors
-
-const Hockey = () => {
+const Baseball = () => {
   const [games, setGames] = useState([]);
   const [selectedLeague, setSelectedLeague] = useState("All");
   const [showCount, setShowCount] = useState(12);
@@ -20,12 +17,12 @@ const Hockey = () => {
     const fetchGames = async () => {
       try {
         const today = new Date().toISOString().split('T')[0];
-        const response = await axios.get(`https://v1.hockey.api-sports.io/games?date=${today}`, {
+        const response = await axios.get(`https://v1.baseball.api-sports.io/games?date=${today}`, {
           headers: { 'x-apisports-key': API_KEY }
         });
         setGames(response.data.response);
       } catch (err) {
-        console.error("Error fetching hockey games", err);
+        console.error("Error fetching baseball games", err);
         setError(err.message);
       } finally {
         setLoading(false);
@@ -36,14 +33,14 @@ const Hockey = () => {
 
   useEffect(() => { setShowCount(12); }, [selectedLeague]);
 
-  const groupByLeague = useMemo(() =>(gamesList) => {
+  const groupByLeague = (gamesList) => {
     return gamesList.reduce((groups, game) => {
       const league = game.league?.name || "Other";
       if (!groups[league]) groups[league] = [];
       groups[league].push(game);
       return groups;
     }, {});
-  }, [games]);
+  };
 
   const groupedGames = groupByLeague(games);
   const leagues = ["All", ...Object.keys(groupedGames)];
@@ -53,8 +50,8 @@ const Hockey = () => {
   const getStatusStyle = (status) => {
     if (!status?.short) return "bg-gray-600 text-gray-200";
     const s = status.short;
-    const live = ["P1", "P2", "P3", "OT", "SO", "LIVE"];
-    const finished = ["FT", "AOT", "APN"];
+    const live = ["IN", "LIVE"];
+    const finished = ["FT", "POST"];
     const notStarted = ["NS"];
     if (live.includes(s)) return "bg-live/20 text-live animate-pulse";
     if (finished.includes(s)) return "bg-win/20 text-win";
@@ -65,15 +62,11 @@ const Hockey = () => {
   const getStatusLabel = (status) => {
     if (!status?.short) return "TBD";
     const s = status.short;
-    if (["P1", "P2", "P3"].includes(s)) return `🔴 ${s}`;
-    if (s === "OT") return "🔴 Overtime";
-    if (s === "SO") return "🔴 Shootout";
+    if (s === "IN") return `🔴 Inning ${status.timer || ''}`;
     if (s === "FT") return "Final";
-    if (s === "AOT") return "Final/OT";
-    if (s === "APN") return "Final/SO";
-    if (s === "NS") return "Not Started";
+    if (s === "POST") return "Postponed";
     if (s === "CANC") return "Cancelled";
-    if (s === "PST") return "Postponed";
+    if (s === "NS") return "Not Started";
     return status.long || s;
   };
 
@@ -83,7 +76,7 @@ const Hockey = () => {
       <SportsType />
       <main className="flex-1 w-full text-white py-6 px-4 lg:px-6 max-w-[1400px] mx-auto">
         <h2 className="text-2xl font-bold mb-4 text-center tracking-wide">
-          🏒 Hockey — Today's Games
+          ⚾ Baseball — Today's Games
         </h2>
 
         {loading && (
@@ -129,10 +122,10 @@ const Hockey = () => {
                 const kickoff = new Date(game.date).toLocaleTimeString("en-US", {
                   hour: "2-digit", minute: "2-digit"
                 });
-                const homeGoals = game.scores?.home;
-                const awayGoals = game.scores?.away;
-                const homeWon = homeGoals != null && awayGoals != null && homeGoals > awayGoals;
-                const awayWon = homeGoals != null && awayGoals != null && awayGoals > homeGoals;
+                const homeScore = game.scores?.home?.total;
+                const awayScore = game.scores?.away?.total;
+                const homeWon = homeScore != null && awayScore != null && homeScore > awayScore;
+                const awayWon = homeScore != null && awayScore != null && awayScore > homeScore;
 
                 return (
                   <div key={game.id} className="glass rounded-xl p-4 hover:ring-1 hover:ring-accent/30 transition-all duration-300">
@@ -155,15 +148,28 @@ const Hockey = () => {
                         <span className={`text-xs font-semibold text-center ${homeWon ? 'text-win' : 'text-gray-300'}`}>{game.teams?.home?.name}</span>
                       </div>
                       <div className="flex items-center gap-2 mx-2">
-                        <span className={`text-2xl font-bold ${homeWon ? 'text-win' : 'text-white'}`}>{homeGoals ?? '-'}</span>
+                        <span className={`text-2xl font-bold ${homeWon ? 'text-win' : 'text-white'}`}>{homeScore ?? '-'}</span>
                         <span className="text-gray-500 text-lg">:</span>
-                        <span className={`text-2xl font-bold ${awayWon ? 'text-win' : 'text-white'}`}>{awayGoals ?? '-'}</span>
+                        <span className={`text-2xl font-bold ${awayWon ? 'text-win' : 'text-white'}`}>{awayScore ?? '-'}</span>
                       </div>
                       <div className="flex flex-col items-center gap-1 flex-1">
                         <img src={game.teams?.away?.logo} alt={game.teams?.away?.name} className="w-10 h-10 object-contain" onError={(e) => { e.target.src = 'https://via.placeholder.com/40'; }} />
                         <span className={`text-xs font-semibold text-center ${awayWon ? 'text-win' : 'text-gray-300'}`}>{game.teams?.away?.name}</span>
                       </div>
                     </div>
+
+                    {/* Innings breakdown */}
+                    {game.scores?.home?.innings && (
+                      <div className="flex flex-wrap justify-center gap-2 text-xs text-gray-500 mb-2">
+                        {Object.entries(game.scores.home.innings).map(([inning, homeRuns]) => (
+                          homeRuns != null && (
+                            <span key={inning}>
+                              I{inning}: {homeRuns}-{game.scores.away.innings[inning] ?? 0}
+                            </span>
+                          )
+                        ))}
+                      </div>
+                    )}
 
                     <div className="flex items-center justify-between text-xs text-gray-500 pt-2 border-t border-gray-700/50">
                       <span>{game.league?.season || ''}</span>
@@ -196,4 +202,4 @@ const Hockey = () => {
   );
 };
 
-export default Hockey;
+export default Baseball;

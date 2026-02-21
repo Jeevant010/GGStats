@@ -10,7 +10,7 @@ const gameSchema = new mongoose.Schema({
         required : true,
     },
     description : {
-        string : String,
+        type : String,
         required : true,
     },
 

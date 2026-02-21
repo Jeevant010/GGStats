@@ -1,6 +1,6 @@
 const passport = require("passport");
-const bcrypt = requie("bcrypt");
-const mongoose = required("mongoose");
+const bcrypt = require("bcrypt");
+const mongoose = require("mongoose");
 
 const AdminSchema = new mongoose.Schema({
     name : {

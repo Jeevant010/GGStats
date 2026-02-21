@@ -1,6 +1,135 @@
 @import "tailwindcss";
 
-/* Remove the default scroll */
+/* ============================================
+   GGStats Design System
+   ============================================ */
+
+@theme {
+  --color-surface-900: #0b0d13;
+  --color-surface-800: #111318;
+  --color-surface-700: #1a1d25;
+  --color-surface-600: #22262f;
+  --color-surface-500: #2d3240;
+  --color-surface-400: #3d4354;
+  --color-surface-300: #6b7280;
+  --color-accent: #06b6d4;
+  --color-accent-hover: #22d3ee;
+  --color-accent-muted: #164e63;
+  --color-live: #ef4444;
+  --color-live-glow: #ef444466;
+  --color-win: #22c55e;
+  --color-upcoming: #f59e0b;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Roboto Mono', ui-monospace, monospace;
+}
+
+/* ---- Base ---- */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-surface-900);
+  color: #e5e7eb;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ---- Custom Scrollbar ---- */
 ::-webkit-scrollbar {
-  display: none;
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-surface-800);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-surface-500);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
+}
+
+/* ---- Utility: Glow ring ---- */
+.glow-accent {
+  box-shadow: 0 0 20px var(--color-accent-muted), 0 0 60px rgba(6, 182, 212, 0.1);
+}
+
+/* ---- Utility: Glass card ---- */
+.glass {
+  background: rgba(17, 19, 24, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ---- Utility: Live pulse dot ---- */
+.live-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--color-live);
+  border-radius: 50%;
+  animation: live-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes live-pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 var(--color-live-glow);
+  }
+
+  50% {
+    opacity: 0.7;
+    box-shadow: 0 0 0 8px transparent;
+  }
+}
+
+/* ---- Gradient text ---- */
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-accent), #a78bfa, #f472b6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ---- SlideTextButton animation ---- */
+.btn-slide-vertical {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--color-accent);
+  color: var(--color-accent);
+  transition: all 0.3s ease;
+}
+
+.btn-slide-vertical:hover {
+  background: var(--color-accent);
+  color: white;
+}
+
+.btn-slide-vertical .btn-text.top {
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.btn-slide-vertical .btn-text.bottom {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 100%);
+  transition: transform 0.3s ease;
+}
+
+.btn-slide-vertical:hover .btn-text.top {
+  transform: translateY(-100%);
+}
+
+.btn-slide-vertical:hover .btn-text.bottom {
+  transform: translate(-50%, 0);
 }

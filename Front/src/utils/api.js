@@ -16,7 +16,7 @@ const api = axios.create({
  * Before any request leaves your frontend, axios will run this function by itself .
  * It looks into localStorage for an accessToken.
  * It sets Authorization: Bearer ee4545cr... in requested headers.
- * This let the system knows are we able to access the routes protected by the cookie.token
+ * This let the system knows are we able to access the routes protected by the cookie.token 
  */
 
 api.interceptors.request.use((config) => {

@@ -1,27 +1,11 @@
 
-// ==================== REACT INBUILT HELPERS ===================
-
-import { useState } from 'react';
-import { Search, Volleyball } from 'lucide-react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { useCookies } from 'react-cookie';
 
-
-
-
-
-
-// A normal css 
-import './App.css';
-
-
-
-// =========================== ROUTES AND COMPONENTS =====================
 import Home from './pages/Home';
-import SearchRoute from './pages/Search';
-import Categories from './pages/Categories';
+import SportsHome from './pages/SportsHome';
 import Profile from './pages/Profile';
 import Cricket from './components/sports/Cricket.jsx';
 import Football from './components/sports/Football.jsx';
@@ -37,114 +21,63 @@ import VolleyBalls from './components/sports/Volleyballs.jsx';
 import GamesHome from './pages/GamesHome.jsx';
 import Live from './pages/Live.jsx';
 import SignUp from './components/Differ/single/SignUp.jsx';
-
-
-
-
-
-// ========================= APP BEGINS HERE =================
+import FormulaOne from './components/sports/F1.jsx';
+import Valorant from './components/Games/Valorant.jsx';
+import Baseball from './components/sports/Baseball.jsx';
 function App() {
-  
   const [cookie] = useCookies(["token"]);
+  const isLoggedIn = !!cookie.token;
+
   return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/sports" element={<SportsHome />} />
+        <Route path="/games" element={<GamesHome />} />
+        <Route path="/live" element={<Live />} />
 
-    /**
-     <Router>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/search" element={<SearchRoute />} />
-          <Route path = "/GamesHome" element={<GamesHome/>}/>
-          <Route path="/categories" element={<Categories />} />
-          <Route path="/live" element={<Live />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<SignUp />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="*" element={<Home />} />
-          <Route path="/sports/cricket" element={<Cricket />} />
-          <Route path="/sports/football" element={<Football />} />
-          <Route path="/sports/basketball" element={<Basketball />} />
-          <Route path="/sports/badminton" element={<Badminton />} />
-          <Route path="/sports/kabaddi" element={<Kabaddi />} />
-          <Route path="/sports/volleyball" element={<VolleyBalls />} />
-          <Route path="/sports/hockey" element={<Hockey />} />
-          <Route path="/sports/tennis" element={<Tennis />} />
-          <Route path="/sports/table tennis" element={<TableTennis />} />
-          <Route path="/sports/golf" element={<Golf />} />
-          <Route path="/sports/chess" element={<Chess />} />
-        </Routes>
-      </Router>
-    
+        {isLoggedIn && <Route path="/profile" element={<Profile />} />}
+        {!isLoggedIn && <Route path="/register" element={<SignUp />} />}
 
+        {/* Sport detail routes */}
+        <Route path="/sports/cricket" element={<Cricket />} />
+        <Route path="/sports/football" element={<Football />} />
+        <Route path="/sports/basketball" element={<Basketball />} />
+        <Route path="/sports/badminton" element={<Badminton />} />
+        <Route path="/sports/kabaddi" element={<Kabaddi />} />
+        <Route path="/sports/volleyball" element={<VolleyBalls />} />
+        <Route path="/sports/hockey" element={<Hockey />} />
+        <Route path="/sports/baseball" element={<Baseball />} />
+        <Route path="/sports/tennis" element={<Tennis />} />
+        <Route path="/sports/table-tennis" element={<TableTennis />} />
+        <Route path="/sports/golf" element={<Golf />} />
+        <Route path="/sports/chess" element={<Chess />} />
+        <Route path="/sports/formula-1" element={<FormulaOne />} />
 
+        {/* Game detail routes */}
+        <Route path="/games/valorant" element={<Valorant />} />
 
-     */
-    <>
-      <Router>
-        {
-          cookie.token? (
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/search" element={<SearchRoute />} />
-              <Route path = "/GamesHome" element={<GamesHome/>}/>
-              <Route path="/categories" element={<Categories />} />
-              <Route path="/live" element={<Live />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="*" element={<Home />} />
-              <Route path="/sports/cricket" element={<Cricket />} />
-              <Route path="/sports/football" element={<Football />} />
-              <Route path="/sports/basketball" element={<Basketball />} />
-              <Route path="/sports/badminton" element={<Badminton />} />
-              <Route path="/sports/kabaddi" element={<Kabaddi />} />
-              <Route path="/sports/volleyball" element={<VolleyBalls />} />
-              <Route path="/sports/hockey" element={<Hockey />} />
-              <Route path="/sports/tennis" element={<Tennis />} />
-              <Route path="/sports/table tennis" element={<TableTennis />} />
-              <Route path="/sports/golf" element={<Golf />} />
-              <Route path="/sports/chess" element={<Chess />} />
-            </Routes>
+        <Route path="*" element={<Home />} />
+      </Routes>
 
-          ) : (
-
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/search" element={<SearchRoute />} />
-              <Route path = "/GamesHome" element={<GamesHome/>}/>
-              <Route path="/categories" element={<Categories />} />
-              <Route path="/live" element={<Live />} />
-              <Route path="/register" element={<SignUp />} />
-              <Route path="*" element={<Home />} />
-              <Route path="/sports/cricket" element={<Cricket />} />
-              <Route path="/sports/football" element={<Football />} />
-              <Route path="/sports/basketball" element={<Basketball />} />
-              <Route path="/sports/badminton" element={<Badminton />} />
-              <Route path="/sports/kabaddi" element={<Kabaddi />} />
-              <Route path="/sports/volleyball" element={<VolleyBalls />} />
-              <Route path="/sports/hockey" element={<Hockey />} />
-              <Route path="/sports/tennis" element={<Tennis />} />
-              <Route path="/sports/table tennis" element={<TableTennis />} />
-              <Route path="/sports/golf" element={<Golf />} />
-              <Route path="/sports/chess" element={<Chess />} />
-            </Routes>
-          )
-        }         
-
-
-            <ToastContainer
-                    position="top-right"
-                    autoClose={3000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                    theme="colored"
-                  />
-        
-      </Router>
-    </>
-  )
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        toastStyle={{
+          background: '#1a1d25',
+          border: '1px solid rgba(255,255,255,0.06)',
+        }}
+      />
+    </Router>
+  );
 }
 
 export default App;
