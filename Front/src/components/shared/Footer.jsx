@@ -10,7 +10,7 @@ const Footer = () => {
                     {/* Brand */}
                     <div className="md:col-span-1">
                         <div className="flex items-center gap-2 mb-3">
-                            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-accent to-purple-500 flex items-center justify-center">
+                            <div className="w-8 h-8 rounded-lg bg-linear-to-br from-accent to-purple-500 flex items-center justify-center">
                                 <Gamepad2 size={16} className="text-white" />
                             </div>
                             <span className="text-white text-lg font-bold">
@@ -63,14 +63,16 @@ const Footer = () => {
                         <h4 className="text-white text-sm font-semibold mb-3 uppercase tracking-wider">Connect</h4>
                         <div className="flex gap-3">
                             {[
-                                { Icon: Github, href: '#' },
-                                { Icon: Twitter, href: '#' },
-                                { Icon: Youtube, href: '#' },
-                                { Icon: Mail, href: '#' },
+                                { Icon: Github, href: 'https://github.com/Jeevant010/GGStats' },
+                                { Icon: Twitter, href: 'https://twitter.com' },
+                                { Icon: Youtube, href: 'https://youtube.com' },
+                                { Icon: Mail, href: 'mailto:jeevant10@gmail.com' },
                             ].map(({ Icon, href }, i) => (
                                 <a
                                     key={i}
                                     href={href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                     className="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center text-gray-500 hover:text-accent hover:bg-accent/10 transition-all duration-200"
                                 >
                                     <Icon size={16} />
