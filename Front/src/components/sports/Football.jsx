@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import axios from 'axios';
 import Header from '../Differ/single/Header';
 import SportsType from '../SportsType';
@@ -11,7 +11,7 @@ const Football = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const API_KEY = import.meta.env.VITE_FOOTBALL_API_KEY;
+  const API_KEY = import.meta.env.VITE_SPORTS_API_KEY;
 
   useEffect(() => {
     const fetchFixtures = async () => {
@@ -33,14 +33,14 @@ const Football = () => {
 
   useEffect(() => { setShowCount(12); }, [selectedLeague]);
 
-  const groupByLeague = (matches) => {
+  const groupByLeague = useMemo(() => (matches) => {
     return matches.reduce((groups, match) => {
       const league = match.league.name || "Other";
       if (!groups[league]) groups[league] = [];
       groups[league].push(match);
       return groups;
     }, {});
-  };
+  }, [fixtures]);
 
   const groupedFixtures = groupByLeague(fixtures);
   const leagues = ["All", ...Object.keys(groupedFixtures)];

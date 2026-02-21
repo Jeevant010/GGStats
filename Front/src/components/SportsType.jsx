@@ -15,6 +15,7 @@ const sportsItems = [
   { name: 'Hockey', icon: Swords },
   { name: 'Tennis', icon: Disc },
   { name: 'Table Tennis', icon: Disc },
+  { name: 'Baseball', icon: Disc },
   { name: 'Golf', icon: Flag },
   { name: 'Chess', icon: Layers },
   { name: 'Formula 1', icon: Bike },

@@ -11,7 +11,7 @@ const FormulaOne = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const API_KEY = import.meta.env.VITE_FOOTBALL_API_KEY;
+    const API_KEY = import.meta.env.VITE_SPORTS_API_KEY;
 
     useEffect(() => {
         const fetchRaces = async () => {

@@ -23,7 +23,7 @@ import Live from './pages/Live.jsx';
 import SignUp from './components/Differ/single/SignUp.jsx';
 import FormulaOne from './components/sports/F1.jsx';
 import Valorant from './components/Games/Valorant.jsx';
-
+import Baseball from './components/sports/Baseball.jsx';
 function App() {
   const [cookie] = useCookies(["token"]);
   const isLoggedIn = !!cookie.token;
@@ -47,6 +47,7 @@ function App() {
         <Route path="/sports/kabaddi" element={<Kabaddi />} />
         <Route path="/sports/volleyball" element={<VolleyBalls />} />
         <Route path="/sports/hockey" element={<Hockey />} />
+        <Route path="/sports/baseball" element={<Baseball />} />
         <Route path="/sports/tennis" element={<Tennis />} />
         <Route path="/sports/table-tennis" element={<TableTennis />} />
         <Route path="/sports/golf" element={<Golf />} />
