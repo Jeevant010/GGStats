@@ -14,6 +14,7 @@ const SPORT_ICONS = {
     Baseball: '⚾',
     Hockey: '🏒',
     Tennis: '🎾',
+    Valorant: '🎮',
 };
 
 const Live = () => {
@@ -28,17 +29,27 @@ const Live = () => {
         setTimeout(() => setRefreshing(false), 1000);
     };
 
-    // Filter scores by sport
+    // STRICT: Only show matches that are currently LIVE (in progress)
+    const liveOnlyScores = scores.filter((s) => s.gameState === 'live');
+
+    // Group live-only scores by sport
+    const liveGrouped = liveOnlyScores.reduce((acc, score) => {
+        if (!acc[score.sport]) acc[score.sport] = [];
+        acc[score.sport].push(score);
+        return acc;
+    }, {});
+
+    const liveAvailableSports = [...new Set(liveOnlyScores.map((s) => s.sport))];
+
+    // Filter by sport selection
     const filteredGrouped =
         activeFilter === 'All'
-            ? groupedScores
-            : { [activeFilter]: groupedScores[activeFilter] || [] };
+            ? liveGrouped
+            : { [activeFilter]: liveGrouped[activeFilter] || [] };
 
     const totalMatches = activeFilter === 'All'
-        ? scores.length
-        : (groupedScores[activeFilter] || []).length;
-
-    const liveCount = scores.filter((s) => s.gameState === 'live').length;
+        ? liveOnlyScores.length
+        : (liveGrouped[activeFilter] || []).length;
 
     return (
         <div className="min-h-screen flex flex-col bg-surface-900">
@@ -55,10 +66,7 @@ const Live = () => {
                         <h1 className="text-2xl font-bold text-white">Live Now</h1>
                         {!loading && (
                             <span className="text-xs text-gray-500 bg-surface-700 px-2.5 py-1 rounded-full ml-1">
-                                {totalMatches} {totalMatches === 1 ? 'match' : 'matches'}
-                                {liveCount > 0 && (
-                                    <span className="text-live ml-1">• {liveCount} live</span>
-                                )}
+                                <span className="text-live">{totalMatches} live</span>
                             </span>
                         )}
                     </div>
@@ -85,7 +93,7 @@ const Live = () => {
                 </div>
 
                 {/* Sport Filter Tabs */}
-                {availableSports.length > 1 && (
+                {liveAvailableSports.length > 1 && (
                     <div className="flex items-center gap-2 mb-6 overflow-x-auto pb-2 scrollbar-hide">
                         <Filter size={14} className="text-gray-500 flex-shrink-0" />
                         <button
@@ -94,7 +102,7 @@ const Live = () => {
                         >
                             All Sports
                         </button>
-                        {availableSports.map((sport) => (
+                        {liveAvailableSports.map((sport) => (
                             <button
                                 key={sport}
                                 onClick={() => setActiveFilter(sport)}
@@ -103,7 +111,7 @@ const Live = () => {
                                 <span>{SPORT_ICONS[sport] || '🏅'}</span>
                                 {sport}
                                 <span className="text-[10px] opacity-60">
-                                    ({groupedScores[sport]?.length || 0})
+                                    ({liveGrouped[sport]?.length || 0})
                                 </span>
                             </button>
                         ))}
@@ -155,24 +163,21 @@ const Live = () => {
                     </div>
                 )}
 
-                {/* Empty State */}
-                {!loading && !error && scores.length === 0 && (
+                {!loading && !error && liveOnlyScores.length === 0 && (
                     <div className="glass rounded-xl p-12 text-center">
                         <Wifi size={48} className="text-gray-600 mx-auto mb-4" />
-                        <h3 className="text-lg font-semibold text-gray-300 mb-2">No Games Right Now</h3>
+                        <h3 className="text-lg font-semibold text-gray-300 mb-2">No Live Games Right Now</h3>
                         <p className="text-gray-500 text-sm max-w-md mx-auto">
-                            There are no scheduled, live, or recently completed games at the moment.
-                            Check back later or refresh to see the latest.
+                            No matches are currently in progress.
+                            Check the individual sport or game pages for completed and upcoming schedules.
                         </p>
                     </div>
                 )}
 
-                {/* Scores Grid by Sport */}
-                {!loading && !error && scores.length > 0 && (
+                {!loading && !error && liveOnlyScores.length > 0 && (
                     <div className="space-y-8">
                         {Object.entries(filteredGrouped).map(([sport, sportScores]) => {
                             if (!sportScores || sportScores.length === 0) return null;
-                            const sportLive = sportScores.filter((s) => s.gameState === 'live').length;
                             return (
                                 <section key={sport}>
                                     <div className="flex items-center gap-3 mb-4">
@@ -181,14 +186,12 @@ const Live = () => {
                                         <span className="text-xs text-gray-500 bg-surface-700 px-2 py-0.5 rounded-full">
                                             {sportScores.length} {sportScores.length === 1 ? 'game' : 'games'}
                                         </span>
-                                        {sportLive > 0 && (
-                                            <div className="flex items-center gap-1.5">
-                                                <div className="live-dot" style={{ width: 6, height: 6 }} />
-                                                <span className="text-[10px] font-bold text-live">
-                                                    {sportLive} LIVE
-                                                </span>
-                                            </div>
-                                        )}
+                                        <div className="flex items-center gap-1.5">
+                                            <div className="live-dot" style={{ width: 6, height: 6 }} />
+                                            <span className="text-[10px] font-bold text-live">
+                                                LIVE
+                                            </span>
+                                        </div>
                                         <div className="flex-1 h-px bg-surface-700 ml-2" />
                                     </div>
 
@@ -203,12 +206,11 @@ const Live = () => {
                     </div>
                 )}
 
-                {/* Auto-refresh indicator */}
-                {!loading && scores.length > 0 && (
+                {!loading && liveOnlyScores.length > 0 && (
                     <div className="mt-8 text-center">
                         <p className="text-[11px] text-gray-600 flex items-center justify-center gap-2">
-                            <span className="inline-block w-1.5 h-1.5 rounded-full bg-win animate-pulse" />
-                            Auto-refreshing every 30 seconds • Powered by ESPN
+                            <span className="inline-block w-1.5 h-1.5 rounded-full bg-live animate-pulse" />
+                            Showing only live matches • Auto-refreshing every 30 seconds
                         </p>
                     </div>
                 )}
