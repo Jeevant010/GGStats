@@ -133,3 +133,46 @@ body {
 .btn-slide-vertical:hover .btn-text.bottom {
   transform: translate(-50%, 0);
 }
+
+/* ---- Sport Filter Tab ---- */
+.sport-filter-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #6b7280;
+  background: rgba(17, 19, 24, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sport-filter-tab:hover {
+  color: #e5e7eb;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.sport-filter-tab.active {
+  color: white;
+  background: var(--color-accent-muted);
+  border-color: var(--color-accent);
+}
+
+/* ---- Live Card Glow ---- */
+.live-card-glow {
+  box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.1), 0 0 20px rgba(239, 68, 68, 0.05);
+}
+
+/* ---- Hide Scrollbar ---- */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

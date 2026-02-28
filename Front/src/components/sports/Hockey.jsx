@@ -3,7 +3,7 @@ import axios from 'axios';
 import Header from '../Differ/single/Header';
 import SportsType from '../SportsType';
 import Footer from '../shared/Footer';
-// import Cors from 'cors';
+import DatePicker from '../DatePicker';
 
 // const Cors
 
@@ -13,14 +13,17 @@ const Hockey = () => {
   const [showCount, setShowCount] = useState(12);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const API_KEY = import.meta.env.VITE_SPORTS_API_KEY;
 
   useEffect(() => {
     const fetchGames = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        const today = new Date().toISOString().split('T')[0];
-        const response = await axios.get(`https://v1.hockey.api-sports.io/games?date=${today}`, {
+        const dateStr = selectedDate.toISOString().split('T')[0];
+        const response = await axios.get(`https://v1.hockey.api-sports.io/games?date=${dateStr}`, {
           headers: { 'x-apisports-key': API_KEY }
         });
         setGames(response.data.response);
@@ -32,11 +35,11 @@ const Hockey = () => {
       }
     };
     fetchGames();
-  }, []);
+  }, [selectedDate]);
 
   useEffect(() => { setShowCount(12); }, [selectedLeague]);
 
-  const groupByLeague = useMemo(() =>(gamesList) => {
+  const groupByLeague = useMemo(() => (gamesList) => {
     return gamesList.reduce((groups, game) => {
       const league = game.league?.name || "Other";
       if (!groups[league]) groups[league] = [];
@@ -82,9 +85,12 @@ const Hockey = () => {
       <Header />
       <SportsType />
       <main className="flex-1 w-full text-white py-6 px-4 lg:px-6 max-w-[1400px] mx-auto">
-        <h2 className="text-2xl font-bold mb-4 text-center tracking-wide">
-          🏒 Hockey — Today's Games
-        </h2>
+        <div className="flex flex-col items-center gap-3 mb-6">
+          <h2 className="text-2xl font-bold text-center tracking-wide">
+            🏒 Hockey — {selectedDate.toDateString() === new Date().toDateString() ? "Today's" : selectedDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} Games
+          </h2>
+          <DatePicker selectedDate={selectedDate} onDateChange={(d) => { setSelectedDate(d); setSelectedLeague('All'); }} />
+        </div>
 
         {loading && (
           <div className="flex items-center justify-center py-20">
