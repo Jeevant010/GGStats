@@ -49,11 +49,9 @@ const HeroCarousel = ({ images = [], interval = 4000, loading = false }) => {
                     const opacity = Math.abs(position) > 1 ? 0 : (isCenter ? 1 : 0.5);
 
                     return (
-                        <Motion.img
-                            key={image}
-                            src={image}
-                            alt={`Slide ${i + 1}`}
-                            className="absolute w-[70%] h-[80%] object-cover object-top rounded-2xl shadow-2xl"
+                        <Motion.div
+                            key={image.image || i}
+                            className="absolute w-[70%] h-[80%] rounded-2xl shadow-2xl overflow-hidden bg-surface-800"
                             animate={{
                                 x: `${xOffset}%`,
                                 scale,
@@ -62,7 +60,39 @@ const HeroCarousel = ({ images = [], interval = 4000, loading = false }) => {
                             }}
                             initial={false}
                             transition={{ duration: 0.8, ease: "easeInOut" }}
-                        />
+                        >
+                            <img
+                                src={image.image}
+                                alt={`Slide ${i + 1}`}
+                                className="w-full h-full object-cover object-top"
+                            />
+                            {/* Overlay */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex flex-col justify-end p-6 md:p-8">
+                                {isCenter && (
+                                    <Motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.3, duration: 0.5 }}
+                                    >
+                                        {image.category && (
+                                            <span className="inline-block px-3 py-1 bg-accent/90 text-white text-xs font-bold rounded-full mb-3 uppercase tracking-wider">
+                                                {image.category}
+                                            </span>
+                                        )}
+                                        {image.title && (
+                                            <h3 className="text-2xl md:text-3xl lg:text-4xl font-black text-white mb-2 leading-tight drop-shadow-md">
+                                                {image.title}
+                                            </h3>
+                                        )}
+                                        {image.description && (
+                                            <p className="text-sm md:text-base text-gray-200 line-clamp-2 md:line-clamp-3 max-w-3xl drop-shadow">
+                                                {image.description}
+                                            </p>
+                                        )}
+                                    </Motion.div>
+                                )}
+                            </div>
+                        </Motion.div>
                     );
                 })}
             </div>

@@ -154,7 +154,7 @@ const Basketball = () => {
 
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex flex-col items-center gap-1 flex-1">
-                        <img src={game.teams?.home?.logo} alt={game.teams?.home?.name} className="w-10 h-10 object-contain" onError={(e) => { e.target.src = 'https://via.placeholder.com/40'; }} />
+                        <img src={game.teams?.home?.logo} alt={game.teams?.home?.name} className="w-10 h-10 object-contain" onError={(e) => { e.target.src = 'https://placehold.co/40'; }} />
                         <span className={`text-xs font-semibold text-center ${homeWon ? 'text-win' : 'text-gray-300'}`}>{game.teams?.home?.name}</span>
                       </div>
                       <div className="flex items-center gap-2 mx-2">
@@ -163,7 +163,7 @@ const Basketball = () => {
                         <span className={`text-2xl font-bold ${awayWon ? 'text-win' : 'text-white'}`}>{awayTotal ?? '-'}</span>
                       </div>
                       <div className="flex flex-col items-center gap-1 flex-1">
-                        <img src={game.teams?.away?.logo} alt={game.teams?.away?.name} className="w-10 h-10 object-contain" onError={(e) => { e.target.src = 'https://via.placeholder.com/40'; }} />
+                        <img src={game.teams?.away?.logo} alt={game.teams?.away?.name} className="w-10 h-10 object-contain" onError={(e) => { e.target.src = 'https://placehold.co/40'; }} />
                         <span className={`text-xs font-semibold text-center ${awayWon ? 'text-win' : 'text-gray-300'}`}>{game.teams?.away?.name}</span>
                       </div>
                     </div>

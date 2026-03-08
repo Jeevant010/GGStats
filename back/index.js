@@ -21,6 +21,7 @@ const User = require('./models/User');
 
 // ========================== IMPORT OF ROUTES =========================
 const authRoutes = require('./routes/auth');
+const esportsRoutes = require('./routes/esports');
 
 
 
@@ -97,5 +98,7 @@ app.use(passport.initialize());
 
 app.get( "/" , (req, res) => res.send( " Can you see me?" ) );
 app.use(authRoutes);
+app.use('/api/esports', esportsRoutes);
+
 app.listen( port , () => console.log("App is running on port http://localhost:" + port));
 

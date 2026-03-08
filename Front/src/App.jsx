@@ -23,6 +23,7 @@ import Live from './pages/Live.jsx';
 import SignUp from './components/Differ/single/SignUp.jsx';
 import FormulaOne from './components/sports/F1.jsx';
 import Valorant from './components/Games/Valorant.jsx';
+import Cs2 from './components/Games/Cs2.jsx';
 import Baseball from './components/sports/Baseball.jsx';
 function App() {
   const [cookie] = useCookies(["token"]);
@@ -56,6 +57,7 @@ function App() {
 
         {/* Game detail routes */}
         <Route path="/games/valorant" element={<Valorant />} />
+        <Route path="/games/cs2" element={<Cs2 />} />
 
         <Route path="*" element={<Home />} />
       </Routes>

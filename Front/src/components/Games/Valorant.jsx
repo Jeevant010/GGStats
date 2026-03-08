@@ -123,8 +123,9 @@ const Valorant = () => {
 
                             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                                 {visibleMatches.map((matchData, index) => {
-                                    const teamA = matchData.match.teams[0];
-                                    const teamB = matchData.match.teams[1];
+                                    const defaultTeam = { code: 'TBD', icon: 'https://placehold.co/40', game_wins: 0, has_won: false };
+                                    const teamA = matchData.match?.teams?.[0] || defaultTeam;
+                                    const teamB = matchData.match?.teams?.[1] || defaultTeam;
                                     const matchDate = new Date(matchData.date).toLocaleDateString("en-US", {
                                         month: "short", day: "numeric", year: "numeric"
                                     });
@@ -136,32 +137,32 @@ const Valorant = () => {
                                         <div key={matchData?.match?.id || index} className="glass rounded-xl p-4 hover:ring-1 hover:ring-accent/30 transition-all duration-300">
                                             <div className="flex items-center justify-between mb-3 pb-2 border-b border-gray-700/50">
                                                 <div className="flex items-center gap-2">
-                                                    <img src={matchData.league.icon} alt={matchData.league.name} className="w-5 h-5 rounded object-contain" onError={(e) => { e.target.style.display = 'none'; }} />
-                                                    <span className="text-xs text-gray-400 truncate max-w-[150px]">{matchData.league.name}</span>
+                                                    <img src={matchData.league?.icon} alt={matchData.league?.name} className="w-5 h-5 rounded object-contain" onError={(e) => { e.target.style.display = 'none'; }} />
+                                                    <span className="text-xs text-gray-400 truncate max-w-[150px]">{matchData.league?.name || "Unknown League"}</span>
                                                 </div>
                                                 <span className={`text-xs px-2 py-0.5 rounded-full ${getStatusStyle(matchData.state)}`}>
-                                                    {matchData.state === "inprogress" ? "🔴 LIVE" : matchData.state.toUpperCase()}
+                                                    {matchData.state === "inprogress" ? "🔴 LIVE" : matchData.state?.toUpperCase()}
                                                 </span>
                                             </div>
 
                                             <div className="flex items-center justify-between mb-3">
-                                                <div className="flex flex-col items-center gap-1 flex-1">
-                                                    <img src={teamA.icon} alt={teamA.code} className="w-10 h-10 object-contain" onError={(e) => { e.target.src = 'https://via.placeholder.com/40'; }} />
-                                                    <span className={`text-xs font-semibold text-center ${teamA.has_won ? 'text-win' : 'text-gray-300'}`}>{teamA.code}</span>
+                                                <div className="flex flex-col items-center flex-1">
+                                                    <img src={teamA.icon} alt={teamA.code} className="w-10 h-10 object-contain" onError={(e) => { e.target.src = 'https://placehold.co/40'; }} />
+                                                    <span className={`text-sm font-bold ${teamA.has_won ? 'text-win' : 'text-gray-400'}`}>{teamA.code}</span>
                                                 </div>
-                                                <div className="flex items-center gap-2 mx-2">
-                                                    <span className={`text-2xl font-bold ${teamA.has_won ? 'text-win' : 'text-white'}`}>{teamA.game_wins}</span>
-                                                    <span className="text-gray-500 text-lg">-</span>
-                                                    <span className={`text-2xl font-bold ${teamB.has_won ? 'text-win' : 'text-white'}`}>{teamB.game_wins}</span>
+                                                <div className="flex items-center gap-3">
+                                                    <span className={`text-xl font-bold ${teamA.has_won ? 'text-win' : 'text-white'}`}>{teamA.game_wins || 0}</span>
+                                                    <span className="text-gray-600">-</span>
+                                                    <span className={`text-xl font-bold ${teamB.has_won ? 'text-win' : 'text-white'}`}>{teamB.game_wins || 0}</span>
                                                 </div>
-                                                <div className="flex flex-col items-center gap-1 flex-1">
-                                                    <img src={teamB.icon} alt={teamB.code} className="w-10 h-10 object-contain" onError={(e) => { e.target.src = 'https://via.placeholder.com/40'; }} />
+                                                <div className="flex flex-col items-center flex-1">
+                                                    <img src={teamB.icon} alt={teamB.code} className="w-10 h-10 object-contain" onError={(e) => { e.target.src = 'https://placehold.co/40'; }} />
                                                     <span className={`text-xs font-semibold text-center ${teamB.has_won ? 'text-win' : 'text-gray-300'}`}>{teamB.code}</span>
                                                 </div>
                                             </div>
 
                                             <div className="flex items-center justify-between text-xs text-gray-500 pt-2 border-t border-gray-700/50">
-                                                <span>Bo{matchData.match.game_type.count}</span>
+                                                <span>Bo{matchData.match?.game_type?.count || '?'}</span>
                                                 <span>{matchDate} • {matchTime}</span>
                                                 {matchData.vod && (
                                                     <a href={matchData.vod} target="_blank" rel="noopener noreferrer" className="text-accent hover:text-accent-hover font-medium">

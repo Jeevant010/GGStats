@@ -25,7 +25,7 @@ const SPORT_ENDPOINTS = [
         sport: 'Cricket',
         icon: '🏏',
         league: 'International',
-        url: 'https://site.api.espn.com/apis/site/v2/sports/cricket/scoreboard',
+        url: 'https://site.api.espn.com/apis/site/v2/sports/cricket/8039/scoreboard',
     },
     {
         sport: 'Baseball',
@@ -43,7 +43,7 @@ const SPORT_ENDPOINTS = [
         sport: 'Tennis',
         icon: '🎾',
         league: 'ATP/WTA',
-        url: 'https://site.api.espn.com/apis/site/v2/sports/tennis/scoreboard',
+        url: 'https://site.api.espn.com/apis/site/v2/sports/tennis/atp/scoreboard',
     },
 ];
 
@@ -162,6 +162,50 @@ function normalizeValorantMatch(matchData) {
 }
 
 /**
+ * Normalizes a CS2 match into the unified score format
+ */
+function normalizeCs2Match(matchData) {
+    const teamAInfo = matchData.team1 || { name: 'TBD' };
+    const teamBInfo = matchData.team2 || { name: 'TBD' };
+    
+    let gameState = 'scheduled';
+    if (matchData.live) gameState = 'live';
+    else if (matchData.date && new Date(matchData.date) < new Date() && !matchData.live) gameState = 'final';
+    else gameState = 'scheduled';
+
+    const statusDetail = matchData.live ? 'In Progress' : (gameState === 'final' ? 'Final' : 'Scheduled');
+
+    return {
+        id: `cs2-${matchData.id || Math.random()}`,
+        sport: 'CS2',
+        sportIcon: '🎯',
+        league: matchData.event?.name || 'CS2 Esports',
+        homeTeam: {
+            name: teamAInfo.name?.substring(0, 10) || 'TBD',
+            abbreviation: teamAInfo.name?.substring(0, 4).toUpperCase() || '',
+            logo: '', // HLTV package usually doesn't scrape team logos natively on the overview API
+            score: '', // HLTV overview API doesn't report running match scores usually
+            record: '',
+            color: null,
+        },
+        awayTeam: {
+            name: teamBInfo.name?.substring(0, 10) || 'TBD',
+            abbreviation: teamBInfo.name?.substring(0, 4).toUpperCase() || '',
+            logo: '',
+            score: '',
+            record: '',
+            color: null,
+        },
+        gameState,
+        statusDetail: statusDetail,
+        venue: matchData.format ? `Format: ${matchData.format}` : '',
+        broadcast: matchData.stars > 0 ? `${matchData.stars} Star Match` : '',
+        date: matchData.date,
+        headline: `${teamAInfo.name || '?'} vs ${teamBInfo.name || '?'}`,
+    };
+}
+
+/**
  * Fetches Valorant esports schedule and filters by date
  */
 async function fetchValorantScores(dateStr) {
@@ -192,6 +236,35 @@ async function fetchValorantScores(dateStr) {
 }
 
 /**
+ * Fetches CS2 esports schedule
+ */
+async function fetchCs2Scores(dateStr) {
+    try {
+        const response = await axios.get('http://localhost:9000/api/esports/cs2', {
+             withCredentials: true 
+        });
+        
+        const allMatches = response.data?.data || [];
+
+        // Filter matches for the selected date
+        const filtered = allMatches.filter((match) => {
+            if (!match.date) return false;
+            // The API returns UTC, but we check against local date string
+             const matchDateObj = new Date(match.date);
+             const matchDateStr = `${matchDateObj.getFullYear()}-${String(matchDateObj.getMonth() + 1).padStart(2, '0')}-${String(matchDateObj.getDate()).padStart(2, '0')}`;
+             return matchDateStr === dateStr;
+        });
+
+        return filtered
+            .map(normalizeCs2Match)
+            .filter(Boolean);
+    } catch (err) {
+        console.warn('CS2 API error (non-blocking):', err.message);
+        return [];
+    }
+}
+
+/**
  * @param {Date} selectedDate - The date to fetch scores for
  */
 export default function useLiveScores(selectedDate = new Date()) {
@@ -210,8 +283,8 @@ export default function useLiveScores(selectedDate = new Date()) {
 
     const fetchScores = useCallback(async () => {
         try {
-            // Fetch ESPN sports + Valorant esports in parallel
-            const [espnResults, valorantScores] = await Promise.all([
+            // Fetch ESPN sports + Valorant + CS2 esports in parallel
+            const [espnResults, valorantScores, cs2Scores] = await Promise.all([
                 Promise.allSettled(
                     SPORT_ENDPOINTS.map((ep) => {
                         const separator = ep.url.includes('?') ? '&' : '?';
@@ -223,6 +296,7 @@ export default function useLiveScores(selectedDate = new Date()) {
                     })
                 ),
                 fetchValorantScores(isoDate),
+                fetchCs2Scores(isoDate),
             ]);
 
             const allScores = [];
@@ -239,8 +313,9 @@ export default function useLiveScores(selectedDate = new Date()) {
                 });
             });
 
-            // Add Valorant results
+            // Add Esports results
             allScores.push(...valorantScores);
+            allScores.push(...cs2Scores);
 
             // Sort: live games first, then scheduled, then completed
             const stateOrder = { live: 0, scheduled: 1, final: 2 };

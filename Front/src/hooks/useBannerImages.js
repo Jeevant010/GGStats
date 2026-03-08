@@ -13,26 +13,26 @@ const LEAGUE_IDS = {
 // Fallback images in case the API fails
 const FALLBACK_IMAGES = {
     sports: [
-        "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=1200&q=80",
-        "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&w=1200&q=80",
-        "https://images.unsplash.com/photo-1461896836934-bd45ba8fcf9b?auto=format&fit=crop&w=1200&q=80",
-        "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=1200&q=80",
-        "https://images.unsplash.com/photo-1587280501635-68a0e82cd5ff?auto=format&fit=crop&w=1200&q=80",
+        { image: "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=1200&q=80", title: "Football", category: "Soccer" },
+        { image: "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&w=1200&q=80", title: "Basketball", category: "Basketball" },
+        { image: "https://images.unsplash.com/photo-1461896836934-bd45ba8fcf9b?auto=format&fit=crop&w=1200&q=80", title: "Tennis", category: "Tennis" },
+        { image: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=1200&q=80", title: "Soccer", category: "Soccer" },
+        { image: "https://images.unsplash.com/photo-1587280501635-68a0e82cd5ff?auto=format&fit=crop&w=1200&q=80", title: "Esports", category: "Esports" },
     ],
     games: [
-        "/game4.jpg",
-        "/game2.jpg",
-        "/game3.jpg",
-        "/game1.jpg",
-        "/game5.jpg",
-        "/game6.jpg",
+        { image: "/game4.jpg", title: "Action Game", category: "Action" },
+        { image: "/game2.jpg", title: "RPG Adventure", category: "RPG" },
+        { image: "/game3.jpg", title: "Sci-Fi Shooter", category: "Shooter" },
+        { image: "/game1.jpg", title: "Fantasy MMO", category: "MMORPG" },
+        { image: "/game5.jpg", title: "Strategy Wars", category: "Strategy" },
+        { image: "/game6.jpg", title: "Racing Drift", category: "Racing" },
     ],
     home: [
-        "/game4.jpg",
-        "/game2.jpg",
-        "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=1200&q=80",
-        "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&w=1200&q=80",
-        "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=1200&q=80",
+        { image: "/game4.jpg", title: "Action Game", category: "Action" },
+        { image: "/game2.jpg", title: "RPG Adventure", category: "RPG" },
+        { image: "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=1200&q=80", title: "Football", category: "Soccer" },
+        { image: "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&w=1200&q=80", title: "Basketball", category: "Basketball" },
+        { image: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=1200&q=80", title: "Soccer", category: "Soccer" },
     ],
 };
 
@@ -51,11 +51,19 @@ const fetchSportsBanners = async (leagueIds) => {
         if (result.status === "fulfilled" && result.value.data?.leagues) {
             const league = result.value.data.leagues[0];
             // Collect only fanart & banner images
-            if (league.strFanart1) bannerUrls.push(league.strFanart1);
-            if (league.strFanart2) bannerUrls.push(league.strFanart2);
-            if (league.strFanart3) bannerUrls.push(league.strFanart3);
-            if (league.strFanart4) bannerUrls.push(league.strFanart4);
-            if (league.strBanner) bannerUrls.push(league.strBanner);
+            const pushImage = (url) => {
+                bannerUrls.push({
+                    image: url,
+                    title: league.strLeague,
+                    description: league.strDescriptionEN,
+                    category: league.strSport
+                });
+            };
+            if (league.strFanart1) pushImage(league.strFanart1);
+            if (league.strFanart2) pushImage(league.strFanart2);
+            if (league.strFanart3) pushImage(league.strFanart3);
+            if (league.strFanart4) pushImage(league.strFanart4);
+            if (league.strBanner) pushImage(league.strBanner);
         }
     });
 
@@ -86,7 +94,13 @@ const fetchGameBanners = async () => {
             // Take the first screenshot from each game (highest quality)
             const shots = result.value.data.screenshots;
             if (shots.length > 0) {
-                screenshotUrls.push(shots[0].image);
+                screenshotUrls.push({
+                    image: shots[0].image,
+                    title: result.value.data.title,
+                    description: result.value.data.short_description,
+                    category: result.value.data.genre,
+                    publisher: result.value.data.publisher
+                });
             }
         }
     });
