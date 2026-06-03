@@ -1,4 +1,3 @@
-const passport = require("passport");
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 

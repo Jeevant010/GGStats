@@ -1,71 +1,45 @@
-const express = require("express");
-const router = express.Router();
-const jwt = require("jsonwebtoken");
-const User = require("../models/User");
-const bcrypt = require("bcrypt");
-const { getToken, verifyToken } = require("../utils/helpers");
-const passport = require("passport");
+const authService = require('../services/auth.service');
 
-
-
-/// adding the comments on everypart as to debug it easier. 
-
-/*  Whenever you work on it try to keep in mind that we need to write it cleaner 
-    and cleaner to keep and eye on the error and for beginners to learn it the 
-    best way they like. 
- 
-
-*/
 
 ///// ===================== SIGN UP  =====================
-router.post("/register", async (req, res) => {
+const register = async (req, res) => {
     // getting the user data
     let { userName, email, phone, password } = req.body;
 
-    /*  take let as i want to drop the phone values only if they are empty as to avoid 
-        the equal values of phone only for null/undefined values.
-        */
+
     // checking if phone is empty then i make it undefined.
     if (!phone || phone.trim() === "") phone = undefined;
     // checking that credentials aren't empty
     if (!email || !password || !userName)
         return res.status(400).json({ error: "Email , password, UserName are required! " });
     // checking for existing email 
-    const existing = await User.findOne({ email });
+    const existing = await authService.findExistingUser(email);
     if (existing) return res.status(409).json({ error: " Email Already Registered" });
 
-    // hashing the password to make it hidden for user as well as developer
-    const hashed = await bcrypt.hash(password, 10);
-    // creating the user using schema in models
-    const newUser = await User.create({
+    // creating the user (hashing handled by service)
+    const newUser = await authService.createUser({
         userName,
         email,
-        ...(phone && { phone }),
-        password: hashed
+        phone,
+        password
     });
 
-    // getting the token using the token function in utils/helpers.js
-    const token = await getToken(email, newUser);
+    // getting the token using the token function
+    const token = await authService.generateRegisterToken(email, newUser);
     // what to return to the website and the signed in user
     const usertoReturn = { ...newUser.toJSON(), token };
     // now delete the password to make it secret on frontend and backend
     delete usertoReturn.password;
     // finally return the userdata on the frontend using this REST api
     return res.status(201).json(usertoReturn);
-});
+};
 
 
 ///// ================= LOGIN ==================
 
 
-/** 
- *  lets go for login if there are any problem i will let you know in the issues section in my repo
- *  Dont be shy this is not that hard if you are unable to understand the parts of this 
-    code just comment in my repo this portion i will give you a more better explaination.
- * 
- * 
-*/
-router.post("/login", async (req, res) => {
+
+const login = async (req, res) => {
     // lets have a error handling using try and catch.
     try {
         // arguments from the UI
@@ -80,9 +54,7 @@ router.post("/login", async (req, res) => {
         }
 
         // finding the user in the database also with the password
-        const user = await User.findOne({
-            email: email.trim()
-        }).select('+password');
+        const user = await authService.findUserByEmailWithPassword(email);
 
         // if the user is not there
         if (!user) {
@@ -93,13 +65,9 @@ router.post("/login", async (req, res) => {
             });
         }
         // matching the passwords in the db
-        const isMatch = await bcrypt.compare(password.trim(), user.password);
+        const isMatch = await authService.comparePassword(password.trim(), user.password);
         // if doesnt match we failed the process.
-        /**
-         * you know what we are able to make this section much better but i have a lot of work
-         * you can do make changes make it more robust with better handling errors.
-         * Lets go to next section its just the message we get on the console.
-        */
+
         if (!isMatch) {
             console.log("Password mismatch for user. ", user._id);
             return res.status(401).json({
@@ -108,11 +76,7 @@ router.post("/login", async (req, res) => {
             });
         }
         // this signs token using the email and make it visible for 30 days
-        const token = jwt.sign(
-            { id: user._id, email: user.email },
-            process.env.TOKEN,
-            { expiresIn: '30d' }
-        );
+        const token = authService.generateLoginToken(user);
 
         // now return the object and delete the password so that it doesn't go to the frontend 
         // and we are able to maintain the security of data of user.
@@ -126,8 +90,7 @@ router.post("/login", async (req, res) => {
             user: usertoReturn
         });
     }
-    // if you catch any error out of this handling that we done in upper code 
-    // it will be displayed here and we are able to debug it
+
     catch (error) {
         console.error("Login error: ", error);
         res.status(500).json({
@@ -135,19 +98,15 @@ router.post("/login", async (req, res) => {
             message: 'Internal Server Error'
         });
     }
-});
+};
 
 ///// ================== USER DATA OR PROFILE ================
 /**
  * getting the data of user to himself
 */
-
-
-
-
-router.get("/me", verifyToken, async (req, res) => {
+const getMe = async (req, res) => {
     try {
-        const user = await User.findById(req.user.id || req.user._id).select('-password');
+        const user = await authService.findUserByIdWithoutPassword(req.user.id || req.user._id);
         if (!user) {
             return res.status(404).json({ error: "User not found" });
         }
@@ -157,16 +116,16 @@ router.get("/me", verifyToken, async (req, res) => {
         return res.status(500).json({ error: "Internal Server Error " });
     }
 
-});
+};
 
 
 
 //// ======================= GET USER BY ID =======================
 
-router.get("/get/user/:userId", verifyToken, async (req, res) => {
+const getUserById = async (req, res) => {
     try {
         const { userId } = req.params;
-        const user = await User.findById(userId).select('-password');
+        const user = await authService.findUserByIdWithoutPassword(userId);
 
         if (!user) {
             return res.status(404).json({ error: "User not found " });
@@ -176,13 +135,13 @@ router.get("/get/user/:userId", verifyToken, async (req, res) => {
         console.log(error);
         return res.status(500).json({ error: "Internal Server Error" });
     }
-});
+};
 
 
 /// ====================== CHANGE PASSWORD =====================
 
 
-router.post('/changePassword', verifyToken, async (req, res) => {
+const changePassword = async (req, res) => {
     try {
         const oldpassword = req.body.oldpassword ?? req.body.oldPassword;
         const newPassword = req.body.newPassword ?? req.body.newpassword;
@@ -199,38 +158,42 @@ router.post('/changePassword', verifyToken, async (req, res) => {
             return res.status(401).json({ message: 'Unauthorized.' });
         }
 
+        const result = await authService.changeUserPassword(req.user._id, oldpassword, newPassword);
 
-        const user = await User.findById(req.user._id).select('+password');
-        if (!user) return res.status(404).json({ message: `User not found.` });
-
-        const isMatch = await bcrypt.compare(oldpassword, user.password);
-        if (!isMatch) {
-            return res.status(400).json({ message: "Old Password is incorrect." });
+        if (!result.success) {
+            if (result.reason === 'not_found') {
+                return res.status(404).json({ message: `User not found.` });
+            }
+            if (result.reason === 'wrong_password') {
+                return res.status(400).json({ message: "Old Password is incorrect." });
+            }
+            if (result.reason === 'too_short') {
+                return res.status(400).json({ message: 'Password must be at least 8 characters.' });
+            }
         }
-
-
-        if (newPassword.length < 8) {
-            return res.status(400).json({ message: 'Password must be at least 8 characters.' });
-        }
-
-        user.password = await bcrypt.hash(newPassword, 10);
-        await user.save();
 
         res.json({ message: 'Password successfully changed.' });
     } catch (err) {
         console.log(err);
         res.status(500).json({ message: 'Server error. Please try again.' });
     }
-});
+};
 
 
 //============================== ERROR CONSOLE ==========================
 
 
 // To be implemented whenever needed.
-router.post("/", (req, res, next) => {
+const handlePost = (req, res, next) => {
 
-});
+};
 
 
-module.exports = router;
+module.exports = {
+    register,
+    login,
+    getMe,
+    getUserById,
+    changePassword,
+    handlePost,
+};
