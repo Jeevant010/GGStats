@@ -164,3 +164,9 @@ vite.config.ts.timestamp-*
 
 utils\config.js
 package-lock.json
+
+# GitNexus
+.gitnexus/
+.claude/
+*AGENTS.md
+*CLAUDE.md
