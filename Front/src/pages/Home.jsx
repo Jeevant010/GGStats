@@ -1,9 +1,9 @@
 import React from "react";
-import HeroCarousel from '../components/shared/HeroCarousel';
-import Header from "../components/Differ/single/Header";
-import News from "../components/HomePageComponent/News";
-import { UpcomingEvents } from "../components/HomePageComponent/UpcomingEvents";
-import Footer from "../components/shared/Footer";
+import HeroCarousel from '../components/common/HeroCarousel';
+import Header from "../components/common/Header";
+import News from "../components/home/News";
+import { UpcomingEvents } from "../components/home/UpcomingEvents";
+import Footer from "../components/common/Footer";
 import useBannerImages from "../hooks/useBannerImages";
 
 const Home = () => {

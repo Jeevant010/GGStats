@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import Header from "../components/Differ/single/Header";
-import SportsType from "../components/SportsType";
-import Footer from "../components/shared/Footer";
-import LiveScoreCard from "../components/LiveScoreCard";
-import DatePicker from "../components/DatePicker";
+import Header from "../components/common/Header";
+import SportsType from "../components/common/SportsType";
+import Footer from "../components/common/Footer";
+import LiveScoreCard from "../components/common/LiveScoreCard";
+import DatePicker from "../components/common/DatePicker";
 import useLiveScores from "../hooks/useLiveScores";
 import { CalendarDays, RefreshCw, WifiOff, Clock, Filter, Trophy } from "lucide-react";
 

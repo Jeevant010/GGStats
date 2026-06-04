@@ -1,10 +1,8 @@
 import React from 'react';
-import Header from '../components/Differ/single/Header';
-import GamesType from '../components/GamesType';
-import HeroCarousel from '../components/shared/HeroCarousel';
-// import Current from '../components/GamePageComponents/CurrentScores';
-// import GamesUpdates from '../components/GamePageComponents/GamesUpdates';
-import Footer from '../components/shared/Footer';
+import Header from '../components/common/Header';
+import GamesType from '../components/common/GamesType';
+import HeroCarousel from '../components/common/HeroCarousel';
+import Footer from '../components/common/Footer';
 import useBannerImages from '../hooks/useBannerImages';
 
 const GamesHome = () => {

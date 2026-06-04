@@ -2,7 +2,8 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import { CookiesProvider } from 'react-cookie'
-import { AuthProvider } from './utils/AuthContext.jsx'
+import { AuthProvider } from './contexts/AuthContext.jsx'
+
 import App from './App.jsx'
 
 createRoot(document.getElementById('root')).render(

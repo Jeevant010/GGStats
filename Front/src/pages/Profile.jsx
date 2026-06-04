@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import Header from "../components/Differ/single/Header";
-import Footer from "../components/shared/Footer";
+import Header from "../components/common/Header";
+import Footer from "../components/common/Footer";
 import { UserCircle, Mail, Phone, Clock, LogOut, Loader } from "lucide-react";
-import api from "../utils/api";
+import api from "../services/api";
 
 const Profile = () => {
     const [user, setUser] = useState(null);

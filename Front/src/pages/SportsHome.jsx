@@ -1,8 +1,8 @@
 import React from 'react';
-import Header from '../components/Differ/single/Header';
-import SportsType from '../components/SportsType';
-import HeroCarousel from '../components/shared/HeroCarousel';
-import Footer from '../components/shared/Footer';
+import Header from '../components/common/Header';
+import SportsType from '../components/common/SportsType';
+import HeroCarousel from '../components/common/HeroCarousel';
+import Footer from '../components/common/Footer';
 import useBannerImages from '../hooks/useBannerImages';
 
 const SportsHome = () => {
