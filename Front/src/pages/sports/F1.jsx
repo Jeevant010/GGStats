@@ -29,8 +29,7 @@ const FormulaOne = () => {
             }
         };
         fetchRaces();
-    }, []);
-
+    }, [API_KEY]);
     useEffect(() => { setShowCount(12); }, [selectedType]);
 
     const groupByType = (raceList) => {

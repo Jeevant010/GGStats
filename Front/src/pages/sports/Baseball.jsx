@@ -33,8 +33,7 @@ const Baseball = () => {
       }
     };
     fetchGames();
-  }, [selectedDate]);
-
+  }, [selectedDate, API_KEY]);
   useEffect(() => { setShowCount(12); }, [selectedLeague]);
 
   const groupByLeague = (gamesList) => {

@@ -27,7 +27,7 @@ const Basketball = () => {
         setGames(response.data.response);
       } catch (err) {
         console.error("Error fetching basketball games", err);
-        setError(err.message);
+        setError("Failed to load basketball games. Please try again later.");
       } finally {
         setLoading(false);
       }

@@ -1,9 +1,21 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const LiveScoreCard = ({ match }) => {
     const isLive = match.gameState === 'live';
     const isFinal = match.gameState === 'final';
     const isScheduled = match.gameState === 'scheduled';
+
+    const parseScore = (score) => {
+        if (score === null || score === undefined || String(score).trim() === '') {
+            return NaN;
+        }
+        const parsed = Number(score);
+        return Number.isFinite(parsed) ? parsed : NaN;
+    };
+
+    const awayScore = parseScore(match.awayTeam?.score);
+    const homeScore = parseScore(match.homeTeam?.score);
+    const hasValidScores = !isNaN(awayScore) && !isNaN(homeScore);
 
     return (
         <div
@@ -45,7 +57,7 @@ const LiveScoreCard = ({ match }) => {
                 <TeamRow
                     team={match.awayTeam}
                     isWinning={
-                        !isScheduled && Number(match.awayTeam.score) > Number(match.homeTeam.score)
+                        !isScheduled && hasValidScores && awayScore > homeScore
                     }
                     isLive={isLive}
                     isScheduled={isScheduled}
@@ -68,7 +80,7 @@ const LiveScoreCard = ({ match }) => {
                 <TeamRow
                     team={match.homeTeam}
                     isWinning={
-                        !isScheduled && Number(match.homeTeam.score) > Number(match.awayTeam.score)
+                        !isScheduled && hasValidScores && homeScore > awayScore
                     }
                     isLive={isLive}
                     isScheduled={isScheduled}
@@ -95,28 +107,31 @@ const LiveScoreCard = ({ match }) => {
 };
 
 const TeamRow = ({ team, isWinning, isLive, isScheduled }) => {
+    const [logoError, setLogoError] = useState(false);
+
+    useEffect(() => {
+        setLogoError(false);
+    }, [team.logo]);
+
+    const showLogo = team.logo && !logoError;
+
     return (
         <div className="flex items-center justify-between">
             <div className="flex items-center gap-3 min-w-0 flex-1">
                 {/* Team Logo */}
                 <div className="w-8 h-8 rounded-full bg-surface-600/50 flex-shrink-0 overflow-hidden flex items-center justify-center">
-                    {team.logo ? (
+                    {showLogo ? (
                         <img
                             src={team.logo}
                             alt={team.name}
                             className="w-7 h-7 object-contain"
-                            onError={(e) => {
-                                e.target.style.display = 'none';
-                                e.target.nextSibling.style.display = 'flex';
-                            }}
+                            onError={() => setLogoError(true)}
                         />
-                    ) : null}
-                    <span
-                        className={`text-xs font-bold text-gray-400 ${team.logo ? 'hidden' : 'flex'}`}
-                        style={{ display: team.logo ? 'none' : 'flex' }}
-                    >
-                        {team.abbreviation?.slice(0, 3) || '?'}
-                    </span>
+                    ) : (
+                        <span className="text-xs font-bold text-gray-400 flex">
+                            {team.abbreviation?.slice(0, 3) || '?'}
+                        </span>
+                    )}
                 </div>
 
                 {/* Team Info */}

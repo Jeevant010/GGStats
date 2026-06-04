@@ -38,7 +38,7 @@ const SignUp = () => {
           return;
         }
 
-        const res = await api.post("/login", {
+        const res = await api.post("/api/auth/login", {
           email: form.email,
           password: form.password,
         });
@@ -66,7 +66,7 @@ const SignUp = () => {
           return;
         }
 
-        const res = await api.post("/register", form);
+        const res = await api.post("/api/auth/register", form);
 
         if (res.data && res.data.token) {
           toast.success("Account created! Please login.");

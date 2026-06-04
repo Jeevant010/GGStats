@@ -16,7 +16,7 @@ const Profile = () => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const { data } = await api.get("/me");
+                const { data } = await api.get("/api/auth/me");
                 setUser(data);
                 console.log(data)
             } catch (err) {

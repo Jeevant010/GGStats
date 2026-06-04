@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import Header from '../../components/common/Header';
 import SportsType from '../../components/common/SportsType';
@@ -27,24 +27,24 @@ const Football = () => {
         setFixtures(response.data.response);
       } catch (err) {
         console.error("Error fetching football fixtures", err);
-        setError(err.message);
+        setError("Unable to load fixtures. Please try again later.");
       } finally {
         setLoading(false);
       }
     };
     fetchFixtures();
-  }, [selectedDate]);
+  }, [selectedDate, API_KEY]);
 
   useEffect(() => { setShowCount(12); }, [selectedLeague]);
 
-  const groupByLeague = useMemo(() => (matches) => {
+  const groupByLeague = useCallback((matches) => {
     return matches.reduce((groups, match) => {
       const league = match.league.name || "Other";
       if (!groups[league]) groups[league] = [];
       groups[league].push(match);
       return groups;
     }, {});
-  }, [fixtures]);
+  }, []);
 
   const groupedFixtures = groupByLeague(fixtures);
   const leagues = ["All", ...Object.keys(groupedFixtures)];
@@ -61,14 +61,14 @@ const Football = () => {
     return "bg-surface-500 text-gray-300";
   };
 
-  const getStatusLabel = (status) => {
+  const getStatusLabel = (status, fixtureDate) => {
     const short = status.short;
     if (["1H", "2H", "ET", "BT", "P"].includes(short)) return `🔴 LIVE (${status.elapsed}')`;
     if (short === "HT") return "Half Time";
     if (short === "FT") return "Full Time";
     if (short === "AET") return "After Extra Time";
     if (short === "PEN") return "Penalties";
-    if (short === "NS") return `Kickoff ${new Date(status.elapsed || Date.now()).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}`;
+    if (short === "NS") return `Kickoff ${new Date(fixtureDate || Date.now()).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}`;
     if (short === "PST") return "Postponed";
     if (short === "CANC") return "Cancelled";
     if (short === "SUSP") return "Suspended";
@@ -142,7 +142,7 @@ const Football = () => {
                         <span className="text-xs text-gray-600">• {league.country}</span>
                       </div>
                       <span className={`text-xs px-2 py-0.5 rounded-full ${getStatusStyle(fixture.status.short)}`}>
-                        {getStatusLabel(fixture.status)}
+                        {getStatusLabel(fixture.status, fixture.date)}
                       </span>
                     </div>
 

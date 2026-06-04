@@ -275,8 +275,9 @@ const DatePicker = ({ selectedDate, onDateChange }) => {
                                 Go to Today
                             </button>
                             <span className="text-[10px] text-gray-600">
-                                Last 2 months available
-                            </span>
+                                <span className="text-[10px] text-gray-600">
+                                    Last month available
+                                </span>                            </span>
                         </div>
                     </div>
                 </>

@@ -3,35 +3,40 @@ const authService = require('../services/auth.service');
 
 ///// ===================== SIGN UP  =====================
 const register = async (req, res) => {
-    // getting the user data
-    let { userName, email, phone, password } = req.body;
+    try {
+        // getting the user data
+        let { userName, email, phone, password } = req.body;
 
 
-    // checking if phone is empty then i make it undefined.
-    if (!phone || phone.trim() === "") phone = undefined;
-    // checking that credentials aren't empty
-    if (!email || !password || !userName)
-        return res.status(400).json({ error: "Email , password, UserName are required! " });
-    // checking for existing email 
-    const existing = await authService.findExistingUser(email);
-    if (existing) return res.status(409).json({ error: " Email Already Registered" });
+        // checking if phone is empty then i make it undefined.
+        if (!phone || phone.trim() === "") phone = undefined;
+        // checking that credentials aren't empty
+        if (!email || !password || !userName)
+            return res.status(400).json({ error: "Email , password, UserName are required! " });
+        // checking for existing email 
+        const existing = await authService.findExistingUser(email);
+        if (existing) return res.status(409).json({ error: " Email Already Registered" });
 
-    // creating the user (hashing handled by service)
-    const newUser = await authService.createUser({
-        userName,
-        email,
-        phone,
-        password
-    });
+        // creating the user (hashing handled by service)
+        const newUser = await authService.createUser({
+            userName,
+            email,
+            phone,
+            password
+        });
 
-    // getting the token using the token function
-    const token = await authService.generateRegisterToken(email, newUser);
-    // what to return to the website and the signed in user
-    const usertoReturn = { ...newUser.toJSON(), token };
-    // now delete the password to make it secret on frontend and backend
-    delete usertoReturn.password;
-    // finally return the userdata on the frontend using this REST api
-    return res.status(201).json(usertoReturn);
+        // getting the token using the token function
+        const token = await authService.generateRegisterToken(email, newUser);
+        // what to return to the website and the signed in user
+        const usertoReturn = { ...newUser.toJSON(), token };
+        // now delete the password to make it secret on frontend and backend
+        delete usertoReturn.password;
+        // finally return the userdata on the frontend using this REST api
+        return res.status(201).json(usertoReturn);
+    } catch (error) {
+        console.error("Registration error:", error);
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
 };
 
 
@@ -58,7 +63,7 @@ const login = async (req, res) => {
 
         // if the user is not there
         if (!user) {
-            console.log("No user found", email.trim());
+            console.log("Login failed: invalid email format or email not registered");
             return res.status(401).json({
                 success: false,
                 message: 'Invalid Credentials'
@@ -69,7 +74,7 @@ const login = async (req, res) => {
         // if doesnt match we failed the process.
 
         if (!isMatch) {
-            console.log("Password mismatch for user. ", user._id);
+            console.log("Login failed: password mismatch");
             return res.status(401).json({
                 success: false,
                 message: 'Invalid Credentials'
@@ -180,20 +185,10 @@ const changePassword = async (req, res) => {
 };
 
 
-//============================== ERROR CONSOLE ==========================
-
-
-// To be implemented whenever needed.
-const handlePost = (req, res, next) => {
-
-};
-
-
 module.exports = {
     register,
     login,
     getMe,
     getUserById,
     changePassword,
-    handlePost,
 };

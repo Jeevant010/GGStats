@@ -10,8 +10,7 @@ const Footer = () => {
                     {/* Brand */}
                     <div className="md:col-span-1">
                         <div className="flex items-center gap-2 mb-3">
-                            <div className="w-8 h-8 rounded-lg bg-linear-to-br from-accent to-purple-500 flex items-center justify-center">
-                                <Gamepad2 size={16} className="text-white" />
+                            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-accent to-purple-500 flex items-center justify-center">                                <Gamepad2 size={16} className="text-white" />
                             </div>
                             <span className="text-white text-lg font-bold">
                                 GG<span className="text-accent">Stats</span>

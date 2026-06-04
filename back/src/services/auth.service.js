@@ -23,12 +23,11 @@ const findUserByIdWithPassword = async (id) => {
 };
 
 const createUser = async ({ userName, email, phone, password }) => {
-    const hashed = await bcrypt.hash(password, 10);
     const newUser = await User.create({
         userName,
         email,
         ...(phone && { phone }),
-        password: hashed
+        password
     });
     return newUser;
 };
@@ -58,7 +57,7 @@ const changeUserPassword = async (userId, oldpassword, newPassword) => {
 
     if (newPassword.length < 8) return { success: false, reason: 'too_short' };
 
-    user.password = await bcrypt.hash(newPassword, 10);
+    user.password = newPassword;
     await user.save();
     return { success: true };
 };
