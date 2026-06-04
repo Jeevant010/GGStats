@@ -26,3 +26,9 @@ dist-ssr
 *.sw?
 
 package-lock.json
+
+
+.gitnexus/
+.claude/
+AGENTS.md
+CLAUDE.md
