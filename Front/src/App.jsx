@@ -7,23 +7,24 @@ import { useCookies } from 'react-cookie';
 import Home from './pages/Home';
 import SportsHome from './pages/SportsHome';
 import Profile from './pages/Profile';
-import Cricket from './components/sports/Cricket.jsx';
-import Football from './components/sports/Football.jsx';
-import Basketball from './components/sports/BasketBall.jsx';
-import Chess from './components/sports/Chess.jsx';
-import Golf from './components/sports/Golf.jsx';
-import TableTennis from './components/sports/TableTennis.jsx';
-import Tennis from './components/sports/Tennis.jsx';
-import Badminton from './components/sports/Badminton.jsx';
-import Kabaddi from './components/sports/Kabaddi.jsx';
-import Hockey from './components/sports/Hockey.jsx';
-import VolleyBalls from './components/sports/Volleyballs.jsx';
+import Cricket from './pages/sports/Cricket.jsx';
+import Football from './pages/sports/Football.jsx';
+import Basketball from './pages/sports/BasketBall.jsx';
+import Chess from './pages/sports/Chess.jsx';
+import Golf from './pages/sports/Golf.jsx';
+import TableTennis from './pages/sports/TableTennis.jsx';
+import Tennis from './pages/sports/Tennis.jsx';
+import Badminton from './pages/sports/Badminton.jsx';
+import Kabaddi from './pages/sports/Kabaddi.jsx';
+import Hockey from './pages/sports/Hockey.jsx';
+import VolleyBalls from './pages/sports/Volleyballs.jsx';
 import GamesHome from './pages/GamesHome.jsx';
 import Live from './pages/Live.jsx';
-import SignUp from './components/Differ/single/SignUp.jsx';
-import FormulaOne from './components/sports/F1.jsx';
-import Valorant from './components/Games/Valorant.jsx';
-import Baseball from './components/sports/Baseball.jsx';
+import SignUp from './pages/SignUp.jsx';
+import FormulaOne from './pages/sports/F1.jsx';
+import Valorant from './pages/games/Valorant.jsx';
+import Cs2 from './pages/games/Cs2.jsx';
+import Baseball from './pages/sports/Baseball.jsx';
 function App() {
   const [cookie] = useCookies(["token"]);
   const isLoggedIn = !!cookie.token;
@@ -56,6 +57,7 @@ function App() {
 
         {/* Game detail routes */}
         <Route path="/games/valorant" element={<Valorant />} />
+        <Route path="/games/cs2" element={<Cs2 />} />
 
         <Route path="*" element={<Home />} />
       </Routes>

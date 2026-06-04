@@ -27,8 +27,8 @@ dist-ssr
 
 package-lock.json
 
-
+# GitNexus
 .gitnexus/
 .claude/
-AGENTS.md
-CLAUDE.md
+*AGENTS.md
+*CLUADE.md

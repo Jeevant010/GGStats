@@ -1,0 +1,143 @@
+import React, { useState, useEffect, useCallback } from "react";
+import { motion as Motion } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+const HeroCarousel = ({ images = [], interval = 4000, loading = false }) => {
+    const [index, setIndex] = useState(0);
+    const numImages = images.length;
+
+    const handleNext = useCallback(() => {
+        setIndex((prev) => (prev + 1) % numImages);
+    }, [numImages]);
+
+    const handlePrev = useCallback(() => {
+        setIndex((prev) => (prev - 1 + numImages) % numImages);
+    }, [numImages]);
+
+    useEffect(() => {
+        if (numImages <= 1) return;
+        const timer = setInterval(handleNext, interval);
+        return () => clearInterval(timer);
+    }, [handleNext, interval, numImages]);
+
+    if (loading || numImages === 0) {
+        return (
+            <div className="relative overflow-hidden w-full h-[350px] md:h-[450px] flex items-center justify-center bg-surface-900">
+                <div className="w-[70%] h-[80%] rounded-2xl bg-surface-700 animate-pulse flex items-center justify-center">
+                    {loading && (
+                        <div className="flex flex-col items-center gap-3">
+                            <div className="w-10 h-10 border-3 border-accent/30 border-t-accent rounded-full animate-spin" />
+                            <span className="text-sm text-gray-500">Loading banners...</span>
+                        </div>
+                    )}
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div className="relative overflow-hidden w-full h-[350px] md:h-[450px] flex items-center justify-center bg-surface-900">
+            <div className="relative w-full h-full flex items-center justify-center">
+                {images.map((image, i) => {
+                    let position = i - index;
+                    if (position > numImages / 2) position -= numImages;
+                    else if (position < -numImages / 2) position += numImages;
+
+                    const isCenter = position === 0;
+                    const xOffset = position * 40;
+                    const scale = isCenter ? 1 : 0.7;
+                    const opacity = Math.abs(position) > 1 ? 0 : (isCenter ? 1 : 0.5);
+
+                    return (
+                        <Motion.div
+                            key={image.image || i}
+                            className="absolute w-[70%] h-[80%] rounded-2xl shadow-2xl overflow-hidden bg-surface-800"
+                            animate={{
+                                x: `${xOffset}%`,
+                                scale,
+                                opacity,
+                                zIndex: numImages - Math.abs(position),
+                            }}
+                            initial={false}
+                            transition={{ duration: 0.8, ease: "easeInOut" }}
+                        >
+                            <img
+                                src={image.image}
+                                alt={`Slide ${i + 1}`}
+                                className="w-full h-full object-cover object-top"
+                            />
+                            {/* Overlay */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex flex-col justify-end p-6 md:p-8">
+                                {isCenter && (
+                                    <Motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.3, duration: 0.5 }}
+                                    >
+                                        {image.category && (
+                                            <span className="inline-block px-3 py-1 bg-accent/90 text-white text-xs font-bold rounded-full mb-3 uppercase tracking-wider">
+                                                {image.category}
+                                            </span>
+                                        )}
+                                        {image.title && (
+                                            <h3 className="text-2xl md:text-3xl lg:text-4xl font-black text-white mb-2 leading-tight drop-shadow-md">
+                                                {image.title}
+                                            </h3>
+                                        )}
+                                        {image.description && (
+                                            <p className="text-sm md:text-base text-gray-200 line-clamp-2 md:line-clamp-3 max-w-3xl drop-shadow">
+                                                {image.description}
+                                            </p>
+                                        )}
+                                    </Motion.div>
+                                )}
+                            </div>
+                        </Motion.div>
+                    );
+                })}
+            </div>
+
+            {/* Side Fades */}
+            <div className="absolute left-0 top-0 h-full w-48 bg-gradient-to-r from-surface-900 via-surface-900/50 to-transparent z-20" />
+            <div className="absolute right-0 top-0 h-full w-48 bg-gradient-to-l from-surface-900 via-surface-900/50 to-transparent z-20" />
+
+            {/* Nav Buttons */}
+            {
+                numImages > 1 && (
+                    <>
+                        <button
+                            onClick={handlePrev}
+                            className="absolute left-4 top-1/2 -translate-y-1/2 z-30 p-2.5 glass rounded-full text-gray-400 hover:text-white transition-colors"
+                        >
+                            <ChevronLeft size={22} />
+                        </button>
+                        <button
+                            onClick={handleNext}
+                            className="absolute right-4 top-1/2 -translate-y-1/2 z-30 p-2.5 glass rounded-full text-gray-400 hover:text-white transition-colors"
+                        >
+                            <ChevronRight size={22} />
+                        </button>
+                    </>
+                )
+            }
+
+            {/* Dots */}
+            {
+                numImages > 1 && (
+                    <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-30 flex gap-1.5">
+                        {images.map((_, i) => (
+                            <button
+                                key={`dot-${i}`}
+                                onClick={() => setIndex(i)}
+                                className={`w-2 h-2 rounded-full transition-all duration-300 ${index === i ? "bg-accent w-6" : "bg-white/30 hover:bg-white/50"
+                                    }`}
+                            />
+                        ))}
+                    </div>
+                )
+            }
+        </div >
+    );
+};
+
+export default HeroCarousel;

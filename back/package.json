@@ -13,10 +13,9 @@
   "license": "ISC",
   "author": "Jeevant",
   "type": "commonjs",
-  "main": "index.js",
+  "main": "src/server.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
+    "start": "node src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
@@ -27,6 +26,7 @@
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "helmet": "^8.1.0",
+    "hltv": "^3.5.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.17.0",
     "nodemon": "^3.1.14",

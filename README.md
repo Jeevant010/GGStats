@@ -1,10 +1,10 @@
-# GGStats 🏆
+# GGStats
 
 A full-stack sports & esports statistics dashboard built with **React + Vite** (frontend) and **Node.js + Express + MongoDB** (backend). Track live scores, today's fixtures, and stats across football, basketball, hockey, baseball, Formula 1, and more — all in one dark-themed, responsive UI.
 
 ---
 
-## 🚀 Tech Stack
+## Tech Stack
 
 ### Frontend
 | Tool | Purpose |
@@ -39,54 +39,39 @@ A full-stack sports & esports statistics dashboard built with **React + Vite** (
 GGStats/
 ├── Front/                          # React frontend (Vite)
 │   └── src/
-│       ├── App.jsx                 # Root router
-│       ├── main.jsx                # Entry point
-│       ├── index.css               # Global styles & design tokens
-│       ├── pages/
-│       │   ├── Home.jsx            # Landing page
-│       │   ├── SportsHome.jsx      # Sports hub
-│       │   ├── GamesHome.jsx       # Esports/Games hub
-│       │   ├── Live.jsx            # Live scores page
-│       │   └── Profile.jsx         # User profile (auth-gated)
-│       └── components/
-│           ├── sports/             # Individual sport pages
-│           │   ├── Football.jsx    # ⚽ api-sports Football API
-│           │   ├── BasketBall.jsx  # 🏀 api-sports Basketball API
-│           │   ├── Hockey.jsx      # 🏒 api-sports Hockey API
-│           │   ├── Baseball.jsx    # ⚾ api-sports Baseball API
-│           │   ├── F1.jsx          # 🏎️ api-sports Formula 1 API
-│           │   ├── Cricket.jsx     # 🏏 (stub — ready for API)
-│           │   ├── Tennis.jsx      # 🎾 (stub — ready for API)
-│           │   ├── TableTennis.jsx # 🏓 (stub)
-│           │   ├── Badminton.jsx   # 🏸 (stub)
-│           │   ├── Volleyball.jsx  # 🏐 (stub)
-│           │   ├── Kabaddi.jsx     # (stub)
-│           │   ├── Golf.jsx        # ⛳ (stub)
-│           │   └── Chess.jsx       # ♟️ (stub)
-│           ├── Games/
-│           │   └── Valorant.jsx    # 🎮 Valorant esports
-│           ├── shared/             # Footer, common UI
-│           ├── Differ/             # Auth components (Login, SignUp, Header)
-│           ├── HomePageComponent/  # Hero, NewsCard, etc.
-│           ├── SportsType.jsx      # Sport navigation tabs
-│           └── GamesType.jsx       # Games navigation tabs
+│       ├── App.jsx                 # Root router & paths
+│       ├── main.jsx                # Entry point & provider wrappers
+│       ├── index.css               # Design system & custom tokens
+│       ├── components/
+│       │   ├── common/             # Reusable UI (Header, Footer, DatePicker, etc.)
+│       │   └── home/               # Sections local to Home view (News, NewsCard)
+│       ├── contexts/               # React Contexts (AuthContext)
+│       ├── services/               # Reusable API instances (api.js with Axios interceptors)
+│       ├── hooks/                  # Custom React hooks (useLiveScores, useBannerImages)
+│       └── pages/
+│           ├── Home.jsx            # Home Page
+│           ├── Live.jsx            # Live scores aggregator
+│           ├── Profile.jsx         # Auth-gated User profile page
+│           ├── SignUp.jsx          # Register/Sign Up Page
+│           ├── sports/             # 13 Detailed sports pages (Football, Hockey, etc.)
+│           └── games/              # 2 Detailed game pages (Cs2, Valorant)
 │
 └── back/                           # Express backend
-    ├── index.js                    # Server entry point (port 9000)
-    ├── models/
-    │   ├── User.js                 # User schema
-    │   ├── Admin.js                # Admin schema
-    │   └── Game.js                 # Game schema
-    ├── routes/
-    │   └── auth.js                 # Auth routes (register / login / profile)
-    ├── config/                     # DB / passport config
-    ├── utils/                      # Utility helpers
-    └── .env                        # Environment variables (not committed)
+    └── src/
+        ├── server.js               # Entry point (Server listener + DB connection)
+        ├── app.js                  # Express setup (Middlewares, Security, CORS)
+        ├── config/                 # Configurations (Passport, CORS, DB connection)
+        ├── models/                 # Mongoose schemas (User, Admin, Game)
+        ├── middlewares/            # Custom express middlewares (Auth, Error handling)
+        ├── controllers/            # Controller layer (Auth, Esports)
+        ├── services/               # Service layer (Auth database queries, HLTV calls)
+        ├── routes/                 # Express router setup
+        └── utils/                  # Common utils (JWT signing helper)
 ```
 
 ---
 
-## ⚙️ Setup & Installation
+## Setup and Installation
 
 ### Prerequisites
 - Node.js ≥ 18
@@ -151,7 +136,7 @@ npm run dev
 
 ---
 
-## 🌐 API Integrations
+## API Integrations
 
 All live sports data is fetched directly from the [api-sports.io](https://api-sports.io) platform using today's date.
 
@@ -167,7 +152,7 @@ All live sports data is fetched directly from the [api-sports.io](https://api-sp
 
 ---
 
-## 🔐 Authentication
+## Authentication
 
 - **Register / Login** via email + password
 - Passwords hashed with **bcrypt**
@@ -177,7 +162,7 @@ All live sports data is fetched directly from the [api-sports.io](https://api-sp
 
 ---
 
-## 📄 Pages & Routes
+## Pages and Routes
 
 | Route | Page | Auth Required |
 |---|---|---|
@@ -204,7 +189,7 @@ All live sports data is fetched directly from the [api-sports.io](https://api-sp
 
 ---
 
-## 🎨 Design System
+## Design System
 
 The project uses a custom Tailwind CSS design token system defined in `index.css`:
 
@@ -217,7 +202,7 @@ The project uses a custom Tailwind CSS design token system defined in `index.css
 
 ---
 
-## 🛣️ Roadmap
+## Roadmap
 
 - [ ] Connect Cricket, Tennis, Badminton, Golf APIs
 - [ ] Real live scores on the Live page (currently mock data)
@@ -228,12 +213,12 @@ The project uses a custom Tailwind CSS design token system defined in `index.css
 
 ---
 
-## 📜 License
+## License
 
 ISC — see [package.json](./back/package.json)
 
 ---
 
-## 👤 Author
+## Author
 
 **Jeevant & Deepesh** — [GitHub](https://github.com/Jeevant010/GGStats)

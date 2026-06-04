@@ -1,29 +1,19 @@
 import React from 'react';
-import Header from '../components/Differ/single/Header';
-import GamesType from '../components/GamesType';
-import HeroCarousel from '../components/shared/HeroCarousel';
-// import Current from '../components/GamePageComponents/CurrentScores';
-// import GamesUpdates from '../components/GamePageComponents/GamesUpdates';
-import Footer from '../components/shared/Footer';
-
-const gameImages = [
-  "/game4.jpg",
-  "/game2.jpg",
-  "/game3.jpg",
-  "/game1.jpg",
-  "/game5.jpg",
-  "/game6.jpg",
-  "/val2.jpg",
-  "/omen1.png",
-];
+import Header from '../components/common/Header';
+import GamesType from '../components/common/GamesType';
+import HeroCarousel from '../components/common/HeroCarousel';
+import Footer from '../components/common/Footer';
+import useBannerImages from '../hooks/useBannerImages';
 
 const GamesHome = () => {
+  const { images: gameImages, loading } = useBannerImages("games");
+
   return (
     <div className="min-h-screen flex flex-col bg-surface-900">
       <Header />
       <GamesType />
       <main className="flex-1">
-        <HeroCarousel images={gameImages} />
+        <HeroCarousel images={gameImages} loading={loading} />
         {/* <Current /> */}
         {/* <GamesUpdates /> */}
       </main>

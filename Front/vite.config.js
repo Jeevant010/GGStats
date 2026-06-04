@@ -5,6 +5,15 @@ import tailwindcss from '@tailwindcss/vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(),
-    tailwindcss(),
+  tailwindcss(),
   ],
+  server: {
+    proxy: {
+      '/api/freetogame': {
+        target: 'https://www.freetogame.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/freetogame/, '/api'),
+      },
+    },
+  },
 })

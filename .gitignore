@@ -1,6 +1,5 @@
+.gitnexus
+.claude/
 AGENTS.md
 CLAUDE.md
-.vscode/*
-
-.claude/
-.gitnexus/
+.vscode/
