@@ -14,8 +14,7 @@ const getMatches = async (req, res) => {
         console.error("Error fetching HLTV matches:", error);
         res.status(500).json({
             success: false,
-            message: "Failed to fetch CS2 matches",
-            error: error.message
+            message: "Failed to fetch CS2 matches"
         });
     }
 };

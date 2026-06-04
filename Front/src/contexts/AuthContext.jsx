@@ -7,10 +7,10 @@ const AuthContext = createContext();
  * It will later hold a reference to React’s setIsAuthenticated function.
  * This allows you to call setAuthFromOutside() from anywhere, even outside React components.
  */
-let externelSetAuth ;
-    // If externelSetAuth has been assigned, it will update authentication state.
+let externalSetAuth ;
+    // If externalSetAuth has been assigned, it will update authentication state.
 export function setAuthFromOutside(value) {
-    if(externelSetAuth) externelSetAuth(value);
+    if(externalSetAuth) externalSetAuth(value);
 }
     // the container function for app takes arg as children
 export function AuthProvider({ children }) {
@@ -20,7 +20,7 @@ export function AuthProvider({ children }) {
         !!localStorage.getItem('accessToken')
     );
     // Stores the state updater function so setAuthFromOutside() can use it later.
-    externelSetAuth = setIsAuthenticated;
+    externalSetAuth = setIsAuthenticated;
     // Wraps all child components in AuthContext.Provider.
     return (
         <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>

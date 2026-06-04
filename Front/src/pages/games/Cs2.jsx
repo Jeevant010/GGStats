@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import axios from 'axios';
+import api from '../../services/api';
 import Header from '../../components/common/Header';
 import Footer from '../../components/common/Footer';
 import GamesType from '../../components/common/GamesType';
@@ -18,9 +18,7 @@ const Cs2 = () => {
         const fetchSchedule = async () => {
             try {
                 // Fetch matches from our backend which calls HLTV
-                const res = await axios.get('http://localhost:9000/api/esports/cs2', {
-                    withCredentials: true // in case of CORS or session Needs
-                });
+                const res = await api.get('/api/esports/cs2');
                 
                 if (res.data?.success) {
                   setSchedule(res.data.data);

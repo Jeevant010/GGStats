@@ -8,8 +8,21 @@ const { port } = require('./config/env');
 
 ///=============================== DATABASE =============================
 
-connectDatabase();
+///=============================== DATABASE =============================
+
+(async () => {
+    try {
+        await connectDatabase();
+
+        ///  ======================= SERVER START =====================
+
+        app.listen(port, () => console.log("App is running on port http://localhost:" + port));
+    } catch (err) {
+        console.error("Failed to start server:", err);
+        process.exit(1);
+    }
+})();
 
 ///  ======================= SERVER START =====================
 
-app.listen( port , () => console.log("App is running on port http://localhost:" + port));
+app.listen(port, () => console.log("App is running on port http://localhost:" + port));

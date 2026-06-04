@@ -19,11 +19,15 @@ const connectDatabase = () => {
         } catch(err){
             console.log("ℹNo existing 'phone_1' to drop. " );
         }
+        try {
             await db.collection('users').createIndex(
                 { phone: 1 },
                 { unique : true , partialFilterExpression: { phone : { $type : "string" } } }
             );
             console.log(" Partial unique index created on 'phone' ");
+        } catch (indexErr) {
+            console.error("Failed to create partial unique index on phone:", indexErr);
+        }
     }).catch( err => console.log("Error , Not connected!" , err));
 };
 

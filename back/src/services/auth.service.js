@@ -4,13 +4,17 @@ const { User } = require('../models');
 const { getToken } = require('../utils');
 const { jwtSecret } = require('../config/env');
 
+const normalizeEmail = (email) => {
+    return email ? email.trim().toLowerCase() : '';
+};
+
 const findExistingUser = async (email) => {
-    return User.findOne({ email });
+    return User.findOne({ email: normalizeEmail(email) });
 };
 
 const findUserByEmailWithPassword = async (email) => {
     return User.findOne({
-        email: email.trim()
+        email: normalizeEmail(email)
     }).select('+password');
 };
 
@@ -25,7 +29,7 @@ const findUserByIdWithPassword = async (id) => {
 const createUser = async ({ userName, email, phone, password }) => {
     const newUser = await User.create({
         userName,
-        email,
+        email: normalizeEmail(email),
         ...(phone && { phone }),
         password
     });

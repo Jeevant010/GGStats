@@ -14,7 +14,27 @@ const News = () => {
             setLoading(true);
             setError("");
             const response = await fetch(`https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&apiKey=${API_KEY}`);
+            
+            if (!response.ok) {
+                let errorMsg = `Error: ${response.status} ${response.statusText}`;
+                try {
+                    const errJson = await response.json();
+                    if (errJson && errJson.message) {
+                        errorMsg = errJson.message;
+                    }
+                } catch (e) {}
+                setError(errorMsg);
+                setNewsData([]);
+                return;
+            }
+
             const jsondata = await response.json();
+            if (jsondata.status === "error") {
+                setError(jsondata.message || jsondata.code || "Unknown NewsAPI error");
+                setNewsData([]);
+                return;
+            }
+
             if (jsondata.articles) {
                 setNewsData(jsondata.articles);
             } else {
@@ -23,6 +43,7 @@ const News = () => {
             }
         } catch (err) {
             setError(`Failed to load news: ${err.message}`);
+            setNewsData([]);
         } finally {
             setLoading(false);
         }

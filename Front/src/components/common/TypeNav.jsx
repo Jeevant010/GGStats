@@ -16,6 +16,7 @@ const TypeNav = ({ items = [], basePath = '/sports' }) => {
                         const path = getPath(item.name);
                         const isActive = location.pathname === path;
                         const Icon = item.icon;
+                        const hasIcon = Icon && (typeof Icon === 'function' || typeof Icon === 'object');
 
                         return (
                             <Link
@@ -26,7 +27,7 @@ const TypeNav = ({ items = [], basePath = '/sports' }) => {
                                     : 'text-gray-400 hover:text-white hover:bg-white/5 border border-transparent'
                                     }`}
                             >
-                                <Icon size={14} />
+                                {hasIcon && <Icon size={14} />}
                                 {item.name}
                             </Link>
                         );

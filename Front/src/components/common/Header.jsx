@@ -72,7 +72,8 @@ const Header = () => {
       >
         <ul className="flex flex-col gap-1 p-3">
           {navItems.map(item => {
-            const isActive = location.pathname === item.href;
+            const isActive = location.pathname === item.href ||
+              (item.href !== '/' && location.pathname.startsWith(item.href));
             const Icon = item.icon;
             return (
               <li key={item.label}>
