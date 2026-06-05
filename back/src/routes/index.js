@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const authRoutes = require('./auth.routes');
 const esportsRoutes = require('./esports.routes');
+const tournamnetRoutes = require('./tournament.routes');
 
 router.get("/", (req, res) => {
     res.json({
@@ -10,8 +11,9 @@ router.get("/", (req, res) => {
         timestamp: new Date()
     });
 });
+
 router.use('/api/auth', authRoutes);
 router.use('/api/esports', esportsRoutes);
-
+router.use('/api/tournamnets', tournamnetRoutes);
 
 module.exports = router;
