@@ -14,6 +14,6 @@ router.get("/", (req, res) => {
 
 router.use('/api/auth', authRoutes);
 router.use('/api/esports', esportsRoutes);
-router.use('/api/tournamnets', tournamnetRoutes);
+router.use('/api/tournaments', tournamnetRoutes);
 
 module.exports = router;
