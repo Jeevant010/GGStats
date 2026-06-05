@@ -31,7 +31,7 @@ const tournamnentSchema = new mongoose.Schema({
     videoUrl: {
         type: String,
     },
-    tage: [{
+    tags: [{
         type: String,
     }]
 }, {
