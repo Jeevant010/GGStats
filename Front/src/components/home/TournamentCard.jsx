@@ -1,65 +1,106 @@
-import React from 'react';
-import { MapPin, Trophy } from 'lucide-react';
+import React, { useState } from 'react';
+import { MapPin, Trophy, ArrowRight } from 'lucide-react';
 import { CountdownTimer } from '../common/CountdownTimer';
 
-export const TournamentCard = ({ tournament }) => {
+export const TournamentCard = ({ tournament, index }) => {
+    const [isHovered, setIsHovered] = useState(false);
+
+    // Format start date and time
+    const startDateTime = new Date(tournament.startDate).toLocaleDateString(undefined, {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric'
+    });
+
     return (
-        <div className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/5 bg-surface-800/40 p-6 transition-all duration-500 hover:border-accent/30 hover:bg-surface-800/80 hover:shadow-2xl hover:shadow-accent/5 hover:-translate-y-1">
-            <div className="absolute inset-0 z-0 opacity-10 mix-blend-luminosity grayscale transition-all duration-500 group-hover:opacity-25 group-hover:scale-105">
+        <div
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            className="group flex flex-col md:flex-row odd:md:flex-row-reverse gap-8 md:gap-16 items-stretch w-full bg-surface-800/10 border border-white/5 hover:border-white/10 p-6 md:p-8 rounded-3xl transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)] hover:bg-surface-800/30"
+        >
+            {/* 1. Media Container (50% on Desktop) */}
+            <div className="w-full md:w-1/2 aspect-[16/10] relative rounded-2xl overflow-hidden z-0 bg-surface-900 border border-white/5">
+                {/* Static Image */}
                 <img
                     src={tournament.coverImage}
-                    alt=""
-                    className="h-full w-full object-cover"
+                    alt={tournament.title}
+                    className={`h-full w-full object-cover transition-transform duration-700 ease-out ${
+                        isHovered ? 'scale-105 opacity-80' : 'scale-100 opacity-100'
+                    }`}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-surface-900 via-transparent to-transparent" />
+
+                {/* HTML5 Video Overlay (Seamless Fade-in on Hover) */}
+                {tournament.videoUrl && (
+                    <video
+                        src={tournament.videoUrl}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ease-in-out ${
+                            isHovered ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                        }`}
+                    />
+                )}
+
+                {/* Cover Image Dark Gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
             </div>
 
-            {/* Card Content */}
-            <div className="relative z-10 flex flex-col gap-4">
-                <div className="flex items-center justify-between">
-                    <span className="px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider bg-white/10 text-white rounded-md">
+            {/* 2. Textual Details Container (50% on Desktop, Vertically Centered) */}
+            <div className="w-full md:w-1/2 flex flex-col justify-center gap-4 py-4">
+                
+                {/* Eyebrow info (Date & Category) */}
+                <div className="flex flex-wrap items-center gap-3">
+                    <span className="px-2.5 py-0.5 text-[10px] font-black uppercase tracking-widest bg-accent/20 text-accent rounded-md border border-accent/20">
                         {tournament.sport}
                     </span>
-                    {tournament.tags?.[0] && (
-                        <span className="text-[10px] font-bold text-accent uppercase tracking-wider">
-                            #{tournament.tags[0]}
-                        </span>
-                    )}
+                    <span className="text-[11px] font-medium text-gray-500 uppercase tracking-widest">
+                        {startDateTime}
+                    </span>
                 </div>
 
-                <div>
-                    <h3 className="text-lg font-black text-white leading-tight group-hover:text-accent transition-colors duration-300">
-                        {tournament.title}
-                    </h3>
-                    <p className="mt-2 text-xs text-gray-400 line-clamp-3 leading-relaxed">
-                        {tournament.description}
-                    </p>
-                </div>
-            </div>
+                {/* Bold Event Title */}
+                <h2 className="text-3xl md:text-4xl font-black text-white tracking-tight leading-tight group-hover:text-accent transition-colors duration-300">
+                    {tournament.title}
+                </h2>
 
-            {/* Card Footer Details */}
-            <div className="relative z-10 mt-6 pt-4 border-t border-white/5 flex flex-col gap-3.5">
-                <div className="flex items-center gap-2 text-gray-400 text-xs">
-                    <MapPin size={14} className="text-gray-500 shrink-0" />
-                    <span className="truncate">{tournament.location}</span>
-                </div>
+                {/* Brief Description */}
+                <p className="text-sm text-gray-400 leading-relaxed font-light">
+                    {tournament.description}
+                </p>
 
-                <div className="flex items-center justify-between gap-2 mt-1">
-                    <div className="flex items-center gap-1.5 text-gray-500 text-xs">
-                        <Trophy size={14} />
-                        <span>
-                            {new Date(tournament.startDate).toLocaleDateString(undefined, { 
-                                month: 'short', 
-                                day: 'numeric' 
-                             })}
-                        </span>
+                {/* Metadata Row */}
+                <div className="flex flex-wrap items-center gap-6 mt-2 pb-2">
+                    {/* Location */}
+                    <div className="flex items-center gap-2 text-gray-400 text-xs">
+                        <MapPin size={14} className="text-gray-500 shrink-0" />
+                        <span className="font-medium">{tournament.location}</span>
                     </div>
-                    
+
+                    {/* End Date */}
+                    <div className="flex items-center gap-2 text-gray-400 text-xs">
+                        <Trophy size={14} className="text-gray-500 shrink-0" />
+                        <span>Ends {new Date(tournament.endDate).toLocaleDateString()}</span>
+                    </div>
+                </div>
+
+                {/* Action Row: CTA Button + Live Countdown */}
+                <div className="flex flex-wrap items-center justify-between gap-4 mt-4 pt-4 border-t border-white/5">
+                    {/* Primary CTA Button */}
+                    <button className="flex items-center gap-2 px-6 py-3 bg-white text-surface-900 font-bold rounded-xl text-xs uppercase tracking-wider transition-all duration-300 hover:bg-accent hover:text-white hover:scale-[1.02] hover:shadow-lg hover:shadow-accent/20 active:scale-[0.98]">
+                        <span>View Details</span>
+                        <ArrowRight size={14} />
+                    </button>
+
+                    {/* Live Timer */}
                     <CountdownTimer 
                         startDate={tournament.startDate} 
                         endDate={tournament.endDate} 
                     />
                 </div>
+
             </div>
         </div>
     );

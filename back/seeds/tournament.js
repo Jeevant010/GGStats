@@ -12,7 +12,8 @@ const sampleTournaments = [
         endDate: new Date("2026-07-19T23:59:59Z"),
         location: "USA, Canada, Mexico",
         description: "The 23rd FIFA World Cup featuring 48 teams competing across 16 host cities in North America. The biggest soccer tournament in history.",
-        coverImage: "https:/ss/images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80",
+        coverImage: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80",
+        videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-soccer-player-kicking-ball-in-stadium-1560-large.mp4", // <-- Added
         tags: ["World Cup", "Soccer", "International"]
     },
     {
@@ -23,6 +24,7 @@ const sampleTournaments = [
         location: "India",
         description: "The 9th ICC Champions Trophy, featuring the top eight ranked One Day International men's national teams competing in a high-stakes ODI tournament.",
         coverImage: "https://images.unsplash.com/photo-1531415080290-bc98545ab3ef?auto=format&fit=crop&w=1200&q=80",
+        videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-cricket-batsman-hitting-a-ball-40715-large.mp4", // <-- Added
         tags: ["Champions Trophy", "Cricket", "ODI"]
     },
     {
@@ -33,6 +35,7 @@ const sampleTournaments = [
         location: "Tokyo, Japan",
         description: "The absolute pinnacle of the Valorant Champions Tour. The top 16 teams in the world battle to crown the 2026 world champion.",
         coverImage: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80",
+        videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-gamer-playing-first-person-shooter-video-game-41852-large.mp4", // <-- Added
         tags: ["VCT", "Champions", "Esports", "Valorant"]
     },
     {
@@ -43,9 +46,11 @@ const sampleTournaments = [
         location: "Austin, Texas, USA",
         description: "The premier Counter-Strike 2 Major of 2026, taking place in Austin. The world's top 24 teams battle for glory and a massive $1.25M prize pool.",
         coverImage: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1200&q=80",
+        videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-hands-of-a-gamer-playing-on-a-keyboard-and-mouse-42095-large.mp4", // <-- Added
         tags: ["Major", "CS2", "Esports", "PGL"]
     }
 ];
+
 
 const seedDatabase = async () => {
     try {
