@@ -4,7 +4,7 @@ import { Gamepad2 } from 'lucide-react';
 
 const Logo = () => {
   return (
-    <Link to="/" className="flex items-center gap-2 group z-50">
+    <Link to="/" className="flex items-center gap-2 group z-50" aria-label="Go to GGStats homepage">
       <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-accent to-purple-500 flex items-center justify-center shadow-lg group-hover:shadow-accent/30 transition-shadow duration-300">
         <Gamepad2 size={20} className="text-white" />
       </div>

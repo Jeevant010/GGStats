@@ -1,34 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Search, Newspaper } from 'lucide-react';
 import NewsCard from './NewsCard';
+import api from '../../services/api';
 
 const News = () => {
     const [search, setSearch] = useState("Sport");
     const [newsData, setNewsData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
-    const API_KEY = import.meta.env.VITE_NEWS_KEY || "";
 
-    const getDATA = async (query = search) => {
+    const getDATA = useCallback(async (query) => {
         try {
             setLoading(true);
             setError("");
-            const response = await fetch(`https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&apiKey=${API_KEY}`);
+            const response = await api.get(`/api/news?q=${encodeURIComponent(query)}`);
+            const jsondata = response.data;
             
-            if (!response.ok) {
-                let errorMsg = `Error: ${response.status} ${response.statusText}`;
-                try {
-                    const errJson = await response.json();
-                    if (errJson && errJson.message) {
-                        errorMsg = errJson.message;
-                    }
-                } catch (e) {}
-                setError(errorMsg);
-                setNewsData([]);
-                return;
-            }
-
-            const jsondata = await response.json();
             if (jsondata.status === "error") {
                 setError(jsondata.message || jsondata.code || "Unknown NewsAPI error");
                 setNewsData([]);
@@ -42,16 +29,16 @@ const News = () => {
                 setNewsData([]);
             }
         } catch (err) {
-            setError(`Failed to load news: ${err.message}`);
+            setError(`Failed to load news: ${err.response?.data?.message || err.message}`);
             setNewsData([]);
         } finally {
             setLoading(false);
         }
-    };
+    }, []);
 
     useEffect(() => {
         getDATA("Sport");
-    }, []);
+    }, [getDATA]);
 
     const handleInput = (e) => setSearch(e.target.value);
 
@@ -67,7 +54,7 @@ const News = () => {
 
                     <form
                         className="flex items-center gap-2 w-full sm:w-auto"
-                        onSubmit={e => { e.preventDefault(); getDATA(); }}
+                        onSubmit={e => { e.preventDefault(); getDATA(search); }}
                     >
                         <div className="relative flex-1 sm:w-64">
                             <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />

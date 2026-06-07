@@ -17,6 +17,12 @@ const Baseball = () => {
 
   useEffect(() => {
     const fetchGames = async () => {
+      if (!API_KEY) {
+        setError("Missing API Key. Please set VITE_SPORTS_API_KEY in your environment.");
+        console.error("Error: VITE_SPORTS_API_KEY is undefined or empty. Please set it in your environment variables.");
+        setLoading(false);
+        return;
+      }
       setLoading(true);
       setError(null);
       try {
@@ -89,7 +95,9 @@ const Baseball = () => {
           <div className="flex items-center justify-center py-20">
             <div className="flex flex-col items-center gap-3">
               <div className="w-10 h-10 border-4 border-accent border-t-transparent rounded-full animate-spin"></div>
-              <div className="text-gray-400 text-lg">Loading today's games...</div>
+              <div className="text-gray-400 text-lg">
+                Loading games for {selectedDate ? (selectedDate.toDateString() === new Date().toDateString() ? "today" : selectedDate.toLocaleDateString()) : "today"}...
+              </div>
             </div>
           </div>
         )}

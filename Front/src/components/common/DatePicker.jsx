@@ -31,8 +31,8 @@ const DatePicker = ({ selectedDate, onDateChange }) => {
     // Calculate allowed range: first day of last month → today
     const minDate = useMemo(() => {
         const d = new Date(today);
-        d.setMonth(d.getMonth() - 1);
         d.setDate(1);
+        d.setMonth(d.getMonth() - 1);
         d.setHours(0, 0, 0, 0);
         return d;
     }, [today]);
@@ -275,9 +275,8 @@ const DatePicker = ({ selectedDate, onDateChange }) => {
                                 Go to Today
                             </button>
                             <span className="text-[10px] text-gray-600">
-                                <span className="text-[10px] text-gray-600">
-                                    Last month available
-                                </span>                            </span>
+                                Last month available
+                            </span>
                         </div>
                     </div>
                 </>

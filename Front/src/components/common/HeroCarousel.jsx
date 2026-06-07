@@ -6,6 +6,10 @@ const HeroCarousel = ({ images = [], interval = 4000, loading = false }) => {
     const [index, setIndex] = useState(0);
     const numImages = images.length;
 
+    useEffect(() => {
+        setIndex((prev) => (numImages > 0 ? Math.min(prev, numImages - 1) : 0));
+    }, [numImages]);
+
     const handleNext = useCallback(() => {
         setIndex((prev) => (prev + 1) % numImages);
     }, [numImages]);

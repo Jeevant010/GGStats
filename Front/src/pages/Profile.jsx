@@ -18,7 +18,6 @@ const Profile = () => {
             try {
                 const { data } = await api.get("/api/auth/me");
                 setUser(data);
-                console.log(data)
             } catch (err) {
                 setError(err.response?.data?.error || "Failed to load profile");
             } finally {

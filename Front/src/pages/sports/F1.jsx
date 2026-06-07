@@ -15,6 +15,12 @@ const FormulaOne = () => {
 
     useEffect(() => {
         const fetchRaces = async () => {
+            if (!API_KEY) {
+                setError("Missing API Key. Please set VITE_SPORTS_API_KEY in your environment.");
+                console.error("Error: VITE_SPORTS_API_KEY is undefined or empty. Please set it in your environment variables.");
+                setLoading(false);
+                return;
+            }
             try {
                 const currentYear = new Date().getFullYear();
                 const response = await axios.get(`https://v1.formula-1.api-sports.io/races?season=${currentYear}`, {

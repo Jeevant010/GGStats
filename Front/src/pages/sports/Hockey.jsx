@@ -21,6 +21,12 @@ const Hockey = () => {
 
   useEffect(() => {
     const fetchGames = async () => {
+      if (!API_KEY) {
+        setError("Missing API Key. Please set VITE_SPORTS_API_KEY in your environment.");
+        console.error("Error: VITE_SPORTS_API_KEY is undefined or empty. Please set it in your environment variables.");
+        setLoading(false);
+        return;
+      }
       setLoading(true);
       setError(null);
       try {
@@ -41,16 +47,14 @@ const Hockey = () => {
 
   useEffect(() => { setShowCount(12); }, [selectedLeague]);
 
-  const groupByLeague = useMemo(() => (gamesList) => {
-    return gamesList.reduce((groups, game) => {
+  const groupedGames = useMemo(() => {
+    return games.reduce((groups, game) => {
       const league = game.league?.name || "Other";
       if (!groups[league]) groups[league] = [];
       groups[league].push(game);
       return groups;
     }, {});
   }, [games]);
-
-  const groupedGames = groupByLeague(games);
   const leagues = ["All", ...Object.keys(groupedGames)];
   const gamesToShow = selectedLeague === "All" ? games : (groupedGames[selectedLeague] || []);
   const visibleGames = gamesToShow.slice(0, showCount);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { CalendarDays, Trophy, AlertCircle } from 'lucide-react';
 import api from '../../services/api';
 import { TournamentCard } from './TournamentCard';
@@ -9,25 +9,27 @@ export const UpcomingEvents = () => {
   const [error, setError] = useState(null);
   const [selectedSport, setSelectedSport] = useState("All");
 
-  useEffect(() => {
-    const fetchTournaments = async () => {
-      try {
-        setLoading(true);
-        const response = await api.get('/api/tournaments');
-        if (response.data?.success) {
-          setTournaments(response.data.data);
-        } else {
-          setError("Failed to fetch tournaments data.");
-        }
-      } catch (err) {
-        console.error("Error fetching tournaments:", err);
-        setError(err.response?.data?.message || "Error connecting to the backend server.");
-      } finally {
-        setLoading(false);
+  const fetchTournaments = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await api.get('/api/tournaments');
+      if (response.data?.success) {
+        setTournaments(response.data.data);
+      } else {
+        setError("Failed to fetch tournaments data.");
       }
-    };
-    fetchTournaments();
+    } catch (err) {
+      console.error("Error fetching tournaments:", err);
+      setError(err.response?.data?.message || "Error connecting to the backend server.");
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchTournaments();
+  }, [fetchTournaments]);
 
   const sports = ["All", ...new Set(tournaments.map(t => t.sport))];
   const filteredTournaments = selectedSport === "All"
@@ -77,7 +79,11 @@ export const UpcomingEvents = () => {
         <div className="flex flex-col items-center py-20 bg-red-500/5 border border-red-500/10 rounded-3xl text-center">
           <AlertCircle size={40} className="text-red-500 mb-4" />
           <p className="text-gray-400 text-sm max-w-md mb-6">{error}</p>
-          <button onClick={() => window.location.reload()} className="px-5 py-2.5 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold transition-all">
+          <button 
+            onClick={fetchTournaments} 
+            disabled={loading}
+            className="px-5 py-2.5 bg-white/10 hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl text-xs font-bold transition-all"
+          >
             Try Again
           </button>
         </div>

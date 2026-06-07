@@ -44,7 +44,7 @@ const generateLoginToken = (user) => {
     return jwt.sign(
         { id: user._id, email: user.email },
         jwtSecret,
-        { expiresIn: '30d' }
+        { expiresIn: '7d' }
     );
 };
 

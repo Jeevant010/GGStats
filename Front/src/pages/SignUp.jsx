@@ -46,7 +46,12 @@ const SignUp = () => {
         if (res.data && res.data.token) {
           const date = new Date();
           date.setDate(date.getDate() + 30);
-          setCookie("token", res.data.token, { path: "/", expires: date });
+          setCookie("token", res.data.token, { 
+              path: "/", 
+              expires: date,
+              sameSite: "lax",
+              secure: import.meta.env.PROD
+          });
           localStorage.setItem("accessToken", res.data.token);
           toast.success("Logged in successfully!");
           navigate("/");

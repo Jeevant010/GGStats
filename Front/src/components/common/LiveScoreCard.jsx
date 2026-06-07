@@ -111,7 +111,7 @@ const TeamRow = ({ team, isWinning, isLive, isScheduled }) => {
 
     useEffect(() => {
         setLogoError(false);
-    }, [team.logo]);
+    }, [team]);
 
     const showLogo = team.logo && !logoError;
 

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const tournamnentSchema = new mongoose.Schema({
+const tournamentSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
@@ -16,6 +16,12 @@ const tournamnentSchema = new mongoose.Schema({
     endDate: {
         type: Date,
         required: true,
+        validate: {
+            validator: function(value) {
+                return !this.startDate || value > this.startDate;
+            },
+            message: "End date must be after start date."
+        }
     },
     location: {
         type: String,
@@ -38,5 +44,5 @@ const tournamnentSchema = new mongoose.Schema({
     timestamps: true
 });
 
-const Tournament = mongoose.model('Tournament', tournamnentSchema);
+const Tournament = mongoose.model('Tournament', tournamentSchema);
 module.exports = Tournament;

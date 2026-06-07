@@ -32,7 +32,7 @@ const getCS2Matches = async () => {
         }
     }
 
-    const limitedMatches = matches.slice(0, 50);
+    const limitedMatches = Array.isArray(matches) ? matches.slice(0, 50) : [];
     return limitedMatches;
 };
 

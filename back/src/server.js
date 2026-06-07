@@ -22,7 +22,3 @@ const { port } = require('./config/env');
         process.exit(1);
     }
 })();
-
-///  ======================= SERVER START =====================
-
-app.listen(port, () => console.log("App is running on port http://localhost:" + port));

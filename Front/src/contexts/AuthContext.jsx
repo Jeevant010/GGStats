@@ -1,27 +1,44 @@
-import { createContext , useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 
 // This makes a new React context called AuthContext
 const AuthContext = createContext();
-/**
- * It will later hold a reference to React’s setIsAuthenticated function.
- * This allows you to call setAuthFromOutside() from anywhere, even outside React components.
- */
-let externalSetAuth ;
-    // If externalSetAuth has been assigned, it will update authentication state.
-export function setAuthFromOutside(value) {
-    if(externalSetAuth) externalSetAuth(value);
+
+let externalSetAuth = null;
+let authQueue = [];
+
+export function registerAuthSetter(fn) {
+    externalSetAuth = fn;
+    if (fn && authQueue.length > 0) {
+        authQueue.forEach((val) => fn(val));
+        authQueue = [];
+    }
 }
-    // the container function for app takes arg as children
+
+export function unregisterAuthSetter() {
+    externalSetAuth = null;
+}
+
+export function setAuthFromOutside(value) {
+    if (externalSetAuth) {
+        externalSetAuth(value);
+    } else {
+        authQueue.push(value);
+    }
+}
+
 export function AuthProvider({ children }) {
-    // useState 
     const [isAuthenticated, setIsAuthenticated] = useState(
-        // !!value is a neat trick in JavaScript to convert any value into a real boolean (true or false).
         !!localStorage.getItem('accessToken')
     );
-    // Stores the state updater function so setAuthFromOutside() can use it later.
-    externalSetAuth = setIsAuthenticated;
-    // Wraps all child components in AuthContext.Provider.
+
+    useEffect(() => {
+        registerAuthSetter(setIsAuthenticated);
+        return () => {
+            unregisterAuthSetter();
+        };
+    }, []);
+
     return (
         <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
             {children}
@@ -29,7 +46,6 @@ export function AuthProvider({ children }) {
     );
 }
 
-    // Custom hook to use the context easily.
-export function useAuth(){
+export function useAuth() {
     return useContext(AuthContext);
 }

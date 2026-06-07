@@ -11,8 +11,13 @@ const register = async (req, res) => {
         // checking if phone is empty then i make it undefined.
         if (!phone || phone.trim() === "") phone = undefined;
         // checking that credentials aren't empty
-        if (!email || !password || !userName)
+        if (
+            typeof email !== 'string' || email.trim().length === 0 ||
+            typeof password !== 'string' || password.trim().length === 0 ||
+            typeof userName !== 'string' || userName.trim().length === 0
+        ) {
             return res.status(400).json({ error: "Email , password, UserName are required! " });
+        }
         // checking for existing email 
         const existing = await authService.findExistingUser(email);
         if (existing) return res.status(409).json({ error: " Email Already Registered" });
@@ -153,6 +158,10 @@ const changePassword = async (req, res) => {
 
         if (!oldpassword || !newPassword) {
             return res.status(400).json({ message: "All Fields are required." });
+        }
+
+        if (typeof oldpassword !== 'string') {
+            return res.status(400).json({ message: "Invalid old password." });
         }
 
         if (typeof newPassword !== 'string') {

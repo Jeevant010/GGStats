@@ -17,6 +17,12 @@ const Valorant = () => {
 
     useEffect(() => {
         const fetchSchedule = async () => {
+            if (!API_KEY) {
+                setError("Missing API Key. Please set VITE_VALORANT_SCHEDULE_API in your environment.");
+                console.error("Error: VITE_VALORANT_SCHEDULE_API is undefined or empty. Please set it in your environment variables.");
+                setLoading(false);
+                return;
+            }
             try {
                 const response = await axios.get('https://api.henrikdev.xyz/valorant/v1/esports/schedule', {
                     headers: { 'Authorization': API_KEY }
@@ -30,7 +36,7 @@ const Valorant = () => {
             }
         };
         fetchSchedule();
-    }, []);
+    }, [API_KEY]);
 
     useEffect(() => { setShowCount(12); }, [selectedRegion, selectedDate]);
 

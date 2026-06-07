@@ -1,33 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { Clock, Play } from 'lucide-react';
 
-export const CountdownTimer = ({ startDate, endDate }) => {
-    const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+const calculateTimeLeft = (startDate, endDate) => {
+    const now = new Date();
+    const start = new Date(startDate);
+    const end = new Date(endDate);
 
-    function calculateTimeLeft() {
-        const now = new Date();
-        const start = new Date(startDate);
-        const end = new Date(endDate);
+    if (now > end) return { status: "Completed" };
+    if (now >= start && now <= end) return { status: "Active" };
 
-        if (now > end) return { status: "Completed" };
-        if (now >= start && now <= end) return { status: "Active" };
-
-        const difference = start - now;
-        if (difference > 0) {
-            return {
-                status: "Upcoming",
-                days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-                hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-                minutes: Math.floor((difference / 1000 / 60) % 60),
-                seconds: Math.floor((difference / 1000) % 60)
-            };
-        }
-        return { status: "Completed" };
+    const difference = start - now;
+    if (difference > 0) {
+        return {
+            status: "Upcoming",
+            days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+            hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+            minutes: Math.floor((difference / 1000 / 60) % 60),
+            seconds: Math.floor((difference / 1000) % 60)
+        };
     }
+    return { status: "Completed" };
+};
+
+export const CountdownTimer = ({ startDate, endDate }) => {
+    const [timeLeft, setTimeLeft] = useState(() => calculateTimeLeft(startDate, endDate));
 
     useEffect(() => {
         const timer = setInterval(() => {
-            setTimeLeft(calculateTimeLeft());
+            setTimeLeft(calculateTimeLeft(startDate, endDate));
         }, 1000);
 
         return () => clearInterval(timer);

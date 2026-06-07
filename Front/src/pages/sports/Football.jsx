@@ -17,6 +17,12 @@ const Football = () => {
 
   useEffect(() => {
     const fetchFixtures = async () => {
+      if (!API_KEY) {
+        setError("Missing API Key. Please set VITE_SPORTS_API_KEY in your environment.");
+        console.error("Error: VITE_SPORTS_API_KEY is undefined or empty. Please set it in your environment variables.");
+        setLoading(false);
+        return;
+      }
       setLoading(true);
       setError(null);
       try {
@@ -39,7 +45,7 @@ const Football = () => {
 
   const groupByLeague = useCallback((matches) => {
     return matches.reduce((groups, match) => {
-      const league = match.league.name || "Other";
+      const league = match.league?.name || "Other";
       if (!groups[league]) groups[league] = [];
       groups[league].push(match);
       return groups;
@@ -68,7 +74,12 @@ const Football = () => {
     if (short === "FT") return "Full Time";
     if (short === "AET") return "After Extra Time";
     if (short === "PEN") return "Penalties";
-    if (short === "NS") return `Kickoff ${new Date(fixtureDate || Date.now()).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}`;
+    if (short === "NS") {
+      if (fixtureDate && !isNaN(new Date(fixtureDate).getTime())) {
+        return `Kickoff ${new Date(fixtureDate).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}`;
+      }
+      return "Kickoff TBD";
+    }
     if (short === "PST") return "Postponed";
     if (short === "CANC") return "Cancelled";
     if (short === "SUSP") return "Suspended";
